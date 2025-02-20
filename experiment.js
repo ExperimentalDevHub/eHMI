@@ -1,5 +1,5 @@
 // ✅ Version 1.5 - Video Autoplay Fix
-console.log("🚀 experiment.js is running - Version 1.5");
+console.log("🚀 experiment.js is running - Version 1.9");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
