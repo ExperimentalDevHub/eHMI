@@ -1,4 +1,4 @@
-console.log("🚀 experiment.js is running - Final Version");
+console.log("🚀 experiment.js is running - Final FART Version");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
@@ -31,12 +31,14 @@ const video_trial = {
     stimulus: `
         <h2>Watch the video and press the spacebar when appropriate.</h2>
         <p>Press space to record timestamps.</p>
-        <iframe id="video-player" width="800" height="450"
-            src="https://www.youtube-nocookie.com/embed/sV5MwVYQwS8?start=37&autoplay=1&mute=1
-            &controls=0&modestbranding=1&rel=0&iv_load_policy=3
-            &disablekb=1&fs=0&playsinline=1&enablejsapi=1"
-            frameborder="0" allow="autoplay">
-        </iframe>
+        <div class="yt-embed-holder">
+            <iframe id="video-player" width="800" height="450"
+                src="https://www.youtube-nocookie.com/embed/sV5MwVYQwS8?start=37&autoplay=1&mute=1
+                &controls=0&modestbranding=1&rel=0&iv_load_policy=3
+                &disablekb=1&fs=0&playsinline=1&enablejsapi=1"
+                frameborder="0" allow="autoplay">
+            </iframe>
+        </div>
     `,
     choices: [" "],  // Spacebar
     response_ends_trial: false,
@@ -50,8 +52,9 @@ const video_trial = {
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('video-player', {
         events: {
-            'onReady': function () {
+            'onReady': function (event) {
                 console.log("✅ Video ready to play.");
+                player.mute(); // ✅ Ensure Video is Muted
             },
             'onStateChange': function (event) {
                 if (event.data === YT.PlayerState.PLAYING) {
