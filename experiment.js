@@ -1,5 +1,5 @@
 // 🚀 Confirm script is loading
-console.log("🚀 experiment.js is running - Version 1.1");
+console.log("🚀 experiment.js is running - Version 1.2");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
