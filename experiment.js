@@ -71,9 +71,9 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-let timestampData = []; // Store timestamps
-let isTiming = false;  // Tracks whether we're timing an action
-let playerReady = false;  // Ensures YouTube API is loaded
+isTiming = false;  // Tracks whether we're timing an action
+playerReady = false;  // Ensures YouTube API is loaded
+
 
 // ✅ FIX: Make sure player exists before tracking timestamps
 document.addEventListener("keydown", function (event) {
