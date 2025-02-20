@@ -60,10 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(GOOGLE_SHEETS_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            mode: "no-cors" // ✅ Prevents CORS errors
         })
-        .then(response => response.text())
-        .then(result => console.log("Google Sheets Response:", result))
+        .then(() => console.log("Data sent to Google Sheets:", data))
         .catch(error => console.error("Error sending to Google Sheets:", error));
     }
+    
 });
