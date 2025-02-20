@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 1.9");
+console.log("Experiment.js - Version 2.0");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let keyPressData = [];
         let videoStartTime = null;
         let spacebarActive = false;
-        let videoNumber = index + 1; // ✅ Assign video number properly
+        let videoNumber = index + 1; // ✅ Assign the correct video number
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -52,17 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
             on_start: function () {
                 videoStartTime = performance.now();
 
-                // ✅ Remove existing event listeners before adding new ones
-                document.removeEventListener("keydown", keydownHandler);
-                document.removeEventListener("keyup", keyupHandler);
-
                 function keydownHandler(event) {
                     if (event.code === "Space" && !spacebarActive) {
                         spacebarActive = true;
                         let currentTime = performance.now();
                         keyPressData.push({
                             participantID: participantID,
-                            videoNumber: videoNumber, // ✅ Correctly store video number
+                            videoNumber: videoNumber, // ✅ Force the correct video number here
                             start: (currentTime - videoStartTime) / 1000
                         });
                     }
@@ -80,9 +76,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
 
+                // ✅ Ensure previous event listeners are removed before adding new ones
+                document.removeEventListener("keydown", keydownHandler);
+                document.removeEventListener("keyup", keyupHandler);
+
                 // ✅ Add event listeners for this specific video
                 document.addEventListener("keydown", keydownHandler);
                 document.addEventListener("keyup", keyupHandler);
+            },
+            on_finish: function () {
+                // ✅ Ensure video ends without showing suggestions
+                document.getElementById("jspsych-experiment").innerHTML = "";
             }
         };
         timeline.push(videoTrial);
