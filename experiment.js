@@ -1,14 +1,26 @@
-console.log("Experiment.js - Version 1.3");
+console.log("Experiment.js - Version 1.4");
+
+// Generate or retrieve a unique participant ID
+function getParticipantID() {
+    let participantID = localStorage.getItem("participantID");
+    if (!participantID) {
+        participantID = "P" + Math.floor(100000 + Math.random() * 900000); // Random 6-digit ID
+        localStorage.setItem("participantID", participantID);
+    }
+    return participantID;
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
     let timeline = [];
 
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzFc2e-R4bJrjbgu0CvixuQi_wm-Hjme1GkAj9JWUpEdLZYnpmDK6kVvooCcVl0zOw7FA/exec"; // Replace this!
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzFc2e-R4bJrjbgu0CvixuQi_wm-Hjme1GkAj9JWUpEdLZYnpmDK6kVvooCcVl0zOw7FA/exec";
+
+    let participantID = getParticipantID(); // Get or generate participant ID
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: "<h2>Welcome to the eHMI Experiment</h2>",
+        stimulus: `<h2>Welcome to the eHMI Experiment</h2><p>Your Participant ID: <strong>${participantID}</strong></p>`,
         choices: ["Start Experiment"],
     };
     timeline.push(startExperiment);
@@ -24,9 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 src="https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1" 
                 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
             </iframe>`,
-        prompt: "<p>Watch the video carefully. Press and hold spacebar when necessary.</p>",
+        prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Your Participant ID: <strong>${participantID}</strong></p>`,
         choices: "NO_KEYS",
-        trial_duration: 3000, 
+        trial_duration: 3000,
         on_start: function () {
             videoStartTime = performance.now();
 
@@ -34,7 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (event.code === "Space" && !spacebarActive) {
                     spacebarActive = true;
                     let currentTime = performance.now();
-                    keyPressData.push({ start: (currentTime - videoStartTime) / 1000 });
+                    keyPressData.push({
+                        participantID: participantID,
+                        start: (currentTime - videoStartTime) / 1000
+                    });
                 }
             });
 
@@ -45,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     let lastEntry = keyPressData[keyPressData.length - 1];
                     lastEntry.end = (currentTime - videoStartTime) / 1000;
                     lastEntry.duration = lastEntry.end - lastEntry.start;
-                    
+
                     // Send data to Google Sheets
                     sendToGoogleSheets(lastEntry);
                 }
@@ -61,10 +76,9 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
-            mode: "no-cors" // ✅ Prevents CORS errors
+            mode: "no-cors"
         })
         .then(() => console.log("Data sent to Google Sheets:", data))
         .catch(error => console.error("Error sending to Google Sheets:", error));
     }
-    
 });
