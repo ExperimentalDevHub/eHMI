@@ -4,7 +4,7 @@ const jsPsych = initJsPsych({
     on_finish: function() {
         console.log("✅ Experiment finished!");
     }
-});
+}); 
 
 // Define video trial
 const video_trial = {
