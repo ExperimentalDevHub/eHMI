@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<h2>Welcome to the eHMI Experiment</h2><p>Your Participant ID: <strong>${participantID}</strong></p>`,
+        stimulus: `<h2>Welcome to the eHMI Experiment</h2>`,
         choices: ["Start Experiment"],
     };
     timeline.push(startExperiment);
