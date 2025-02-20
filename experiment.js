@@ -1,3 +1,6 @@
+console.log("🚀 experiment.js is running - Version 1.0");
+
+
 // Initialize jsPsych
 const jsPsych = initJsPsych({
     display_element: 'jspsych-experiment',
