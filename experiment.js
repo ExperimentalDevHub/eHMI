@@ -1,5 +1,5 @@
-// ✅ Version 1.6 - Hide YouTube UI & Disable Suggested Videos
-console.log("🚀 experiment.js is running - Version 1.11");
+// ✅ Version 1.7 - Hide YouTube UI & Disable Overlays
+console.log("🚀 experiment.js is running - Version 69");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
@@ -19,14 +19,14 @@ const welcome_trial = {
     }
 };
 
-// Video trial with autoplay & hidden YouTube UI
+// Video trial with autoplay & forced minimal UI
 const video_trial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <h2>Watch the video and press the spacebar when appropriate.</h2>
         <p>Press space to record timestamps.</p>
         <iframe id="video-player" width="800" height="450"
-            src="https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3"
+            src="https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1"
             frameborder="0" allow="autoplay" allowfullscreen>
         </iframe>
     `,
