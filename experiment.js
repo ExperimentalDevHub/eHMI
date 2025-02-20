@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 5 ");
+console.log("Experiment.js - Version 1.6");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -16,9 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
     let timeline = [];
 
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzFc2e-R4bJrjbgu0CvixuQi_wm-Hjme1GkAj9JWUpEdLZYnpmDK6kVvooCcVl0zOw7FA/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
 
-    let participantID = getParticipantID(); // Get or generate participant ID
+    let participantID = getParticipantID();
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
+       
         "https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1",
         "https://www.youtube.com/embed/KIvC5wsoW2Y?start=40&end=43&autoplay=1&mute=1",
         "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1"
@@ -37,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let keyPressData = [];
         let videoStartTime = null;
         let spacebarActive = false;
+        let videoNumber = index + 1; // ✅ Track video number
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -45,9 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     src="${videoURL}" 
                     frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                 </iframe>`,
-            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${index + 1} of ${videoList.length}</p>`,
+            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${videoNumber} of ${videoList.length}</p>`,
             choices: "NO_KEYS",
-            trial_duration: 5000, // Adjust based on video length
+            trial_duration: 5000, // ✅ Change this to match video length
             on_start: function () {
                 videoStartTime = performance.now();
 
@@ -57,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let currentTime = performance.now();
                         keyPressData.push({
                             participantID: participantID,
-                            videoIndex: index + 1, // Label which video
+                            videoNumber: videoNumber, // ✅ Store video number
                             start: (currentTime - videoStartTime) / 1000
                         });
                     }
@@ -78,6 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         };
         timeline.push(videoTrial);
+
+        // ✅ Add a transition screen instead of jumping to the next video
+        let transitionScreen = {
+            type: jsPsychHtmlButtonResponse,
+            stimulus: `<h2>Proceed to Next Trial</h2><p>Click the button below to continue.</p>`,
+            choices: ["Next Video"],
+        };
+        timeline.push(transitionScreen);
     });
 
     let endExperiment = {
