@@ -1,123 +1,44 @@
-console.log("🚀 experiment.js is running - fuck d ");
-
 // Initialize jsPsych
 const jsPsych = initJsPsych({
     display_element: 'jspsych-experiment',
-    on_finish: function () {
+    on_finish: function() {
         console.log("✅ Experiment finished!");
-        console.table(timestampData);
     }
 });
 
-// Generate unique participant ID
-const participantID = jsPsych.randomization.randomID(10);
-let timestampData = []; // Store timestamps ✅ (Only declared once)
-let isTiming = false;
-let player = null; // YouTube API player reference
-let playerReady = false;  // Ensures YouTube API is fully loaded before allowing spacebar presses
-
-// Welcome screen
-const welcome_trial = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: "<h1>Welcome to the Experiment</h1><p>Click below to start.</p>",
-    choices: ["Start Experiment"],
-    on_finish: function () {
-        console.log("✅ Welcome screen complete.");
-    }
-};
-
-// Video trial
+// Define video trial
 const video_trial = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-        <h2>Watch the video and press the spacebar when appropriate.</h2>
-        <p>Press space to record timestamps.</p>
-        <div class="yt-embed-holder">
-            <iframe id="video-player" width="800" height="450"
-                src="https://www.youtube-nocookie.com/embed/sV5MwVYQwS8?start=37&autoplay=1&mute=1
-                &controls=0&modestbranding=1&rel=0&iv_load_policy=3
-                &disablekb=1&fs=0&playsinline=1&enablejsapi=1"
-                frameborder="0" allow="autoplay">
-            </iframe>
-        </div>
-    `,
-    choices: [" "],  // Spacebar
+    type: jsPsychVideoKeyboardResponse,
+    stimulus: ["https://www.youtube.com/embed/https://www.youtube.com/watch?v=sV5MwVYQwS8?start=37&end=40&autoplay=1&controls=0"],
+    width: 800,
+    choices: [" "],  // Spacebar to interact
     response_ends_trial: false,
-    data: { participant_id: participantID },
-    on_load: function () {
-        console.log("✅ Video loaded & autoplaying.");
+    prompt: "<h2>Watch the video and press the spacebar when appropriate.</h2><p>Press space to record timestamps.</p>",
+    data: {
+        participant_id: jsPsych.randomization.randomID(10) // Random participant ID
+    },
+    on_load: function() {
+        console.log("✅ Video trial loaded!");
+    },
+    on_start: function(trial) {
+        trial.start_times = [];
+        trial.end_times = [];
+    },
+    on_finish: function(trial) {
+        console.log("✅ Video finished!", trial);
     }
 };
 
-// ✅ FIX: Ensure YouTube API is properly initialized
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('video-player', {
-        events: {
-            'onReady': function (event) {
-                console.log("✅ Player is fully ready!");
-                playerReady = true; // ✅ Now player is truly ready
-                
-                // ✅ FIX: Mute Video Properly
-                setTimeout(() => {
-                    if (player && typeof player.mute === "function") {
-                        console.log("🔄 Trying to mute video now...");
-                        player.mute();
-                        setTimeout(() => {
-                            console.log("🔄 Double-check mute status:", player.isMuted());
-                        }, 1000);
-                    } else {
-                        console.log("❌ Mute function is not available.");
-                    }
-                }, 2500);
-                
-            },
-            'onStateChange': function (event) {
-                if (event.data === YT.PlayerState.PLAYING) {
-                    let checkTime = setInterval(function () {
-                        if (player && player.getCurrentTime() >= 40) {
-                            player.stopVideo();
-                            clearInterval(checkTime);
-                            console.log("⏹ Video stopped at 40s.");
-                        }
-                    }, 500);
-                }
-            }
-        }
-    });
-}
-
-// ✅ FIX: Spacebar only works if player is truly ready
-document.addEventListener("keydown", function (event) {
+// Listen for spacebar presses & record timestamps
+document.addEventListener("keydown", function(event) {
     if (event.code === "Space") {
-        if (!playerReady || !player) { 
-            if (!window.warnedOnce) {
-                console.warn("⚠️ Player not ready yet! Ignoring key press.");
-                window.warnedOnce = true; // ✅ Only warn the first time
-            }
-            return;
+        const video = document.querySelector("iframe");
+        if (video) {
+            const currentTime = video.contentWindow?.postMessage({ method: "getCurrentTime" }, "*");
+            console.log("⏳ Spacebar pressed at:", currentTime);
         }
-        
-
-        let currentTime = player.getCurrentTime();
-        
-        if (!isTiming) {
-            // Start new timestamp
-            timestampData.push({ participant: participantID, start: currentTime, end: null });
-            console.log(`⏳ Started at: ${currentTime}s`);
-        } else {
-            // Stop the last timestamp entry
-            timestampData[timestampData.length - 1].end = currentTime;
-            console.log(`✅ Ended at: ${currentTime}s`);
-        }
-        
-        isTiming = !isTiming;
     }
 });
 
-// ✅ FIX: Load YouTube API (Ensures Player is Ready Before Running)
-const script = document.createElement("script");
-script.src = "https://www.youtube.com/iframe_api";
-document.body.appendChild(script);
-
-// Run the experiment
-jsPsych.run([welcome_trial, video_trial]);
+// Run experiment
+jsPsych.run([video_trial]);
