@@ -3,12 +3,16 @@ console.log("Experiment.js - Version 6");
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
-    if (!participantID) {
+
+    // If participantID exists but is too long, reset it
+    if (!participantID || participantID.length > 6) { 
         participantID = Math.floor(100000 + Math.random() * 900000).toString(); // ✅ 6-digit ID
         localStorage.setItem("participantID", participantID);
     }
+    
     return participantID;
 }
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
