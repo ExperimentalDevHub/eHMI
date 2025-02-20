@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eHMI Experiment</title>
 
-    <!-- Load jsPsych core, plugins, and experiment script -->
+    <!-- Load jsPsych core and necessary plugins -->
     <script defer src="jspsych.js"></script>
+    <script defer src="plugin-html-button-response.js"></script> <!-- ✅ FIXED: Added this -->
     <script defer src="plugin-html-keyboard-response.js"></script>
     <script defer src="plugin-video-keyboard-response.js"></script>
     <script defer src="experiment.js"></script>
@@ -18,4 +19,3 @@
     <div id="jspsych-experiment"></div>
 </body>
 </html>
- 
