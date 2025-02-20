@@ -1,4 +1,4 @@
-console.log("🚀 experiment.js is running - Version 3.0");
+console.log("🚀 experiment.js is running - Version 4");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
