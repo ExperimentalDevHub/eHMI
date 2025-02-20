@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 1.6");
+console.log("Experiment.js - Version 1.7");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-       
         "https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1",
         "https://www.youtube.com/embed/KIvC5wsoW2Y?start=40&end=43&autoplay=1&mute=1",
         "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1"
@@ -49,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </iframe>`,
             prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${videoNumber} of ${videoList.length}</p>`,
             choices: "NO_KEYS",
-            trial_duration: 5000, // ✅ Change this to match video length
+            trial_duration: 2800, // ✅ End video slightly early to cut suggested videos
             on_start: function () {
                 videoStartTime = performance.now();
 
@@ -77,17 +76,23 @@ document.addEventListener("DOMContentLoaded", function () {
                         sendToGoogleSheets(lastEntry);
                     }
                 });
+            },
+            on_finish: function () {
+                // ✅ Instead of letting the video end, cut to a blank screen
+                document.getElementById("jspsych-experiment").innerHTML = "<h2>Loading next trial...</h2>";
             }
         };
         timeline.push(videoTrial);
 
-        // ✅ Add a transition screen instead of jumping to the next video
-        let transitionScreen = {
-            type: jsPsychHtmlButtonResponse,
-            stimulus: `<h2>Proceed to Next Trial</h2><p>Click the button below to continue.</p>`,
-            choices: ["Next Video"],
-        };
-        timeline.push(transitionScreen);
+        // ✅ Add "Proceed to Next Trial" button ONLY IF it’s NOT the last video
+        if (index < videoList.length - 1) {
+            let transitionScreen = {
+                type: jsPsychHtmlButtonResponse,
+                stimulus: `<h2>Proceed to Next Trial</h2><p>Click the button below to continue.</p>`,
+                choices: ["Next Video"],
+            };
+            timeline.push(transitionScreen);
+        }
     });
 
     let endExperiment = {
