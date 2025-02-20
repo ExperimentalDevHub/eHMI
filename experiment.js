@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version sdf ");
+console.log("Experiment.js - Version 2.1");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -29,16 +29,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const videoList = [
         "https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1",
-        "https://www.youtube.com/embed/KIvC5wsoW2Y?start=40&end=43&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1",
+        "https://www.youtube.com/embed/4nfq18MG7Mo?start=35&end=38&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1",
         "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1"
     ];
-    
 
     videoList.forEach((videoURL, index) => {
-        let keyPressData = [];
         let videoStartTime = null;
         let spacebarActive = false;
-        let videoNumber = index + 1; // ✅ Assign the correct video number
+        let videoNumber = index + 1; // ✅ Assign correct video number
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -57,36 +55,36 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && !spacebarActive) {
                         spacebarActive = true;
                         let currentTime = performance.now();
-                        keyPressData.push({
+                        let recordedVideoNumber = videoNumber; // ✅ Store the exact video number at keypress
+
+                        let keyPressData = {
                             participantID: participantID,
-                            videoNumber: videoNumber, // ✅ Force the correct video number here
+                            videoNumber: recordedVideoNumber, // ✅ Ensures correct video number
                             start: (currentTime - videoStartTime) / 1000
+                        };
+
+                        document.addEventListener("keyup", function keyupHandler(event) {
+                            if (event.code === "Space" && spacebarActive) {
+                                spacebarActive = false;
+                                let currentTime = performance.now();
+                                keyPressData.end = (currentTime - videoStartTime) / 1000;
+                                keyPressData.duration = keyPressData.end - keyPressData.start;
+
+                                sendToGoogleSheets(keyPressData);
+
+                                // ✅ Remove this keyup event after use to prevent duplicates
+                                document.removeEventListener("keyup", keyupHandler);
+                            }
                         });
-                    }
-                }
-
-                function keyupHandler(event) {
-                    if (event.code === "Space" && spacebarActive) {
-                        spacebarActive = false;
-                        let currentTime = performance.now();
-                        let lastEntry = keyPressData[keyPressData.length - 1];
-                        lastEntry.end = (currentTime - videoStartTime) / 1000;
-                        lastEntry.duration = lastEntry.end - lastEntry.start;
-
-                        sendToGoogleSheets(lastEntry);
                     }
                 }
 
                 // ✅ Ensure previous event listeners are removed before adding new ones
                 document.removeEventListener("keydown", keydownHandler);
-                document.removeEventListener("keyup", keyupHandler);
-
-                // ✅ Add event listeners for this specific video
                 document.addEventListener("keydown", keydownHandler);
-                document.addEventListener("keyup", keyupHandler);
             },
             on_finish: function () {
-                // ✅ Ensure video ends without showing suggestions
+                // ✅ Clears the video instead of showing suggested videos
                 document.getElementById("jspsych-experiment").innerHTML = "";
             }
         };
