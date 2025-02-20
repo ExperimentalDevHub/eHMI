@@ -1,4 +1,4 @@
-console.log("🚀 experiment.js is running - Final FART Version");
+console.log("🚀 experiment.js is running - FINAL FIXED VERSION");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
@@ -13,7 +13,7 @@ const jsPsych = initJsPsych({
 const participantID = jsPsych.randomization.randomID(10);
 let timestampData = []; // Store timestamps
 let isTiming = false;
-let player; // YouTube API player reference
+let player = null; // YouTube API player reference
 
 // Welcome screen
 const welcome_trial = {
@@ -48,7 +48,7 @@ const video_trial = {
     }
 };
 
-// Track spacebar presses & record timestamps
+// ✅ FIX: Initialize YouTube API PROPERLY
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('video-player', {
         events: {
@@ -59,7 +59,7 @@ function onYouTubeIframeAPIReady() {
             'onStateChange': function (event) {
                 if (event.data === YT.PlayerState.PLAYING) {
                     let checkTime = setInterval(function () {
-                        if (player.getCurrentTime() >= 40) {
+                        if (player && player.getCurrentTime() >= 40) {
                             player.stopVideo();
                             clearInterval(checkTime);
                             console.log("⏹ Video stopped at 40s.");
@@ -71,8 +71,9 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
+// ✅ FIX: Wait for YouTube API to Load Before Spacebar Tracking
 document.addEventListener("keydown", function (event) {
-    if (event.code === "Space") {
+    if (event.code === "Space" && player) {
         if (!isTiming) {
             let startTime = player.getCurrentTime();
             timestampData.push({ participant: participantID, start: startTime, end: null });
@@ -83,10 +84,12 @@ document.addEventListener("keydown", function (event) {
             console.log(`✅ End: ${endTime}s`);
         }
         isTiming = !isTiming;
+    } else if (!player) {
+        console.warn("⚠️ Player not initialized yet!");
     }
 });
 
-// Inject YouTube API
+// Inject YouTube API (Ensures YouTube Player is Ready Before Running)
 const script = document.createElement("script");
 script.src = "https://www.youtube.com/iframe_api";
 document.body.appendChild(script);
