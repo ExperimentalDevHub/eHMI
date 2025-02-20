@@ -1,11 +1,11 @@
-console.log("Experiment.js - Version 1.8");
+console.log("Experiment.js - Version 1.9");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
 
     if (!participantID || participantID.length > 6) {
-        participantID = Math.floor(100000 + Math.random() * 900000).toString(); // ✅ 6-digit ID
+        participantID = Math.floor(100000 + Math.random() * 900000).toString();
         localStorage.setItem("participantID", participantID);
     }
     
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let keyPressData = [];
         let videoStartTime = null;
         let spacebarActive = false;
-        let videoNumber = index + 1; // ✅ Track video number
+        let videoNumber = index + 1; // ✅ Assign video number properly
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -48,23 +48,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 </iframe>`,
             prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${videoNumber} of ${videoList.length}</p>`,
             choices: "NO_KEYS",
-            trial_duration: 2800, // ✅ End video slightly early to cut suggested videos
+            trial_duration: 2800, 
             on_start: function () {
                 videoStartTime = performance.now();
 
-                document.addEventListener("keydown", function (event) {
+                // ✅ Remove existing event listeners before adding new ones
+                document.removeEventListener("keydown", keydownHandler);
+                document.removeEventListener("keyup", keyupHandler);
+
+                function keydownHandler(event) {
                     if (event.code === "Space" && !spacebarActive) {
                         spacebarActive = true;
                         let currentTime = performance.now();
                         keyPressData.push({
                             participantID: participantID,
-                            videoNumber: videoNumber, // ✅ Store video number
+                            videoNumber: videoNumber, // ✅ Correctly store video number
                             start: (currentTime - videoStartTime) / 1000
                         });
                     }
-                });
+                }
 
-                document.addEventListener("keyup", function (event) {
+                function keyupHandler(event) {
                     if (event.code === "Space" && spacebarActive) {
                         spacebarActive = false;
                         let currentTime = performance.now();
@@ -72,19 +76,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         lastEntry.end = (currentTime - videoStartTime) / 1000;
                         lastEntry.duration = lastEntry.end - lastEntry.start;
 
-                        // Send data to Google Sheets
                         sendToGoogleSheets(lastEntry);
                     }
-                });
-            },
-            on_finish: function () {
-                // ✅ Instead of letting the video end, cut to a blank screen
-                document.getElementById("jspsych-experiment").innerHTML = "<h2> </h2>";
+                }
+
+                // ✅ Add event listeners for this specific video
+                document.addEventListener("keydown", keydownHandler);
+                document.addEventListener("keyup", keyupHandler);
             }
         };
         timeline.push(videoTrial);
 
-        // ✅ Add "Proceed to Next Trial" button ONLY IF it’s NOT the last video
         if (index < videoList.length - 1) {
             let transitionScreen = {
                 type: jsPsychHtmlButtonResponse,
