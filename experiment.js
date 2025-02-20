@@ -1,4 +1,4 @@
-console.log("🚀 experiment.js is running - ALDEN ");
+console.log("🚀 experiment.js is running - monkey ");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
@@ -11,9 +11,10 @@ const jsPsych = initJsPsych({
 
 // Generate unique participant ID
 const participantID = jsPsych.randomization.randomID(10);
-let timestampData = []; // Store timestamps
+let timestampData = []; // Store timestamps ✅ (Only declared once)
 let isTiming = false;
 let player = null; // YouTube API player reference
+let playerReady = false;  // Ensures YouTube API is fully loaded before allowing spacebar presses
 
 // Welcome screen
 const welcome_trial = {
@@ -48,12 +49,13 @@ const video_trial = {
     }
 };
 
-// ✅ FIX: Initialize YouTube API PROPERLY
+// ✅ FIX: Ensure YouTube API is properly initialized
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('video-player', {
         events: {
-            'onReady': function (event) {
-                console.log("✅ Video ready to play.");
+            'onReady': function () {
+                console.log("✅ Player is fully ready!");
+                playerReady = true; // ✅ Now player is truly ready
                 player.mute(); // ✅ Ensure Video is Muted
             },
             'onStateChange': function (event) {
@@ -70,10 +72,6 @@ function onYouTubeIframeAPIReady() {
         }
     });
 }
-
-let timestampData = []; // Store timestamps
-let isTiming = false;  // Tracks whether we're timing an action
-let playerReady = false;  // Ensures YouTube API is loaded
 
 // ✅ FIX: Spacebar only works if player is truly ready
 document.addEventListener("keydown", function (event) {
@@ -99,23 +97,10 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-// ✅ FIX: Properly Initialize YouTube API
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('video-player', {
-        events: {
-            'onReady': function () {
-                console.log("✅ Player is fully ready!");
-                playerReady = true; // ✅ Now player is truly ready
-            }
-        }
-    });
-}
-
 // ✅ FIX: Load YouTube API (Ensures Player is Ready Before Running)
 const script = document.createElement("script");
 script.src = "https://www.youtube.com/iframe_api";
 document.body.appendChild(script);
-
 
 // Run the experiment
 jsPsych.run([welcome_trial, video_trial]);
