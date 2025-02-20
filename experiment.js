@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 1.4");
+console.log("Experiment.js - Version 5");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
     let timeline = [];
 
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzFc2e-R4bJrjbgu0CvixuQi_wm-Hjme1GkAj9JWUpEdLZYnpmDK6kVvooCcVl0zOw7FA/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxQ6azojKNF4Da4IEMLk0KFJlM_xDjuAhHdGqDYsxwczPzQtY2kNUiuPGxMo3xxFrBPqg/exec";
 
     let participantID = getParticipantID(); // Get or generate participant ID
 
