@@ -1,44 +1,25 @@
-// Initialize jsPsych
-const jsPsych = initJsPsych({
-    display_element: 'jspsych-experiment',
-    on_finish: function() {
-        console.log("✅ Experiment finished!");
-    }
+document.addEventListener("DOMContentLoaded", function () {
+    let jsPsych = initJsPsych();
+
+    let timeline = [];
+
+    // Start button
+    let startExperiment = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "<h2>Welcome to the eHMI Experiment</h2>",
+        choices: ["Start Experiment"],
+    };
+    timeline.push(startExperiment);
+
+    // Embedded YouTube video
+    let videoTrial = {
+        type: jsPsychVideoKeyboardResponse,
+        stimulus: ["https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1"],
+        prompt: "<p>Watch the video carefully.</p>",
+        choices: "NO_KEYS",
+        trial_ends_after_video: true,
+    };
+    timeline.push(videoTrial);
+
+    jsPsych.run(timeline);
 });
-
-// Define video trial
-const video_trial = {
-    type: jsPsychVideoKeyboardResponse,
-    stimulus: ["https://www.youtube.com/embed/https://www.youtube.com/watch?v=sV5MwVYQwS8?start=37&end=40&autoplay=1&controls=0"],
-    width: 800,
-    choices: [" "],  // Spacebar to interact
-    response_ends_trial: false,
-    prompt: "<h2>Watch the video and press the spacebar when appropriate.</h2><p>Press space to record timestamps.</p>",
-    data: {
-        participant_id: jsPsych.randomization.randomID(10) // Random participant ID
-    },
-    on_load: function() {
-        console.log("✅ Video trial loaded!");
-    },
-    on_start: function(trial) {
-        trial.start_times = [];
-        trial.end_times = [];
-    },
-    on_finish: function(trial) {
-        console.log("✅ Video finished!", trial);
-    }
-};
-
-// Listen for spacebar presses & record timestamps
-document.addEventListener("keydown", function(event) {
-    if (event.code === "Space") {
-        const video = document.querySelector("iframe");
-        if (video) {
-            const currentTime = video.contentWindow?.postMessage({ method: "getCurrentTime" }, "*");
-            console.log("⏳ Spacebar pressed at:", currentTime);
-        }
-    }
-});
-
-// Run experiment
-jsPsych.run([video_trial]);
