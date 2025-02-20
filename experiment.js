@@ -4,11 +4,12 @@ console.log("Experiment.js - Version 5");
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
     if (!participantID) {
-        participantID = "P" + Math.floor(100000 + Math.random() * 900000); // Random 6-digit ID
+        participantID = Math.floor(100000 + Math.random() * 900000).toString(); // ✅ 6-digit ID
         localStorage.setItem("participantID", participantID);
     }
     return participantID;
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 src="https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1" 
                 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
             </iframe>`,
-        prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Your Participant ID: <strong>${participantID}</strong></p>`,
+        prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p>`,
         choices: "NO_KEYS",
         trial_duration: 3000,
         on_start: function () {
