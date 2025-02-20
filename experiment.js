@@ -60,10 +60,16 @@ function onYouTubeIframeAPIReady() {
                 // ✅ FIX: Mute Video Properly
                 setTimeout(() => {
                     if (player && typeof player.mute === "function") {
+                        console.log("🔄 Trying to mute video now...");
                         player.mute();
-                        console.log("🔇 Video is now muted.");
+                        setTimeout(() => {
+                            console.log("🔄 Double-check mute status:", player.isMuted());
+                        }, 1000);
+                    } else {
+                        console.log("❌ Mute function is not available.");
                     }
-                }, 500); 
+                }, 2500);
+                
             },
             'onStateChange': function (event) {
                 if (event.data === YT.PlayerState.PLAYING) {
@@ -84,9 +90,13 @@ function onYouTubeIframeAPIReady() {
 document.addEventListener("keydown", function (event) {
     if (event.code === "Space") {
         if (!playerReady || !player) { 
-            console.warn("⚠️ Player not ready yet! Ignoring key press.");
+            if (!window.warnedOnce) {
+                console.warn("⚠️ Player not ready yet! Ignoring key press.");
+                window.warnedOnce = true; // ✅ Only warn the first time
+            }
             return;
         }
+        
 
         let currentTime = player.getCurrentTime();
         
