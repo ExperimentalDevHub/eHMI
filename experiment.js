@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 1.7");
+console.log("Experiment.js - Version 1.8");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             on_finish: function () {
                 // ✅ Instead of letting the video end, cut to a blank screen
-                document.getElementById("jspsych-experiment").innerHTML = "<h2>Loading next trial...</h2>";
+                document.getElementById("jspsych-experiment").innerHTML = "<h2> </h2>";
             }
         };
         timeline.push(videoTrial);
