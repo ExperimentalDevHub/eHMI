@@ -71,14 +71,14 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-isTiming = false;  // Tracks whether we're timing an action
-playerReady = false;  // Ensures YouTube API is loaded
+let timestampData = []; // Store timestamps
+let isTiming = false;  // Tracks whether we're timing an action
+let playerReady = false;  // Ensures YouTube API is loaded
 
-
-// ✅ FIX: Make sure player exists before tracking timestamps
+// ✅ FIX: Spacebar only works if player is truly ready
 document.addEventListener("keydown", function (event) {
     if (event.code === "Space") {
-        if (!playerReady) {
+        if (!playerReady || !player) { // ✅ Prevent pressing space too early
             console.warn("⚠️ Player not ready yet!");
             return;
         }
@@ -99,23 +99,23 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-// ✅ FIX: Ensure YouTube API is loaded before spacebar events
+// ✅ FIX: Properly Initialize YouTube API
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('video-player', {
         events: {
             'onReady': function () {
-                playerReady = true;
-                console.log("✅ Player is ready.");
+                console.log("✅ Player is fully ready!");
+                playerReady = true; // ✅ Now player is truly ready
             }
         }
     });
 }
 
-
-// Inject YouTube API (Ensures YouTube Player is Ready Before Running)
+// ✅ FIX: Load YouTube API (Ensures Player is Ready Before Running)
 const script = document.createElement("script");
 script.src = "https://www.youtube.com/iframe_api";
 document.body.appendChild(script);
+
 
 // Run the experiment
 jsPsych.run([welcome_trial, video_trial]);
