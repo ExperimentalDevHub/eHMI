@@ -1,4 +1,4 @@
-console.log("🚀 experiment.js is running - ALDEN ");
+console.log("🚀 experiment.js is running - fuck y ");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
