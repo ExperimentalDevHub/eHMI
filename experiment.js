@@ -1,5 +1,5 @@
-// ✅ Version 1.4 - Video Autoplay Fix
-console.log("🚀 experiment.js is running - Version 1.4");
+// ✅ Version 1.5 - Video Autoplay Fix
+console.log("🚀 experiment.js is running - Version 1.5");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
@@ -37,16 +37,15 @@ const video_trial = {
     },
     on_load: function () {
         console.log("✅ Video loaded & autoplaying.");
+
+        // Ensure video starts playing in case autoplay is blocked
+        setTimeout(() => {
+            const iframe = document.getElementById("video-player");
+            if (iframe) {
+                iframe.src += "&autoplay=1";
+            }
+        }, 1000);
     },
-
-    setTimeout(() => {
-        const iframe = document.querySelector("iframe");
-        if (iframe) {
-            iframe.src += "&autoplay=1";
-        }
-    }, 1000); // Delay to ensure iframe loads
-}
-
     on_start: function (trial) {
         trial.start_times = [];
         trial.end_times = [];
@@ -59,10 +58,7 @@ const video_trial = {
 // Track spacebar presses & record timestamps
 document.addEventListener("keydown", function (event) {
     if (event.code === "Space") {
-        const video = document.getElementById("video-player");
-        if (video) {
-            console.log("⏳ Spacebar pressed! Timestamp unknown (YouTube API needed).");
-        }
+        console.log("⏳ Spacebar pressed! (Timestamp recording pending YouTube API)");
     }
 });
 
