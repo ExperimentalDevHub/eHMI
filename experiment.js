@@ -1,4 +1,4 @@
-console.log("🚀 experiment.js is running - FINAL FIXED VERSION");
+console.log("🚀 experiment.js is running - ALDEN ");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
@@ -71,23 +71,46 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-// ✅ FIX: Wait for YouTube API to Load Before Spacebar Tracking
+let timestampData = []; // Store timestamps
+let isTiming = false;  // Tracks whether we're timing an action
+let playerReady = false;  // Ensures YouTube API is loaded
+
+// ✅ FIX: Make sure player exists before tracking timestamps
 document.addEventListener("keydown", function (event) {
-    if (event.code === "Space" && player) {
-        if (!isTiming) {
-            let startTime = player.getCurrentTime();
-            timestampData.push({ participant: participantID, start: startTime, end: null });
-            console.log(`⏳ Start: ${startTime}s`);
-        } else {
-            let endTime = player.getCurrentTime();
-            timestampData[timestampData.length - 1].end = endTime;
-            console.log(`✅ End: ${endTime}s`);
+    if (event.code === "Space") {
+        if (!playerReady) {
+            console.warn("⚠️ Player not ready yet!");
+            return;
         }
+
+        let currentTime = player.getCurrentTime();
+        
+        if (!isTiming) {
+            // Start new timestamp
+            timestampData.push({ participant: participantID, start: currentTime, end: null });
+            console.log(`⏳ Started at: ${currentTime}s`);
+        } else {
+            // Stop the last timestamp entry
+            timestampData[timestampData.length - 1].end = currentTime;
+            console.log(`✅ Ended at: ${currentTime}s`);
+        }
+        
         isTiming = !isTiming;
-    } else if (!player) {
-        console.warn("⚠️ Player not initialized yet!");
     }
 });
+
+// ✅ FIX: Ensure YouTube API is loaded before spacebar events
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('video-player', {
+        events: {
+            'onReady': function () {
+                playerReady = true;
+                console.log("✅ Player is ready.");
+            }
+        }
+    });
+}
+
 
 // Inject YouTube API (Ensures YouTube Player is Ready Before Running)
 const script = document.createElement("script");
