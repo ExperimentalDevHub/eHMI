@@ -1,8 +1,7 @@
-console.log("Experiment.js - Version 1.0");
+console.log("Experiment.js - Version 1.1");
 
 document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
-
     let timeline = [];
 
     // Start button
@@ -15,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let keyPressData = [];
     let videoStartTime = null;
+    let spacebarActive = false;
 
     let videoTrial = {
         type: jsPsychHtmlKeyboardResponse,
@@ -23,25 +23,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 src="https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1" 
                 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
             </iframe>`,
-        prompt: "<p>Watch the video carefully. Press spacebar when necessary.</p>",
-        choices: "ALL_KEYS",
-        trial_duration: 3000, // 3 seconds
+        prompt: "<p>Watch the video carefully. Press and hold spacebar when necessary.</p>",
+        choices: "NO_KEYS", // Prevents jsPsych from ending the trial on keypress
+        trial_duration: 3000, // 3 seconds to match 37-40s
         on_start: function () {
             videoStartTime = performance.now();
-        },
-        on_keydown: function (event) {
-            if (event.code === "Space") {
-                let currentTime = performance.now();
-                keyPressData.push({ start: (currentTime - videoStartTime) / 1000 });
-            }
-        },
-        on_keyup: function (event) {
-            if (event.code === "Space" && keyPressData.length > 0) {
-                let currentTime = performance.now();
-                keyPressData[keyPressData.length - 1].end = (currentTime - videoStartTime) / 1000;
-                keyPressData[keyPressData.length - 1].duration = 
-                    keyPressData[keyPressData.length - 1].end - keyPressData[keyPressData.length - 1].start;
-            }
+
+            document.addEventListener("keydown", function (event) {
+                if (event.code === "Space" && !spacebarActive) {
+                    spacebarActive = true;
+                    let currentTime = performance.now();
+                    keyPressData.push({ start: (currentTime - videoStartTime) / 1000 });
+                }
+            });
+
+            document.addEventListener("keyup", function (event) {
+                if (event.code === "Space" && spacebarActive) {
+                    spacebarActive = false;
+                    let currentTime = performance.now();
+                    let lastEntry = keyPressData[keyPressData.length - 1];
+                    lastEntry.end = (currentTime - videoStartTime) / 1000;
+                    lastEntry.duration = lastEntry.end - lastEntry.start;
+                }
+            });
         },
         on_finish: function () {
             console.log("Key Press Data:", keyPressData);
