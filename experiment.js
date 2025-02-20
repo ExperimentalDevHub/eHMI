@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
     let timeline = [];
 
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxQ6azojKNF4Da4IEMLk0KFJlM_xDjuAhHdGqDYsxwczPzQtY2kNUiuPGxMo3xxFrBPqg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz8uw9KqceljSjVx6mGdZnjD7rCxTT-EvuUHxI7DoR8CvCUuBbVDTBdSMLjrmuLuH44JA/exec";
 
     let participantID = getParticipantID(); // Get or generate participant ID
 
