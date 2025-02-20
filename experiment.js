@@ -1,4 +1,4 @@
-console.log("🚀 experiment.js is running - monkey ");
+console.log("🚀 experiment.js is running - ALDEN ");
 
 // Initialize jsPsych
 const jsPsych = initJsPsych({
@@ -53,10 +53,17 @@ const video_trial = {
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('video-player', {
         events: {
-            'onReady': function () {
+            'onReady': function (event) {
                 console.log("✅ Player is fully ready!");
                 playerReady = true; // ✅ Now player is truly ready
-                player.mute(); // ✅ Ensure Video is Muted
+                
+                // ✅ FIX: Mute Video Properly
+                setTimeout(() => {
+                    if (player && typeof player.mute === "function") {
+                        player.mute();
+                        console.log("🔇 Video is now muted.");
+                    }
+                }, 500); 
             },
             'onStateChange': function (event) {
                 if (event.data === YT.PlayerState.PLAYING) {
@@ -76,8 +83,8 @@ function onYouTubeIframeAPIReady() {
 // ✅ FIX: Spacebar only works if player is truly ready
 document.addEventListener("keydown", function (event) {
     if (event.code === "Space") {
-        if (!playerReady || !player) { // ✅ Prevent pressing space too early
-            console.warn("⚠️ Player not ready yet!");
+        if (!playerReady || !player) { 
+            console.warn("⚠️ Player not ready yet! Ignoring key press.");
             return;
         }
 
