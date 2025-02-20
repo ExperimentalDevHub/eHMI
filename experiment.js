@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 5");
+console.log("Experiment.js - Version 6");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
