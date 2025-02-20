@@ -1,3 +1,6 @@
+<script defer src="plugin-html-button-response.js"></script>
+
+
 // 🚀 Confirm script is loading
 console.log("🚀 experiment.js is running - Version 1.2");
 
