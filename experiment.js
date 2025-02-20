@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 2.0");
+console.log("Experiment.js - Version sdf ");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -28,10 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-        "https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/KIvC5wsoW2Y?start=40&end=43&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1"
+        "https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1",
+        "https://www.youtube.com/embed/KIvC5wsoW2Y?start=40&end=43&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1",
+        "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1"
     ];
+    
 
     videoList.forEach((videoURL, index) => {
         let keyPressData = [];
