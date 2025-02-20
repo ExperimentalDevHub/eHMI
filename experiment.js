@@ -1,10 +1,11 @@
-console.log("Experiment.js - Version 1.1");
+console.log("Experiment.js - Version 1.3");
 
 document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
     let timeline = [];
 
-    // Start button
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzFc2e-R4bJrjbgu0CvixuQi_wm-Hjme1GkAj9JWUpEdLZYnpmDK6kVvooCcVl0zOw7FA/exec"; // Replace this!
+
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: "<h2>Welcome to the eHMI Experiment</h2>",
@@ -24,8 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
             </iframe>`,
         prompt: "<p>Watch the video carefully. Press and hold spacebar when necessary.</p>",
-        choices: "NO_KEYS", // Prevents jsPsych from ending the trial on keypress
-        trial_duration: 3000, // 3 seconds to match 37-40s
+        choices: "NO_KEYS",
+        trial_duration: 3000, 
         on_start: function () {
             videoStartTime = performance.now();
 
@@ -44,14 +45,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     let lastEntry = keyPressData[keyPressData.length - 1];
                     lastEntry.end = (currentTime - videoStartTime) / 1000;
                     lastEntry.duration = lastEntry.end - lastEntry.start;
+                    
+                    // Send data to Google Sheets
+                    sendToGoogleSheets(lastEntry);
                 }
             });
-        },
-        on_finish: function () {
-            console.log("Key Press Data:", keyPressData);
         }
     };
     timeline.push(videoTrial);
 
     jsPsych.run(timeline);
+
+    function sendToGoogleSheets(data) {
+        fetch(GOOGLE_SHEETS_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.text())
+        .then(result => console.log("Google Sheets Response:", result))
+        .catch(error => console.error("Error sending to Google Sheets:", error));
+    }
 });
