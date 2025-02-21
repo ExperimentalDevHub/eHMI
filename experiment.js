@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 3.0");
+console.log("Experiment.js - Version 3.1");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
             stimulus: `
                 <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
                     <iframe id="experiment-video" 
-                        style="width: 80%; aspect-ratio: 16 / 9;"  // ✅ Proper widescreen ratio
+                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>`,
             prompt: `<p style="text-align: center; font-size: 24px;">
                         Watch the video carefully. Press and hold spacebar when necessary.
-                     </p>`,  // ✅ Removed "Video 1 of 3" text
+                     </p>`,
             choices: "NO_KEYS",
             trial_duration: null,
             on_start: function () {
