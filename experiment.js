@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 2.7");
+console.log("Experiment.js - Version 2.8");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -22,8 +22,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<h2>Welcome to the eHMI Experiment</h2><p>Your Participant ID: <strong>${participantID}</strong></p>`,
+        stimulus: `<h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
+                   <p style="font-size: 24px;">Your Participant ID: <strong>${participantID}</strong></p>`,
         choices: ["Start Experiment"],
+        button_html: `<button style="font-size: 24px; padding: 15px 30px;">%choice%</button>`,
     };
     timeline.push(startExperiment);
 
@@ -36,26 +38,29 @@ document.addEventListener("DOMContentLoaded", function () {
     videoList.forEach((videoURL, index) => {
         let videoStartTime = null;
         let spacebarActive = false;
-        let videoNumber = index + 1; // ✅ Assign correct video number
-        let isLastVideo = (index === videoList.length - 1); // ✅ Check if it's the last video
+        let videoNumber = index + 1;
+        let isLastVideo = (index === videoList.length - 1);
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
-                <div id="video-container">
-                    <iframe id="experiment-video" width="560" height="315" 
+                <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+                    <iframe id="experiment-video" width="80%" height="80%" 
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
                 </div>
                 <div id="next-button-container" style="display: none; text-align: center; margin-top: 20px;">
-                    <button id="next-button" style="padding: 10px 20px; font-size: 16px;">
+                    <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
                         ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
                     </button>
                 </div>`,
-            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p>`,
-            choices: "NO_KEYS", // ✅ Prevent trial from auto-ending
-            trial_duration: null, // ✅ Trial does not auto-end
+            prompt: `<p style="text-align: center; font-size: 24px;">
+                        Watch the video carefully. Press and hold spacebar when necessary.
+                     </p>
+                     <p style="text-align: center; font-size: 24px;">Video ${videoNumber} of ${videoList.length}</p>`,
+            choices: "NO_KEYS",
+            trial_duration: null,
             on_start: function () {
                 videoStartTime = performance.now();
 
@@ -63,11 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && !spacebarActive) {
                         spacebarActive = true;
                         let currentTime = performance.now();
-                        let recordedVideoNumber = videoNumber; // ✅ Store the exact video number at keypress
+                        let recordedVideoNumber = videoNumber;
 
                         let keyPressData = {
                             participantID: participantID,
-                            videoNumber: recordedVideoNumber, // ✅ Ensures correct video number
+                            videoNumber: recordedVideoNumber,
                             start: (currentTime - videoStartTime) / 1000
                         };
 
@@ -79,29 +84,25 @@ document.addEventListener("DOMContentLoaded", function () {
                                 keyPressData.duration = keyPressData.end - keyPressData.start;
 
                                 sendToGoogleSheets(keyPressData);
-
-                                // ✅ Remove this keyup event after use to prevent duplicates
                                 document.removeEventListener("keyup", keyupHandler);
                             }
                         });
                     }
                 }
 
-                // ✅ Ensure previous event listeners are removed before adding new ones
                 document.removeEventListener("keydown", keydownHandler);
                 document.addEventListener("keydown", keydownHandler);
 
-                // ✅ FIX: Show the correct button (Proceed for most trials, Finish for last)
                 setTimeout(() => {
                     document.getElementById("next-button-container").style.display = "block";
                     document.getElementById("next-button").addEventListener("click", () => {
                         if (isLastVideo) {
-                            document.body.innerHTML = ""; // ✅ Clear screen (goodbye page)
+                            document.body.innerHTML = "";
                         } else {
-                            jsPsych.finishTrial(); // ✅ User manually proceeds to next trial
+                            jsPsych.finishTrial();
                         }
                     });
-                }, 3000); // ✅ The button appears after the video duration ends
+                }, 3000);
             },
             on_finish: function () {
                 console.log(`Video ${videoNumber} completed, waiting for user to proceed.`);
