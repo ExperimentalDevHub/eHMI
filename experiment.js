@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.addEventListener("keydown", keydownHandler);
 
                 // ✅ Delay the appearance of the "Next Video" button until trial ends
-                jsPsych.setTimeout(() => {
+                setTimeout(() => {
                     document.getElementById("next-button-container").style.display = "block";
                     document.getElementById("next-button").addEventListener("click", () => {
                         jsPsych.finishTrial(); // ✅ Proceed when button is clicked
