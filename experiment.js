@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
                     </button>
                 </div>`,
-            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${videoNumber} of ${videoList.length}</p>`,
+            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p>`,
             choices: "NO_KEYS", // ✅ Prevent trial from auto-ending
             trial_duration: null, // ✅ Trial does not auto-end
             on_start: function () {
