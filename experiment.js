@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 2.9");
+console.log("Experiment.js - Version 3.0");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         type: jsPsychHtmlButtonResponse,
         stimulus: `<h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
                    <p style="font-size: 24px;">Your Participant ID: <strong>${participantID}</strong></p>`,
-        choices: [`<button style="font-size: 24px; padding: 15px 30px;">Start Experiment</button>`], // ✅ Fixed button HTML
+        choices: [`<button style="font-size: 24px; padding: 15px 30px;">Start Experiment</button>`],
     };
     timeline.push(startExperiment);
 
@@ -37,14 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
     videoList.forEach((videoURL, index) => {
         let videoStartTime = null;
         let spacebarActive = false;
-        let videoNumber = index + 1;
         let isLastVideo = (index === videoList.length - 1);
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
-                    <iframe id="experiment-video" width="80%" height="80%" 
+                    <iframe id="experiment-video" 
+                        style="width: 80%; aspect-ratio: 16 / 9;"  // ✅ Proper widescreen ratio
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>`,
             prompt: `<p style="text-align: center; font-size: 24px;">
                         Watch the video carefully. Press and hold spacebar when necessary.
-                     </p>
-                     <p style="text-align: center; font-size: 24px;">Video ${videoNumber} of ${videoList.length}</p>`,
+                     </p>`,  // ✅ Removed "Video 1 of 3" text
             choices: "NO_KEYS",
             trial_duration: null,
             on_start: function () {
@@ -67,11 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && !spacebarActive) {
                         spacebarActive = true;
                         let currentTime = performance.now();
-                        let recordedVideoNumber = videoNumber;
 
                         let keyPressData = {
                             participantID: participantID,
-                            videoNumber: recordedVideoNumber,
                             start: (currentTime - videoStartTime) / 1000
                         };
 
@@ -104,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 3000);
             },
             on_finish: function () {
-                console.log(`Video ${videoNumber} completed, waiting for user to proceed.`);
+                console.log(`Video completed, waiting for user to proceed.`);
             }
         };
         timeline.push(videoTrial);
