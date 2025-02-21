@@ -28,10 +28,12 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-        "https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1",
-        "https://www.youtube.com/embed/4nfq18MG7Mo?start=35&end=38&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1",
-        "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1"
+        "https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/4nfq18MG7Mo?start=35&end=38&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0"
     ];
+    
+    
 
     videoList.forEach((videoURL, index) => {
         let videoStartTime = null;
@@ -50,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div id="next-button-container" style="display: none; text-align: center; margin-top: 20px;">
                     <button id="next-button" style="padding: 10px 20px; font-size: 16px;">Proceed to Next Trial</button>
                 </div>`,
-            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${videoNumber} of ${videoList.length}</p>`,
+            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p>`,
             choices: "NO_KEYS", // ✅ Prevent trial from auto-ending
             trial_duration: null, // ✅ Trial does not auto-end
             on_start: function () {
