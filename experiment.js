@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 2.6");
+console.log("Experiment.js - Version 2.7");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -32,13 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "https://www.youtube.com/embed/4nfq18MG7Mo?start=35&end=38&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0"
     ];
-    
-    
 
     videoList.forEach((videoURL, index) => {
         let videoStartTime = null;
         let spacebarActive = false;
         let videoNumber = index + 1; // ✅ Assign correct video number
+        let isLastVideo = (index === videoList.length - 1); // ✅ Check if it's the last video
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -50,9 +49,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     </iframe>
                 </div>
                 <div id="next-button-container" style="display: none; text-align: center; margin-top: 20px;">
-                    <button id="next-button" style="padding: 10px 20px; font-size: 16px;">Proceed to Next Trial</button>
+                    <button id="next-button" style="padding: 10px 20px; font-size: 16px;">
+                        ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
+                    </button>
                 </div>`,
-            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p>`,
+            prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${videoNumber} of ${videoList.length}</p>`,
             choices: "NO_KEYS", // ✅ Prevent trial from auto-ending
             trial_duration: null, // ✅ Trial does not auto-end
             on_start: function () {
@@ -90,28 +91,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.removeEventListener("keydown", keydownHandler);
                 document.addEventListener("keydown", keydownHandler);
 
-                // ✅ FIX: Show the "Proceed" button when video is done, but DO NOT auto-skip
+                // ✅ FIX: Show the correct button (Proceed for most trials, Finish for last)
                 setTimeout(() => {
                     document.getElementById("next-button-container").style.display = "block";
                     document.getElementById("next-button").addEventListener("click", () => {
-                        jsPsych.finishTrial(); // ✅ User manually proceeds
+                        if (isLastVideo) {
+                            document.body.innerHTML = ""; // ✅ Clear screen (goodbye page)
+                        } else {
+                            jsPsych.finishTrial(); // ✅ User manually proceeds to next trial
+                        }
                     });
                 }, 3000); // ✅ The button appears after the video duration ends
             },
             on_finish: function () {
-                // ✅ Keep the video on screen while waiting for user input
                 console.log(`Video ${videoNumber} completed, waiting for user to proceed.`);
             }
         };
         timeline.push(videoTrial);
     });
-
-    let endExperiment = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `<h2>Thank you for participating!</h2><p>Your data has been recorded.</p>`,
-        choices: ["Finish"],
-    };
-    timeline.push(endExperiment);
 
     jsPsych.run(timeline);
 
