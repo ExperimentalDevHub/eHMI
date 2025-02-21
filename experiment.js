@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 2.8");
+console.log("Experiment.js - Version 2.9");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -24,8 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         type: jsPsychHtmlButtonResponse,
         stimulus: `<h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
                    <p style="font-size: 24px;">Your Participant ID: <strong>${participantID}</strong></p>`,
-        choices: ["Start Experiment"],
-        button_html: `<button style="font-size: 24px; padding: 15px 30px;">%choice%</button>`,
+        choices: [`<button style="font-size: 24px; padding: 15px 30px;">Start Experiment</button>`], // ✅ Fixed button HTML
     };
     timeline.push(startExperiment);
 
