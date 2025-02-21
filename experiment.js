@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 2.5");
+console.log("Experiment.js - Version 2.6");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -48,11 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     </iframe>
                 </div>
                 <div id="next-button-container" style="display: none; text-align: center; margin-top: 20px;">
-                    <button id="next-button" style="padding: 10px 20px; font-size: 16px;">Next Video</button>
+                    <button id="next-button" style="padding: 10px 20px; font-size: 16px;">Proceed to Next Trial</button>
                 </div>`,
             prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${videoNumber} of ${videoList.length}</p>`,
-            choices: "NO_KEYS",
-            trial_duration: 3000, // ✅ The video plays for its duration but trial does not end automatically
+            choices: "NO_KEYS", // ✅ Prevent trial from auto-ending
+            trial_duration: null, // ✅ Trial does not auto-end
             on_start: function () {
                 videoStartTime = performance.now();
 
@@ -88,13 +88,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.removeEventListener("keydown", keydownHandler);
                 document.addEventListener("keydown", keydownHandler);
 
-                // ✅ FIX: Show the "Next Video" button after the video ends, but DO NOT skip trial
+                // ✅ FIX: Show the "Proceed" button when video is done, but DO NOT auto-skip
                 setTimeout(() => {
                     document.getElementById("next-button-container").style.display = "block";
                     document.getElementById("next-button").addEventListener("click", () => {
-                        jsPsych.finishTrial(); // ✅ Now the user manually moves forward
+                        jsPsych.finishTrial(); // ✅ User manually proceeds
                     });
-                }, 3000); // ✅ The button appears after the trial duration ends
+                }, 3000); // ✅ The button appears after the video duration ends
             },
             on_finish: function () {
                 // ✅ Keep the video on screen while waiting for user input
