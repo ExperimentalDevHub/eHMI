@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 2.1");
+console.log("Experiment.js - Version 2.3");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -41,13 +41,18 @@ document.addEventListener("DOMContentLoaded", function () {
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
-                <iframe id="experiment-video" width="560" height="315" 
-                    src="${videoURL}" 
-                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-                </iframe>`,
+                <div id="video-container">
+                    <iframe id="experiment-video" width="560" height="315" 
+                        src="${videoURL}" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                    </iframe>
+                </div>
+                <div id="next-button-container" style="display: none;">
+                    <button id="next-button">Next Video</button>
+                </div>`,
             prompt: `<p>Watch the video carefully. Press and hold spacebar when necessary.</p><p>Video ${videoNumber} of ${videoList.length}</p>`,
             choices: "NO_KEYS",
-            trial_duration: 2800, 
+            trial_duration: 3000, // ✅ Keep this but do NOT auto-advance
             on_start: function () {
                 videoStartTime = performance.now();
 
@@ -82,22 +87,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 // ✅ Ensure previous event listeners are removed before adding new ones
                 document.removeEventListener("keydown", keydownHandler);
                 document.addEventListener("keydown", keydownHandler);
+
+                // ✅ Delay the appearance of the "Next Video" button until trial ends
+                jsPsych.setTimeout(() => {
+                    document.getElementById("next-button-container").style.display = "block";
+                    document.getElementById("next-button").addEventListener("click", () => {
+                        jsPsych.finishTrial(); // ✅ Proceed when button is clicked
+                    });
+                }, 3000); // ✅ Show button AFTER video duration ends
             },
             on_finish: function () {
-                // ✅ Clears the video instead of showing suggested videos
-                document.getElementById("jspsych-experiment").innerHTML = "";
+                // ✅ Keep the video on screen while waiting for user input
+                console.log(`Video ${videoNumber} completed, waiting for user to proceed.`);
             }
         };
         timeline.push(videoTrial);
-
-        if (index < videoList.length - 1) {
-            let transitionScreen = {
-                type: jsPsychHtmlButtonResponse,
-                stimulus: `<h2>Proceed to Next Trial</h2><p>Click the button below to continue.</p>`,
-                choices: ["Next Video"],
-            };
-            timeline.push(transitionScreen);
-        }
     });
 
     let endExperiment = {
