@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 3.3");
+console.log("Experiment.js - Version 3.4");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let videoStartTime = null;
         let spacebarActive = false;
         let isLastVideo = (index === videoList.length - 1);
+        let spacebarPresses = [];
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -49,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
                 </div>
+                <div style="height: 70px;"></div> <!-- Added spacing to prevent video shifting -->
                 <p style="text-align: center; font-size: 24px;">
                     Watch the video carefully. Press and hold spacebar when necessary.
                 </p>
@@ -69,37 +71,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         let keyPressData = {
                             participantID: participantID,
-                            videoNumber: index + 1, // ✅ FIXED: Add video number
+                            videoNumber: index + 1, 
                             start: (currentTime - videoStartTime) / 1000
                         };
+                        spacebarPresses.push(keyPressData);
+                    }
+                }
 
-                        document.addEventListener("keyup", function keyupHandler(event) {
-                            if (event.code === "Space" && spacebarActive) {
-                                spacebarActive = false;
-                                let currentTime = performance.now();
-                                keyPressData.end = (currentTime - videoStartTime) / 1000;
-                                keyPressData.duration = keyPressData.end - keyPressData.start;
-
-                                sendToGoogleSheets(keyPressData);
-                                document.removeEventListener("keyup", keyupHandler);
-                            }
-                        });
+                function keyupHandler(event) {
+                    if (event.code === "Space" && spacebarActive) {
+                        spacebarActive = false;
+                        let currentTime = performance.now();
+                        let lastPress = spacebarPresses[spacebarPresses.length - 1];
+                        lastPress.end = (currentTime - videoStartTime) / 1000;
+                        lastPress.duration = lastPress.end - lastPress.start;
                     }
                 }
 
                 document.removeEventListener("keydown", keydownHandler);
                 document.addEventListener("keydown", keydownHandler);
+                document.removeEventListener("keyup", keyupHandler);
+                document.addEventListener("keyup", keyupHandler);
 
                 setTimeout(() => {
                     document.getElementById("next-button-container").style.display = "block";
                     document.getElementById("next-button").addEventListener("click", () => {
+                        spacebarPresses.forEach(sendToGoogleSheets);
+                        spacebarPresses = [];
+                        
                         if (isLastVideo) {
                             document.body.innerHTML = "";
                         } else {
                             jsPsych.finishTrial();
                         }
                     });
-                }, 4000); // ✅ FIXED: Delayed next button by 1 more second (original was 3000ms)
+                }, 4000);
             },
             on_finish: function () {
                 console.log(`Video ${index + 1} completed, waiting for user to proceed.`);
@@ -111,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
     jsPsych.run(timeline);
 
     function sendToGoogleSheets(data) {
-        data.timestamp = new Date().toISOString(); // ✅ Ensure data is sent in order
+        data.timestamp = new Date().toISOString(); 
         fetch(GOOGLE_SHEETS_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
