@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container" style="display: none; text-align: center; margin-top: 10px;">
+                    <div id="next-button-container" style="visibility: hidden; text-align: center; margin-top: 10px;">
                         <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
                             ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
                         </button>
@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                         if (isLastVideo) {
                             document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>
-                                                        Thank you for completing Part 1.<br>
-                                                        Please continue to <a href='https://www.google.com' target='_blank'>Part 2</a>.
+                                                        Thank you for completing Part 1<br>
+                                                        Please continue to <a href='https://www.google.com' target='_blank'>Part 2</a>
                                                       </div>`;
                         } else {
                             jsPsych.finishTrial();
