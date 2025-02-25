@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 3.6");
+console.log("Experiment.js - Version 3.7");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `<div style="text-align: center;">
-                      <img src="HFASt Logo.png" alt="Lab Logo" style="max-width: 200px; margin-bottom: 20px;">
+                      <img src="HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
                       <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
                       <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                         In this experiment, you will be shown brief video clips to interact with. Please imagine yourself as a pedestrian attempting to cross the street. When you feel comfortable and safe crossing the street, press and hold the spacebar on your computer. If, at any time, you begin to feel unsafe or that you would prefer to return to your starting point, simply release the spacebar again. Once one video finishes, please select "Proceed to Next Trial". When you are ready to begin, please select "Start Experiment" to proceed to the first video.
@@ -63,35 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
             on_start: function () {
                 videoStartTime = performance.now();
 
-                function keydownHandler(event) {
-                    if (event.code === "Space" && !spacebarActive) {
-                        spacebarActive = true;
-                        let currentTime = performance.now();
-
-                        let keyPressData = {
-                            participantID: getParticipantID(),
-                            videoNumber: index + 1, 
-                            start: (currentTime - videoStartTime) / 1000
-                        };
-                        spacebarPresses.push(keyPressData);
-                    }
-                }
-
-                function keyupHandler(event) {
-                    if (event.code === "Space" && spacebarActive) {
-                        spacebarActive = false;
-                        let currentTime = performance.now();
-                        let lastPress = spacebarPresses[spacebarPresses.length - 1];
-                        lastPress.end = (currentTime - videoStartTime) / 1000;
-                        lastPress.duration = lastPress.end - lastPress.start;
-                    }
-                }
-
-                document.removeEventListener("keydown", keydownHandler);
-                document.addEventListener("keydown", keydownHandler);
-                document.removeEventListener("keyup", keyupHandler);
-                document.addEventListener("keyup", keyupHandler);
-
                 setTimeout(() => {
                     document.getElementById("next-button-container").style.display = "block";
                     document.getElementById("next-button").addEventListener("click", () => {
@@ -99,7 +70,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         spacebarPresses = [];
                         
                         if (isLastVideo) {
-                            document.body.innerHTML = "";
+                            document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>
+                                                        Thank you for completing Part 1.<br>
+                                                        Please continue to <a href='https://www.google.com' target='_blank'>Part 2</a>.
+                                                      </div>`;
                         } else {
                             jsPsych.finishTrial();
                         }
