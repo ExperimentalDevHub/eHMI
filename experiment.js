@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 3.5");
+console.log("Experiment.js - Version 3.6");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -18,14 +18,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
 
-    let participantID = getParticipantID();
-
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `<div style="text-align: center;">
                       <img src="lab_logo.png" alt="Lab Logo" style="max-width: 200px; margin-bottom: 20px;">
                       <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
-                      <p style="font-size: 24px;">Your Participant ID: <strong>${participantID}</strong></p>
+                      <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
+                        In this experiment, you will be shown brief video clips to interact with. Please imagine yourself as a pedestrian attempting to cross the street. When you feel comfortable and safe crossing the street, press and hold the spacebar on your computer. If, at any time, you begin to feel unsafe or that you would prefer to return to your starting point, simply release the spacebar again. Once one video finishes, please select "Proceed to Next Trial". When you are ready to begin, please select "Start Experiment" to proceed to the first video.
+                      </p>
                    </div>`,
         choices: [`<button style="font-size: 24px; padding: 15px 30px;">Start Experiment</button>`],
     };
@@ -52,9 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <p style="text-align: center; font-size: 24px; margin-bottom: 10px;">
-                        Watch the video carefully. Press and hold spacebar when necessary.
-                    </p>
                     <div id="next-button-container" style="display: none; text-align: center; margin-top: 10px;">
                         <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
                             ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
@@ -72,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let currentTime = performance.now();
 
                         let keyPressData = {
-                            participantID: participantID,
+                            participantID: getParticipantID(),
                             videoNumber: index + 1, 
                             start: (currentTime - videoStartTime) / 1000
                         };
@@ -108,9 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     });
                 }, 4000);
-            },
-            on_finish: function () {
-                console.log(`Video ${index + 1} completed, waiting for user to proceed.`);
             }
         };
         timeline.push(videoTrial);
