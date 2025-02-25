@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 3.4");
+console.log("Experiment.js - Version 3.5");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -22,8 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: `<h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
-                   <p style="font-size: 24px;">Your Participant ID: <strong>${participantID}</strong></p>`,
+        stimulus: `<div style="text-align: center;">
+                      <img src="lab_logo.png" alt="Lab Logo" style="max-width: 200px; margin-bottom: 20px;">
+                      <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
+                      <p style="font-size: 24px;">Your Participant ID: <strong>${participantID}</strong></p>
+                   </div>`,
         choices: [`<button style="font-size: 24px; padding: 15px 30px;">Start Experiment</button>`],
     };
     timeline.push(startExperiment);
@@ -43,21 +46,20 @@ document.addEventListener("DOMContentLoaded", function () {
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
-                <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+                <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
                     <iframe id="experiment-video" 
-                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
+                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                </div>
-                <div style="height: 70px;"></div> <!-- Added spacing to prevent video shifting -->
-                <p style="text-align: center; font-size: 24px;">
-                    Watch the video carefully. Press and hold spacebar when necessary.
-                </p>
-                <div id="next-button-container" style="display: none; text-align: center; margin-top: 20px;">
-                    <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
-                        ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
-                    </button>
+                    <p style="text-align: center; font-size: 24px; margin-bottom: 10px;">
+                        Watch the video carefully. Press and hold spacebar when necessary.
+                    </p>
+                    <div id="next-button-container" style="display: none; text-align: center; margin-top: 10px;">
+                        <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
+                            ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
+                        </button>
+                    </div>
                 </div>`,
             choices: "NO_KEYS",
             trial_duration: null,
