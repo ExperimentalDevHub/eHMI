@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 1");
+console.log("Experiment.js - Version 2");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -61,6 +61,33 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_start: function () {
+                document.addEventListener("keydown", function keydownHandler(event) {
+                    if (event.code === "Space" && !spacebarActive) {
+                        spacebarActive = true;
+                        let currentTime = performance.now();
+
+                        let keyPressData = {
+                            participantID: getParticipantID(),
+                            videoNumber: index + 1,
+                            start: (currentTime - videoStartTime) / 1000
+                        };
+                        spacebarPresses.push(keyPressData);
+                        console.log("Spacebar Press Detected:", keyPressData);
+                    }
+                });
+
+                document.addEventListener("keyup", function keyupHandler(event) {
+                    if (event.code === "Space" && spacebarActive) {
+                        spacebarActive = false;
+                        let currentTime = performance.now();
+                        let lastPress = spacebarPresses[spacebarPresses.length - 1];
+                        if (lastPress) {
+                            lastPress.end = (currentTime - videoStartTime) / 1000;
+                            lastPress.duration = lastPress.end - lastPress.start;
+                            console.log("Spacebar Released:", lastPress);
+                        }
+                    }
+                });
                 videoStartTime = performance.now();
 
                 setTimeout(() => {
