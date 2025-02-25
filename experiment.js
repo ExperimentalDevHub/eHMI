@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 3.1");
+console.log("Experiment.js - Version 1");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
             stimulus: `
                 <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
                     <iframe id="experiment-video" 
-                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
+                        style="width: 81vw; height: 45.563vw; max-width: 1296px; max-height: 729px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         let keyPressData = {
                             participantID: participantID,
+                            videoNumber: index + 1, // ✅ FIXED: Add video number
                             start: (currentTime - videoStartTime) / 1000
                         };
 
@@ -98,10 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             jsPsych.finishTrial();
                         }
                     });
-                }, 3000);
+                }, 4000); // ✅ FIXED: Delayed next button by 1 more second (original was 3000ms)
             },
             on_finish: function () {
-                console.log(`Video completed, waiting for user to proceed.`);
+                console.log(`Video ${index + 1} completed, waiting for user to proceed.`);
             }
         };
         timeline.push(videoTrial);
