@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 3.8");
+console.log("Experiment.js - Version 3.9");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container" style="visibility: hidden; display: block; text-align: center; margin-top: 10px;">
+                    <div id="next-button-container" style="visibility: visible; display: block; display: block; text-align: center; margin-top: 10px;">
                         <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
                             ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
                         </button>
