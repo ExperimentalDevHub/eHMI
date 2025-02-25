@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 2");
+console.log("Experiment.js - Version 3.9");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -31,11 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    const videoList = [
-        "https://www.youtube.com/embed/sV5MwVYQwS8?start=37&end=40&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/4nfq18MG7Mo?start=35&end=38&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/8cUL_EkO7mU?start=15&end=18&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0"
-    ];
+    const videoList = [$1];
+    videoList.sort(() => Math.random() - 0.5);
 
     videoList.forEach((videoURL, index) => {
         let videoStartTime = null;
