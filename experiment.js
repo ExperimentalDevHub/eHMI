@@ -1,4 +1,4 @@
-console.log("Experiment.js - Version 3.9");
+console.log("Experiment.js - Version 1");
 
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container" style="visibility: visible; display: block; display: block; text-align: center; margin-top: 10px;">
+                    <div id="next-button-container" style="visibility: hidden; display: block; display: block; text-align: center; margin-top: 10px;">
                         <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
                             ${isLastVideo ? "Finish Experiment" : "Proceed to Next Trial"}
                         </button>
@@ -64,9 +64,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 videoStartTime = performance.now();
 
                 setTimeout(() => {
-                    document.getElementById("next-button-container").style.display = "block";
+                    document.getElementById("next-button-container").style.visibility = "visible";
                     document.getElementById("next-button").addEventListener("click", () => {
-                        spacebarPresses.forEach(sendToGoogleSheets);
+                        if (spacebarPresses.length > 0) {
+                            spacebarPresses.forEach(sendToGoogleSheets);
+                        }
+                        console.log("Sending data:", spacebarPresses);
                         spacebarPresses = [];
                         
                         if (isLastVideo) {
