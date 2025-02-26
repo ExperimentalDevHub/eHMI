@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 8");
+console.log("ExperimentManual.js - Version 9 (Bug Fix)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -58,19 +58,19 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Adding video numbers (1-6)
+    // ✅ Using original video URLs & adding video numbers
     const videoList = [
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 1 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 2 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 3 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 4 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 5 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 6 }
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1", videoNum: 1 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1", videoNum: 2 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1", videoNum: 3 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1", videoNum: 4 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1", videoNum: 5 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1", videoNum: 6 }
     ];
 
     videoList.forEach((video, index) => {
-        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]); // Extract the start timestamp
-        
+        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]);
+
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -107,17 +107,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         let correctedStartTime = videoStartTime + pressStart;
                         let correctedEndTime = videoStartTime + pressEnd;
 
-                        console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
-
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNum: video.videoNum,  // ✅ Added Video Number
+                            videoNum: video.videoNum, 
                             startTime: Number(correctedStartTime.toFixed(3)),
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
+
+                        console.log("📤 Data to be sent:", JSON.stringify(dataToSend, null, 2));
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             jsPsych.finishTrial();
                         };
                     }
-                }, 1000); // ✅ "Proceed to Next Trial" button now shows again
+                }, 1000);
             }
         };
         timeline.push(videoTrial);
