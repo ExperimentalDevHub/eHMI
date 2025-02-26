@@ -1,4 +1,4 @@
-console.log("experiment1.js - Version 1");
+console.log("experiment1.js - Version 2");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -121,11 +121,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ experimentData: dataToSend }),
+                            body: JSON.stringify({ experimentData: dataToSend })
                         })
-                        .then(response => response.text())  // Convert response to text to debug
+                        .then(response => response.json())  // Convert response to JSON
                         .then(data => console.log("🛠️ Google Sheets Response:", data))  // Print response
                         .catch(error => console.error("❌ Google Sheets Error:", error));
+                        
                         
 
                         pressStart = null;
