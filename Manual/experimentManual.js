@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - The FINAL Working Version");
+console.log("ExperimentManual.js - The FINAL FINAL FINAL Version");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -55,13 +55,11 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-        // Manual driving condition
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&rel=0&modestbranding=1",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&rel=0&modestbranding=1",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&rel=0&modestbranding=1",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&rel=0&modestbranding=1",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&rel=0&modestbranding=1",
-        // Manual pedestrian condition
         "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&rel=0&modestbranding=1",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&rel=0&modestbranding=1",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&rel=0&modestbranding=1",
@@ -92,19 +90,26 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
+                let videoElement = document.getElementById(`experiment-video-${index}`);
+                let buttonContainer = document.getElementById(`next-button-container-${index}`);
+                let button = document.getElementById(`next-button-${index}`);
+
+                let videoEndTime = parseInt(videoURL.match(/end=(\d+)/)[1], 10);
+                let startTime = parseInt(videoURL.match(/start=(\d+)/)[1], 10);
+                let totalDuration = (videoEndTime - startTime) * 1000;
+
                 setTimeout(() => {
-                    let button = document.getElementById(`next-button-${index}`);
-                    if (button) {
-                        button.addEventListener("click", () => {
-                            if (isLastVideo) {
-                                sendToGoogleSheets(experimentData);
-                                document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
-                            } else {
-                                jsPsych.finishTrial();
-                            }
-                        });
+                    buttonContainer.style.visibility = "visible";
+                }, totalDuration + 1000);
+
+                button.addEventListener("click", () => {
+                    if (isLastVideo) {
+                        sendToGoogleSheets(experimentData);
+                        document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
+                    } else {
+                        jsPsych.finishTrial();
                     }
-                }, 1000);
+                });
             }
         };
         timeline.push(videoTrial);
@@ -120,7 +125,7 @@ function sendToGoogleSheets(data) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ experimentData: data })
     })
-    .then(response => response.json())
+    .then(response => response.text()) // Read response as text
     .then(data => console.log("Google Sheets Response:", data))
     .catch(error => console.error("Error sending to Google Sheets:", error));
 }
