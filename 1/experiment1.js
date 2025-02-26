@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 1");
+console.log("ExperimentManual.js - Version 2");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -90,18 +90,29 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
-                start = performance.now() / 1000; // Convert to seconds
-                console.log(`Start Time (seconds): ${start}`);
+                let videoElement = document.getElementById(`experiment-video-${index}`);
+                let start; // Declare start time variable
+            
+                if (videoElement) {
+                    let checkStart = setInterval(() => {
+                        if (!videoElement.paused) { // Detect when video starts playing
+                            start = performance.now() / 1000; // Convert ms to seconds
+                            console.log(`✅ Corrected Start Time (Seconds): ${start}`);
+                            clearInterval(checkStart);
+                        }
+                    }, 100); // Check every 100ms
+                }
             
                 setTimeout(() => {
                     let button = document.getElementById(`next-button-${index}`);
                     if (button) {
                         button.style.display = "block";
                         button.onclick = function () {
-                            let end = performance.now() / 1000; // Convert to seconds
-                            let duration = end - start; // Duration should now be reasonable
-                            console.log(`End Time (seconds): ${end}`);
-                            console.log(`Duration (seconds): ${duration}`);
+                            let end = performance.now() / 1000;
+                            let duration = end - start; // Compute correct duration
+            
+                            console.log(`✅ End Time (Seconds): ${end}`);
+                            console.log(`✅ Duration (Seconds): ${duration}`);
             
                             let dataToSend = {
                                 participantID: participantID,
@@ -127,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }, 1000);
             }
+            
             
         };
         timeline.push(videoTrial);
