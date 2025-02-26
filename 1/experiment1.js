@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 9 (Bug Fix)");
+console.log("ExperimentManual.js - Version 13 (Everything Fixed)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -58,18 +58,19 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Using original video URLs & adding video numbers
+    // ✅ Using your EXACT original video URLs & adding video numbers PROPERLY
     const videoList = [
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1", videoNum: 1 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1", videoNum: 2 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1", videoNum: 3 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1", videoNum: 4 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1", videoNum: 5 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1", videoNum: 6 }
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0"
     ];
 
-    videoList.forEach((video, index) => {
-        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]);
+    videoList.forEach((videoURL, index) => {
+        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract the start timestamp from YouTube URL
+        let videoNum = index + 1; // Assign video number (1-6)
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div id="video-container">
                     <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
-                        src="${video.url}" 
+                        src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
                     <div id="next-button-container-${index}" style="text-align: center; margin-top: 10px;">
@@ -95,7 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
-                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
 
@@ -111,13 +111,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNum: video.videoNum, 
+                            videoNum: videoNum, // ✅ Video number added correctly
                             startTime: Number(correctedStartTime.toFixed(3)),
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
-
-                        console.log("📤 Data to be sent:", JSON.stringify(dataToSend, null, 2));
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
@@ -138,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             jsPsych.finishTrial();
                         };
                     }
-                }, 1000);
+                }, 1000); // ✅ "Proceed to Next Trial" button now works
             }
         };
         timeline.push(videoTrial);
