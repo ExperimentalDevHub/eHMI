@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FIXING BUTTON ISSUE");
+console.log("ExperimentManual.js - ALL ISSUES FIXED");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -59,11 +59,13 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
+        // Manual driving condition
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        // Manual pedestrian condition
         "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -79,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container">
-                    <p>Loading video ${index + 1} of ${videoList.length}</p>
                     <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
                         src="${videoURL}" 
@@ -94,16 +95,22 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_start: function () {
                 console.log(`Starting Video ${index + 1}: ${videoURL}`);
-
                 setTimeout(() => {
                     let button = document.getElementById(`next-button-${index}`);
                     if (button) {
-                        console.log(`Button found for Video ${index + 1}, showing now.`);
+                        console.log(`Button found for Video ${index + 1}, now clickable.`);
                         button.style.visibility = "visible";
-                    } else {
-                        console.error(`Button NOT FOUND for Video ${index + 1}.`);
+                        button.onclick = function () {
+                            console.log(`Button clicked for Video ${index + 1}`);
+                            if (isLastVideo) {
+                                sendToGoogleSheets(experimentData);
+                                document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
+                            } else {
+                                jsPsych.finishTrial();
+                            }
+                        };
                     }
-                }, 5000);
+                }, 1000);
             }
         };
         timeline.push(videoTrial);
@@ -111,3 +118,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     jsPsych.run(timeline);
 });
+
+function sendToGoogleSheets(data) {
+    console.log("Sending data to Google Sheets:", data);
+    fetch(GOOGLE_SHEETS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ experimentData: data })
+    })
+    .then(response => response.text())
+    .then(data => console.log("Google Sheets Response:", data))
+    .catch(error => console.error("Error sending to Google Sheets:", error));
+}
