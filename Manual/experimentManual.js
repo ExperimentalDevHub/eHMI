@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX (Google Sheets & Button)");
+console.log("ExperimentManual.js - FINAL FINAL FIX (Google Sheets Data & Full URLs)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -26,6 +26,16 @@ function getParticipantID() {
     }
     console.log("Participant ID:", participantID);
     return participantID;
+}
+
+// Function to extract start and end times from the video URL
+function extractVideoTimes(videoURL) {
+    let startMatch = videoURL.match(/start=(\d+)/);
+    let endMatch = videoURL.match(/end=(\d+)/);
+    return {
+        start: startMatch ? parseInt(startMatch[1]) : null,
+        end: endMatch ? parseInt(endMatch[1]) : null
+    };
 }
 
 // Run experiment
@@ -58,15 +68,24 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
+        // Manual driving condition
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0"
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        // Manual pedestrian condition
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0"
     ];
     videoList.sort(() => Math.random() - 0.5);
 
     videoList.forEach((videoURL, index) => {
+        let { start, end } = extractVideoTimes(videoURL);
         let isLastVideo = index === videoList.length - 1;
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -87,31 +106,17 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_finish: function () {
-                console.log(`✅ Sending data for Video ${index + 1}`);
                 experimentData.push({
                     participantID: participantID,
+                    date: new Date().toLocaleDateString(),
+                    videoNumber: index + 1,
                     videoURL: videoURL,
-                    timestamp: new Date().toISOString()
+                    startTime: start,
+                    endTime: end,
+                    duration: end - start
                 });
 
                 sendToGoogleSheets(experimentData);
-            },
-            on_load: function () {
-                setTimeout(() => {
-                    let buttonContainer = document.getElementById(`next-button-container-${index}`);
-                    let button = document.getElementById(`next-button-${index}`);
-
-                    if (buttonContainer && button) {
-                        console.log(`✅ Button found for Video ${index + 1}, now clickable.`);
-                        buttonContainer.style.visibility = "visible";
-                        button.onclick = function () {
-                            console.log(`🖱️ Button clicked for Video ${index + 1}`);
-                            jsPsych.finishTrial();
-                        };
-                    } else {
-                        console.error(`❌ Button NOT FOUND for Video ${index + 1}.`);
-                    }
-                }, 1000);
             }
         };
         timeline.push(videoTrial);
@@ -121,19 +126,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function sendToGoogleSheets(data) {
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_GOOGLE_SHEETS_URL_HERE";
     
-    console.log("⚡ Sending data to Google Sheets...");
-    console.log("📝 Data being sent:", JSON.stringify(data, null, 2));
-
     fetch(GOOGLE_SHEETS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ experimentData: data }),
-        mode: "no-cors"  // 🚀 Fix for CORS blocking issue
+        mode: "no-cors"
     })
     .then(() => {
-        console.log("✅ Google Sheets Request Sent. (No-cors mode, no response available)");
+        console.log("✅ Google Sheets Request Sent.");
     })
     .catch(error => {
         console.error("❌ Error sending to Google Sheets:", error);
