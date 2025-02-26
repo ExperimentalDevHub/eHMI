@@ -1,16 +1,19 @@
-console.log("ExperimentManual.js - The FINAL FINAL FINAL Version");
+console.log("ExperimentManual.js - DEBUG MODE");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
+    console.log("Loading YouTube API...");
     let tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     let firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+} else {
+    console.log("YouTube API already loaded.");
 }
 
 // Global function for YouTube API
 function onYouTubeIframeAPIReady() {
-    console.log("YouTube API Loaded");
+    console.log("YouTube API Loaded and Ready.");
 }
 
 // Generate or retrieve a unique participant ID
@@ -21,12 +24,13 @@ function getParticipantID() {
         participantID = Math.floor(100000 + Math.random() * 900000).toString();
         localStorage.setItem("participantID", participantID);
     }
-
+    console.log("Participant ID:", participantID);
     return participantID;
 }
 
 // Run experiment
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("Document Loaded, Initializing Experiment...");
     let jsPsych = initJsPsych();
     let timeline = [];
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
@@ -55,17 +59,19 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1&rel=0&modestbranding=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1&rel=0&modestbranding=1"
+        // Manual driving condition
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        // Manual pedestrian condition
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0"
     ];
     videoList.sort(() => Math.random() - 0.5);
 
@@ -73,43 +79,15 @@ document.addEventListener("DOMContentLoaded", function () {
         let isLastVideo = (index === videoList.length - 1);
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: `
-                <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
-                    <iframe id="experiment-video-${index}" 
-                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
-                        src="${videoURL}" 
-                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-                    </iframe>
-                    <div id="next-button-container-${index}" style="visibility: hidden; text-align: center; margin-top: 10px;">
-                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 24px;">
-                            ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
-                        </button>
-                    </div>
-                </div>
-            `,
+            stimulus: `<p>Loading video ${index + 1} of ${videoList.length}</p>`,
             choices: "NO_KEYS",
             trial_duration: null,
-            on_load: function () {
-                let videoElement = document.getElementById(`experiment-video-${index}`);
-                let buttonContainer = document.getElementById(`next-button-container-${index}`);
-                let button = document.getElementById(`next-button-${index}`);
-
-                let videoEndTime = parseInt(videoURL.match(/end=(\d+)/)[1], 10);
-                let startTime = parseInt(videoURL.match(/start=(\d+)/)[1], 10);
-                let totalDuration = (videoEndTime - startTime) * 1000;
-
+            on_start: function () {
+                console.log(`Starting Video ${index + 1}: ${videoURL}`);
                 setTimeout(() => {
-                    buttonContainer.style.visibility = "visible";
-                }, totalDuration + 1000);
-
-                button.addEventListener("click", () => {
-                    if (isLastVideo) {
-                        sendToGoogleSheets(experimentData);
-                        document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
-                    } else {
-                        jsPsych.finishTrial();
-                    }
-                });
+                    console.log(`Expected End Time Reached for Video ${index + 1}, showing button...`);
+                    document.getElementById(`next-button-${index}`).style.visibility = "visible";
+                }, 5000); // For debugging purposes, show button after 5 seconds
             }
         };
         timeline.push(videoTrial);
