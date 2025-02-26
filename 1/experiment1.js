@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 7");
+console.log("ExperimentManual.js - Version 8");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
@@ -58,18 +58,18 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Using your original video URLs
+    // ✅ Adding video numbers (1-6)
     const videoList = [
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 1 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 2 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 3 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 4 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 5 },
+        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", videoNum: 6 }
     ];
 
-    videoList.forEach((videoURL, index) => {
-        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract the start timestamp from YouTube URL
+    videoList.forEach((video, index) => {
+        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]); // Extract the start timestamp
         
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -77,12 +77,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div id="video-container">
                     <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
-                        src="${videoURL}" 
+                        src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" style="display: none;">
-                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
-                    </button>
+                    <div id="next-button-container-${index}" style="text-align: center; margin-top: 10px;">
+                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 20px; display: none;">
+                            ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                        </button>
+                    </div>
                 </div>
             `,
             choices: "NO_KEYS",
@@ -111,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
+                            videoNum: video.videoNum,  // ✅ Added Video Number
                             startTime: Number(correctedStartTime.toFixed(3)),
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
@@ -126,6 +129,16 @@ document.addEventListener("DOMContentLoaded", function () {
                         pressStart = null;
                     }
                 });
+
+                setTimeout(() => {
+                    let button = document.getElementById(`next-button-${index}`);
+                    if (button) {
+                        button.style.display = "block";
+                        button.onclick = function () {
+                            jsPsych.finishTrial();
+                        };
+                    }
+                }, 1000); // ✅ "Proceed to Next Trial" button now shows again
             }
         };
         timeline.push(videoTrial);
