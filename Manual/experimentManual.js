@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FINAL (Button Forced to Show)");
+console.log("ExperimentManual.js - FINAL DEBUG MODE (Button + Google Sheets Fix)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -45,6 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     let experimentData = [];
+
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_GOOGLE_SHEETS_URL_HERE";
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
@@ -110,13 +112,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     let button = document.getElementById(`next-button-${index}`);
                     if (button) {
                         console.log(`✅ Button found for Video ${index + 1}, making visible.`);
-                        button.style.display = "block"; // FORCE IT TO SHOW
+                        button.style.display = "block"; 
                         button.onclick = function () {
                             console.log(`🖱️ Button clicked for Video ${index + 1}`);
                             jsPsych.finishTrial();
                         };
                     } else {
-                        console.error(`❌ BUTTON MISSING FOR VIDEO ${index + 1} - WTF IS HAPPENING.`);
+                        console.error(`❌ BUTTON MISSING FOR VIDEO ${index + 1}.`);
                     }
                 }, (end - start + 1) * 1000);
             }
