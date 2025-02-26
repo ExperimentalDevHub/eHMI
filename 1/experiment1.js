@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 10");
+console.log("ExperimentManual.js - Debugging Version");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     Please imagine yourself as a pedestrian attempting to cross the street. 
                     When you feel comfortable and safe crossing, press and hold the spacebar. 
                     If you ever feel unsafe, simply release the spacebar. 
+                    After the video ends, a button will appear to continue. 
                     The videos will autoplay, do not interact with their playback. 
                     When you are ready to begin, select "Start Experiment."
                 </p>
@@ -102,22 +103,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
 
-                        let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
-                        let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
-
-                        console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
+                        let correctedStartTime = videoStartTime + pressStart;
+                        let correctedEndTime = videoStartTime + pressEnd;
 
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
                             videoNumber: index + 1,
-                            startTime: Number(correctedStartTime.toFixed(3)), // ✅ Ensuring correct number format
+                            startTime: Number(correctedStartTime.toFixed(3)), 
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
 
-                        console.log("Data to send:", dataToSend);
+                        console.log("🔍 Data Before Sending:", JSON.stringify(dataToSend, null, 2));
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
@@ -130,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
 
-                // ✅ Ensuring Next Button Always Works
                 button.addEventListener("click", () => jsPsych.finishTrial());
             }
         };
