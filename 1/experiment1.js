@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 2");
+console.log("ExperimentManual.js - Version 3");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -41,17 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
-                <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
                 <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In this experiment, you will be shown brief video clips to interact with. 
-                    Please imagine yourself as a pedestrian attempting to cross the street. 
-                    When you feel comfortable and safe crossing, press and hold the spacebar. 
-                    If you ever feel unsafe, simply release the spacebar. 
-                    After the video ends, a button will appear one second later to continue. 
-                    The videos will autoplay, do not interact with their playback. 
-                    When you are ready to begin, select "Start Experiment."
-                </p>
+                <p style="font-size: 20px;">When you feel comfortable crossing, press and hold the spacebar.</p>
+                <button>Start Experiment</button>
             </div>
         `,
         choices: ["Start Experiment"]
@@ -59,88 +51,90 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1"
     ];
     videoList.sort(() => Math.random() - 0.5);
 
     videoList.forEach((videoURL, index) => {
         let isLastVideo = index === videoList.length - 1;
         let start;
+        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract YouTube video timestamp
+
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container">
                     <iframe id="experiment-video-${index}" 
-                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
+                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container-${index}" style="text-align: center; margin-top: 10px;">
-                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 20px; display: none;">
-                            ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
-                        </button>
-                    </div>
+                    <button id="next-button-${index}" style="display: none;">
+                        ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
+                    </button>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let videoElement = document.getElementById(`experiment-video-${index}`);
-                let start; // Declare start time variable
-            
-                if (videoElement) {
-                    let checkStart = setInterval(() => {
-                        if (!videoElement.paused) { // Detect when video starts playing
-                            start = performance.now() / 1000; // Convert ms to seconds
-                            console.log(`✅ Corrected Start Time (Seconds): ${start}`);
-                            clearInterval(checkStart);
-                        }
-                    }, 100); // Check every 100ms
-                }
-            
+                let pressStart = null;
+
+                document.addEventListener("keydown", function (event) {
+                    if (event.code === "Space" && pressStart === null) {
+                        pressStart = performance.now() / 1000; // Convert ms to seconds
+                        console.log(`🟢 Space Press Start (Experiment Time): ${pressStart.toFixed(3)}`);
+                    }
+                });
+
+                document.addEventListener("keyup", function (event) {
+                    if (event.code === "Space" && pressStart !== null) {
+                        let pressEnd = performance.now() / 1000;
+                        let pressDuration = pressEnd - pressStart;
+
+                        let correctedStartTime = videoStartTime + pressStart; // Adjust based on YouTube timestamp
+                        let correctedEndTime = videoStartTime + pressEnd;
+
+                        console.log(`🔴 Space Press End (Experiment Time): ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
+
+                        let dataToSend = {
+                            participantID: parseInt(participantID, 10),
+                            date: new Date().toISOString().split('T')[0],
+                            experimentCode: 1,
+                            startTime: Number(correctedStartTime.toFixed(3)), 
+                            endTime: Number(correctedEndTime.toFixed(3)),
+                            duration: Number(pressDuration.toFixed(3))
+                        };
+
+                        console.log("📤 Sending Data to Google Sheets:", JSON.stringify(dataToSend, null, 2));
+
+                        fetch(GOOGLE_SHEETS_URL, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ experimentData: dataToSend }),
+                            mode: "no-cors"
+                        }).then(() => console.log("✅ Google Sheets Request Sent."))
+                          .catch(error => console.error("❌ Google Sheets Error:", error));
+
+                        pressStart = null;
+                    }
+                });
+
                 setTimeout(() => {
                     let button = document.getElementById(`next-button-${index}`);
                     if (button) {
                         button.style.display = "block";
                         button.onclick = function () {
-                            let end = performance.now() / 1000;
-                            let duration = end - start; // Compute correct duration
-            
-                            console.log(`✅ End Time (Seconds): ${end}`);
-                            console.log(`✅ Duration (Seconds): ${duration}`);
-            
-                            let dataToSend = {
-                                participantID: participantID,
-                                videoIndex: index + 1,
-                                videoURL: videoURL,
-                                startTime: parseFloat(start.toFixed(3)),  // Ensuring it is a number
-                                endTime: parseFloat(end.toFixed(3)),      // Ensuring it is a number
-                                duration: parseFloat(duration.toFixed(3)) // Ensuring it is a number
-                            };
-                            
-            
-                            console.log("📤 Sending Data to Google Sheets:", JSON.stringify(dataToSend, null, 2));
-            
-                            fetch(GOOGLE_SHEETS_URL, {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ experimentData: dataToSend }),
-                                mode: "no-cors"
-                            }).then(() => console.log("✅ Google Sheets Request Sent."))
-                              .catch(error => console.error("❌ Google Sheets Error:", error));
-            
                             jsPsych.finishTrial();
                         };
                     }
                 }, 1000);
             }
-            
-            
         };
         timeline.push(videoTrial);
     });
