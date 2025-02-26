@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 8");
+console.log("ExperimentManual.js - Version 9");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -48,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     Please imagine yourself as a pedestrian attempting to cross the street. 
                     When you feel comfortable and safe crossing, press and hold the spacebar. 
                     If you ever feel unsafe, simply release the spacebar. 
-                    After the video ends, a button will appear one second later to continue. 
                     The videos will autoplay, do not interact with their playback. 
                     When you are ready to begin, select "Start Experiment."
                 </p>
@@ -68,6 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
     ];
 
+    let universalButton = `
+        <button id="next-button" style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
+            Proceed to Next Trial
+        </button>
+    `;
+
     videoList.forEach((videoURL, index) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract start timestamp
         
@@ -80,16 +85,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" style="display: none; font-size: 18px; padding: 10px 20px;">
-                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
-                    </button>
+                    ${index === 0 ? universalButton : ""}
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let button = document.getElementById(`next-button-${index}`);
 
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
@@ -113,9 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
                             videoNumber: index + 1,
-                            startTime: Number(correctedStartTime.toFixed(3)), // ✅ Convert string back to number
-                            endTime: Number(correctedEndTime.toFixed(3)),
-                            duration: Number(pressDuration.toFixed(3))
+                            startTime: parseFloat(correctedStartTime.toFixed(3)), // ✅ Ensuring correct number format
+                            endTime: parseFloat(correctedEndTime.toFixed(3)),
+                            duration: parseFloat(pressDuration.toFixed(3))
                         };
 
                         console.log("Data to send:", dataToSend);
@@ -131,13 +133,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
 
-                // ✅ Fix: Ensure Next Button Appears After Video Ends
-                setTimeout(() => {
-                    if (button) {
-                        button.style.display = "block";
-                        button.addEventListener("click", () => jsPsych.finishTrial());
-                    }
-                }, (videoStartTime * 1000) + 30000); // 30s after video start
+                if (index === 0) {
+                    document.getElementById("next-button").addEventListener("click", () => jsPsych.finishTrial());
+                }
             }
         };
         timeline.push(videoTrial);
