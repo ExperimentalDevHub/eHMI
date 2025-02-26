@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FINAL FINAL VERSION");
+console.log("ExperimentManual.js - FINAL VERSION with Google Sheets Integration");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -19,6 +19,7 @@ function onYouTubeIframeAPIReady() {
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
+
     if (!participantID || participantID.length > 6) {
         participantID = Math.floor(100000 + Math.random() * 900000).toString();
         localStorage.setItem("participantID", participantID);
@@ -58,39 +59,64 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-        // Manual driving condition
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 3, end: 32 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 36, end: 65 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 69, end: 98 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 102, end: 141 },
-        { url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 179, end: 208 },
-        // Manual pedestrian condition
-        { url: "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 3, end: 32 },
-        { url: "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 36, end: 65 },
-        { url: "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 69, end: 98 },
-        { url: "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 102, end: 131 },
-        { url: "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 135, end: 174 },
-        { url: "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", start: 178, end: 218 }
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
     ];
     videoList.sort(() => Math.random() - 0.5);
 
-    videoList.forEach((video, index) => {
+    videoList.forEach((videoURL, index) => {
         let isLastVideo = index === videoList.length - 1;
-
+        let start;
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
-                <div style="text-align: center;">
-                    <iframe src="${video.url}" style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    <button id="next-button-${index}" style="padding: 15px 30px; font-size: 20px; display: none;">
-                        ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
-                    </button>
+                <div id="video-container">
+                    <iframe id="experiment-video-${index}" 
+                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
+                        src="${videoURL}" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                    </iframe>
+                    <div id="next-button-container-${index}" style="text-align: center; margin-top: 10px;">
+                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 20px; display: none;">
+                            ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
+                        </button>
+                    </div>
                 </div>
             `,
             choices: "NO_KEYS",
-            trial_duration: (video.end - video.start + 1) * 1000,
-            on_finish: function () {
-                sendToGoogleSheets({ participantID, videoURL: video.url, start: video.start, end: video.end, timestamp: new Date().toISOString() });
+            trial_duration: null,
+            on_load: function () {
+                start = performance.now();
+                setTimeout(() => {
+                    let button = document.getElementById(`next-button-${index}`);
+                    if (button) {
+                        button.style.display = "block";
+                        button.onclick = function () {
+                            let end = performance.now();
+                            let dataToSend = {
+                                participantID: participantID,
+                                videoIndex: index + 1,
+                                videoURL: videoURL,
+                                startTime: start,
+                                endTime: end,
+                                duration: end - start
+                            };
+                            console.log("📤 Sending Data to Google Sheets:", JSON.stringify(dataToSend, null, 2));
+                            fetch(GOOGLE_SHEETS_URL, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ experimentData: dataToSend }),
+                                mode: "no-cors"
+                            }).then(() => console.log("✅ Google Sheets Request Sent."))
+                              .catch(error => console.error("❌ Google Sheets Error:", error));
+                            jsPsych.finishTrial();
+                        };
+                    }
+                }, 1000);
             }
         };
         timeline.push(videoTrial);
@@ -98,9 +124,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
     jsPsych.run(timeline);
 });
-
-function sendToGoogleSheets(data) {
-    fetch(GOOGLE_SHEETS_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data), mode: "no-cors" })
-        .then(() => console.log("✅ Data sent to Google Sheets:", data))
-        .catch(error => console.error("❌ Error sending to Google Sheets:", error));
-}
