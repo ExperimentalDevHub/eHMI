@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     videoList.forEach((videoURL, index) => {
-        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract the start timestamp from YouTube URL
+        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract start timestamp
         
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -89,48 +89,60 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-
+                let button = document.getElementById(`next-button-${index}`);
+    
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
-
+    
                 document.addEventListener("keyup", function (event) {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-
+    
                         let correctedStartTime = videoStartTime + pressStart;
                         let correctedEndTime = videoStartTime + pressEnd;
-
+    
                         console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
-
+    
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNumber: index + 1, // ✅ New field added (1-based index)
-                            startTime: Number(correctedStartTime.toFixed(3)),
-                            endTime: Number(correctedEndTime.toFixed(3)),
-                            duration: Number(pressDuration.toFixed(3))
+                            videoNumber: index + 1,
+                            startTime: parseFloat(correctedStartTime.toFixed(3)), // ✅ Ensuring numerical values
+                            endTime: parseFloat(correctedEndTime.toFixed(3)),
+                            duration: parseFloat(pressDuration.toFixed(3))
                         };
-
+    
+                        console.log("Data to send:", dataToSend); // Debugging
+    
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
                         }).then(() => console.log("✅ Google Sheets Request Sent."));
-
+    
                         pressStart = null;
                     }
                 });
+    
+                // ✅ Fix: Ensure Next Button Appears After Video Ends
+                setTimeout(() => {
+                    if (button) {
+                        button.style.display = "block";
+                        button.addEventListener("click", () => jsPsych.finishTrial());
+                    }
+                }, (videoStartTime * 1000) + 1000);
             }
         };
         timeline.push(videoTrial);
     });
+    
 
     jsPsych.run(timeline);
 });
