@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: 
+        stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
                 <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     When you are ready to begin, select "Start Experiment."
                 </p>
             </div>
-        ,
+        `,
         choices: ["Start Experiment"]
     };
     timeline.push(startExperiment);
@@ -69,69 +69,68 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     videoList.forEach((videoURL, index) => {
-    let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract the start timestamp from YouTube URL
-    
-    let videoTrial = {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `
-            <div id="video-container">
-                <iframe id="experiment-video-${index}" 
-                    style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
-                    src="${videoURL}" 
-                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-                </iframe>
-                <button id="next-button-${index}" style="display: none;">
-                    ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
-                </button>
-            </div>
-        `,
-        choices: "NO_KEYS",
-        trial_duration: null,
-        on_load: function () {
-            let pressStart = null;
+        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract the start timestamp from YouTube URL
+        
+        let videoTrial = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: `
+                <div id="video-container">
+                    <iframe id="experiment-video-${index}" 
+                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
+                        src="${videoURL}" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                    </iframe>
+                    <button id="next-button-${index}" style="display: none;">
+                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                    </button>
+                </div>
+            `,
+            choices: "NO_KEYS",
+            trial_duration: null,
+            on_load: function () {
+                let pressStart = null;
 
-            document.addEventListener("keydown", function (event) {
-                if (event.code === "Space" && pressStart === null) {
-                    pressStart = performance.now() / 1000;
-                    console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
-                }
-            });
+                document.addEventListener("keydown", function (event) {
+                    if (event.code === "Space" && pressStart === null) {
+                        pressStart = performance.now() / 1000;
+                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
+                    }
+                });
 
-            document.addEventListener("keyup", function (event) {
-                if (event.code === "Space" && pressStart !== null) {
-                    let pressEnd = performance.now() / 1000;
-                    let pressDuration = pressEnd - pressStart;
+                document.addEventListener("keyup", function (event) {
+                    if (event.code === "Space" && pressStart !== null) {
+                        let pressEnd = performance.now() / 1000;
+                        let pressDuration = pressEnd - pressStart;
 
-                    let correctedStartTime = videoStartTime + pressStart;
-                    let correctedEndTime = videoStartTime + pressEnd;
+                        let correctedStartTime = videoStartTime + pressStart;
+                        let correctedEndTime = videoStartTime + pressEnd;
 
-                    console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
+                        console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
 
-                    let dataToSend = {
-                        participantID: parseInt(participantID, 10),
-                        date: new Date().toISOString().split('T')[0],
-                        experimentCode: 1,
-                        videoNumber: index + 1, // ✅ New field added (1-based index)
-                        startTime: Number(correctedStartTime.toFixed(3)),
-                        endTime: Number(correctedEndTime.toFixed(3)),
-                        duration: Number(pressDuration.toFixed(3))
-                    };
+                        let dataToSend = {
+                            participantID: parseInt(participantID, 10),
+                            date: new Date().toISOString().split('T')[0],
+                            experimentCode: 1,
+                            videoNumber: index + 1, // ✅ New field added (1-based index)
+                            startTime: Number(correctedStartTime.toFixed(3)),
+                            endTime: Number(correctedEndTime.toFixed(3)),
+                            duration: Number(pressDuration.toFixed(3))
+                        };
 
-                    fetch(GOOGLE_SHEETS_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ experimentData: dataToSend }),
-                        mode: "no-cors"
-                    }).then(() => console.log("✅ Google Sheets Request Sent."));
+                        fetch(GOOGLE_SHEETS_URL, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ experimentData: dataToSend }),
+                            mode: "no-cors"
+                        }).then(() => console.log("✅ Google Sheets Request Sent."));
 
-                    pressStart = null;
-                }
-            });
-        }
-    };
-    timeline.push(videoTrial);
-});
-
+                        pressStart = null;
+                    }
+                });
+            }
+        };
+        timeline.push(videoTrial);
+    });
 
     jsPsych.run(timeline);
 });
