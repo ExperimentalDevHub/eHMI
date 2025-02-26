@@ -118,10 +118,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 participantID: participantID,
                                 videoIndex: index + 1,
                                 videoURL: videoURL,
-                                startTime: start.toFixed(3),
-                                endTime: end.toFixed(3),
-                                duration: duration.toFixed(3)
+                                startTime: parseFloat(start.toFixed(3)),  // Ensuring it is a number
+                                endTime: parseFloat(end.toFixed(3)),      // Ensuring it is a number
+                                duration: parseFloat(duration.toFixed(3)) // Ensuring it is a number
                             };
+                            
             
                             console.log("📤 Sending Data to Google Sheets:", JSON.stringify(dataToSend, null, 2));
             
