@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - The Real Final Version");
+console.log("ExperimentManual.js - The FINAL FINAL Version");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -73,18 +73,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     videoList.forEach((videoURL, index) => {
         let isLastVideo = (index === videoList.length - 1);
-
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
-                    <iframe id="experiment-video" 
+                    <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container" style="visibility: hidden; text-align: center; margin-top: 10px;">
-                        <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
+                    <div id="next-button-container-${index}" style="visibility: hidden; text-align: center; margin-top: 10px;">
+                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 24px;">
                             ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
                         </button>
                     </div>
@@ -94,34 +93,27 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_start: function () {
                 setTimeout(() => {
-                    let iframe = document.getElementById("experiment-video");
-                    if (iframe) {
-                        let player = new YT.Player(iframe, {
-                            events: {
-                                onStateChange: function (event) {
-                                    if (event.data === YT.PlayerState.ENDED) {
-                                        setTimeout(() => {
-                                            document.getElementById("next-button-container").style.visibility = "visible";
-                                        }, 1000);
-                                    }
+                    let iframe = document.getElementById(`experiment-video-${index}`);
+                    let player = new YT.Player(iframe, {
+                        events: {
+                            onStateChange: function (event) {
+                                if (event.data === YT.PlayerState.ENDED) {
+                                    setTimeout(() => {
+                                        document.getElementById(`next-button-container-${index}`).style.visibility = "visible";
+                                    }, 1000);
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
                 }, 500);
 
-                setTimeout(() => {
-                    let button = document.getElementById("next-button");
-                    if (button) {
-                        button.addEventListener("click", () => {
-                            if (isLastVideo) {
-                                document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
-                            } else {
-                                jsPsych.finishTrial();
-                            }
-                        });
+                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
+                    if (isLastVideo) {
+                        document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
+                    } else {
+                        jsPsych.finishTrial();
                     }
-                }, 1000);
+                });
             }
         };
         timeline.push(videoTrial);
