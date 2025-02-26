@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbza_CGn-Wom4EDtqagaofb-7oU9yaMbDC3w3G7QQD_IP3Qc_6OYYy4OQV4mvxBJItHZ3Q/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
