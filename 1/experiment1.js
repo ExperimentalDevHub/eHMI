@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 6");
+console.log("ExperimentManual.js - Version 7");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -116,30 +116,16 @@ document.addEventListener("DOMContentLoaded", function () {
                             duration: Number(pressDuration.toFixed(3))
                         };
 
-                        console.log("📤 Sending Data to Google Sheets:", JSON.stringify(dataToSend, null, 2));
-
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ experimentData: dataToSend })
-                        })
-                        .then(response => response.json())
-                        .then(data => console.log("✅ Google Sheets Response:", data))
-                        .catch(error => console.error("❌ Google Sheets Fetch Error:", error));
+                            body: JSON.stringify({ experimentData: dataToSend }),
+                            mode: "no-cors"
+                        }).then(() => console.log("✅ Google Sheets Request Sent."));
 
                         pressStart = null;
                     }
                 });
-
-                setTimeout(() => {
-                    let button = document.getElementById(`next-button-${index}`);
-                    if (button) {
-                        button.style.display = "block";
-                        button.onclick = function () {
-                            jsPsych.finishTrial();
-                        };
-                    }
-                }, 1000);
             }
         };
         timeline.push(videoTrial);
