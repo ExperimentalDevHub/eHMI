@@ -1,6 +1,6 @@
-console.log("ExperimentManual.js - Final Fixed Version");
+console.log("ExperimentManual.js - Final Fixed Version 2");
 
-// Load YouTube API if not already loaded
+// Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     let tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -8,12 +8,12 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
-// Run experiment only after YouTube API is ready
+// Global function for YouTube API
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded");
-    runExperiment();
 }
 
+// Generate or retrieve a unique participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
 
@@ -25,7 +25,8 @@ function getParticipantID() {
     return participantID;
 }
 
-function runExperiment() {
+// Run experiment
+document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
     let timeline = [];
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
@@ -54,13 +55,11 @@ function runExperiment() {
     timeline.push(startExperiment);
 
     const videoList = [
-        // Manual driving condition
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208",
-        // Manual pedestrian condition
         "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98",
@@ -80,7 +79,7 @@ function runExperiment() {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
-                    <iframe id="experiment-video" 
+                    <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
                         src="${videoURL}?autoplay=1&mute=1&enablejsapi=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
@@ -95,22 +94,32 @@ function runExperiment() {
             choices: "NO_KEYS",
             trial_duration: null,
             on_start: function () {
-                let iframe = document.getElementById("experiment-video");
-                let player = new YT.Player(iframe, {
-                    events: {
-                        onReady: function () {
-                            videoStartTime = Date.now();
-                        },
-                        onStateChange: function (event) {
-                            if (event.data === YT.PlayerState.ENDED) {
-                                videoEndTime = Date.now();
-                                setTimeout(() => {
-                                    document.getElementById("next-button-container").style.visibility = "visible";
-                                }, 1000);
+                let iframeID = `experiment-video-${index}`;
+                let player;
+
+                function waitForIframe() {
+                    let iframe = document.getElementById(iframeID);
+                    if (iframe) {
+                        player = new YT.Player(iframeID, {
+                            events: {
+                                onReady: function () {
+                                    videoStartTime = Date.now();
+                                },
+                                onStateChange: function (event) {
+                                    if (event.data === YT.PlayerState.ENDED) {
+                                        videoEndTime = Date.now();
+                                        setTimeout(() => {
+                                            document.getElementById("next-button-container").style.visibility = "visible";
+                                        }, 1000);
+                                    }
+                                }
                             }
-                        }
+                        });
+                    } else {
+                        setTimeout(waitForIframe, 100);
                     }
-                });
+                }
+                waitForIframe();
 
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space") {
@@ -139,11 +148,7 @@ function runExperiment() {
 
                     if (isLastVideo) {
                         sendToGoogleSheets(experimentData);
-                        document.body.innerHTML = `
-                            <div style='text-align: center; font-size: 24px; margin-top: 20vh;'>
-                                Thank you for completing this section
-                            </div>
-                        `;
+                        document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
                     } else {
                         jsPsych.finishTrial();
                     }
@@ -154,7 +159,7 @@ function runExperiment() {
     });
 
     jsPsych.run(timeline);
-}
+});
 
 function sendToGoogleSheets(data) {
     fetch(GOOGLE_SHEETS_URL, {
@@ -162,7 +167,6 @@ function sendToGoogleSheets(data) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ experimentData: data }),
         mode: "no-cors"
-    })
-    .then(() => console.log("Data sent to Google Sheets:", data))
+    }).then(() => console.log("Data sent to Google Sheets:", data))
     .catch(error => console.error("Error sending to Google Sheets:", error));
 }
