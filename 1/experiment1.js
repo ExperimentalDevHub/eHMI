@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 10");
+console.log("ExperimentManual.js - Version 11");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNumber: videoNumber, // ✅ Include video number
+                            videoNum: videoNumber, // ✅ FIXED: Ensure this is included
                             startTime: Number(correctedStartTime.toFixed(3)), 
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
