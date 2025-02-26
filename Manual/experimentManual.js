@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Now Actually Fixed");
+console.log("ExperimentManual.js - Fully Fixed");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
-                    <iframe id="experiment-video-${index}" 
+                    <iframe id="experiment-video" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
@@ -93,9 +93,26 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_start: function () {
-                setTimeout(() => {
-                    document.getElementById("next-button-container").style.visibility = "visible";
-                }, 1000);
+                let iframe = document.getElementById("experiment-video");
+                let player = new YT.Player(iframe, {
+                    events: {
+                        onStateChange: function (event) {
+                            if (event.data === YT.PlayerState.ENDED) {
+                                setTimeout(() => {
+                                    document.getElementById("next-button-container").style.visibility = "visible";
+                                }, 1000);
+                            }
+                        }
+                    }
+                });
+
+                document.getElementById("next-button").addEventListener("click", () => {
+                    if (isLastVideo) {
+                        document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
+                    } else {
+                        jsPsych.finishTrial();
+                    }
+                });
             }
         };
         timeline.push(videoTrial);
