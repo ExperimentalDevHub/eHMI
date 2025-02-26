@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Document Loaded, Initializing Experiment...");
     let jsPsych = initJsPsych();
     let timeline = [];
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
     let participantID = getParticipantID();
     let experimentData = [];
 
@@ -74,7 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
     videoList.sort(() => Math.random() - 0.5);
 
     videoList.forEach((videoURL, index) => {
-        let isLastVideo = (index === videoList.length - 1);
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -84,9 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container-${index}" style="visibility: hidden;">
-                        <button id="next-button-${index}">${isLastVideo ? "Finish" : "Proceed to Next Trial"}</button>
-                    </div>
                 </div>
             `,
             choices: "NO_KEYS",
@@ -100,21 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 sendToGoogleSheets(experimentData);
-            },
-            on_load: function () {
-                setTimeout(() => {
-                    let button = document.getElementById(`next-button-${index}`);
-                    if (button) {
-                        console.log(`Button found for Video ${index + 1}, now clickable.`);
-                        button.style.visibility = "visible";
-                        button.onclick = function () {
-                            console.log(`Button clicked for Video ${index + 1}`);
-                            jsPsych.finishTrial();
-                        };
-                    } else {
-                        console.error(`Button NOT FOUND for Video ${index + 1}.`);
-                    }
-                }, 1000);
             }
         };
         timeline.push(videoTrial);
@@ -124,6 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function sendToGoogleSheets(data) {
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
+    
     console.log("⚡ Sending data to Google Sheets...");
     console.log("📝 Data being sent:", JSON.stringify(data, null, 2));
 
