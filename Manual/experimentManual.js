@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FINAL FIX (Google Sheets Data & Full URLs)");
+console.log("ExperimentManual.js - FINAL FINAL FINAL (Fixing Button Disappearance)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -28,7 +28,7 @@ function getParticipantID() {
     return participantID;
 }
 
-// Function to extract start and end times from the video URL
+// Extract start and end times from URL
 function extractVideoTimes(videoURL) {
     let startMatch = videoURL.match(/start=(\d+)/);
     let endMatch = videoURL.match(/end=(\d+)/);
@@ -117,6 +117,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 sendToGoogleSheets(experimentData);
+            },
+            on_load: function () {
+                setTimeout(() => {
+                    let buttonContainer = document.getElementById(`next-button-container-${index}`);
+                    let button = document.getElementById(`next-button-${index}`);
+
+                    if (buttonContainer && button) {
+                        console.log(`✅ Button found for Video ${index + 1}, now clickable.`);
+                        buttonContainer.style.visibility = "visible";
+                        button.onclick = function () {
+                            console.log(`🖱️ Button clicked for Video ${index + 1}`);
+                            jsPsych.finishTrial();
+                        };
+                    } else {
+                        console.error(`❌ Button NOT FOUND for Video ${index + 1}.`);
+                    }
+                }, (end - start + 1) * 1000);
             }
         };
         timeline.push(videoTrial);
@@ -124,20 +141,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
     jsPsych.run(timeline);
 });
-
-function sendToGoogleSheets(data) {
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_GOOGLE_SHEETS_URL_HERE";
-    
-    fetch(GOOGLE_SHEETS_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ experimentData: data }),
-        mode: "no-cors"
-    })
-    .then(() => {
-        console.log("✅ Google Sheets Request Sent.");
-    })
-    .catch(error => {
-        console.error("❌ Error sending to Google Sheets:", error);
-    });
-}
