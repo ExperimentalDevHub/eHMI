@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FINAL (Guaranteed Button & Google Sheets Fix)");
+console.log("ExperimentManual.js - FINAL FINAL FINAL VERSION");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -28,24 +28,13 @@ function getParticipantID() {
     return participantID;
 }
 
-// Extract start and end times from URL
-function extractVideoTimes(videoURL) {
-    let startMatch = videoURL.match(/start=(\d+)/);
-    let endMatch = videoURL.match(/end=(\d+)/);
-    return {
-        start: startMatch ? parseInt(startMatch[1]) : null,
-        end: endMatch ? parseInt(endMatch[1]) : null
-    };
-}
-
 // Run experiment
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document Loaded, Initializing Experiment...");
     let jsPsych = initJsPsych();
     let timeline = [];
     let participantID = getParticipantID();
-    let experimentData = [];
-
+    
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
 
     let startExperiment = {
@@ -53,7 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
         stimulus: `
             <div style="text-align: center;">
                 <h2>Welcome to the eHMI Experiment</h2>
-                <p>Press "Start Experiment" to begin.</p>
+                <p>In this experiment, you will watch short video clips. Imagine yourself as a pedestrian crossing the street. Press and hold the spacebar when you feel safe crossing, and release it if you feel unsafe. The videos autoplay, so do not interact with playback.</p>
+                <p>After each video, a button will appear. Click it to proceed.</p>
+                <p>When you are ready, click "Start Experiment" below.</p>
             </div>
         `,
         choices: ["Start Experiment"]
@@ -62,23 +53,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const videoList = [
         // Manual driving condition
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         // Manual pedestrian condition
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1"
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0"
     ];
     videoList.sort(() => Math.random() - 0.5);
 
     videoList.forEach((videoURL, index) => {
-        let { start, end } = extractVideoTimes(videoURL);
         let isLastVideo = index === videoList.length - 1;
 
         let videoTrial = {
@@ -125,29 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             buttonContainer.appendChild(newButton);
                         }
                     }
-                }, (end - start + 1) * 1000);
-            },
-            on_finish: function () {
-                let dataToSend = {
-                    participantID: participantID,
-                    date: new Date().toISOString(),
-                    videoNumber: index + 1,
-                    videoURL: videoURL,
-                    startTime: start,
-                    endTime: end,
-                    duration: end - start
-                };
-
-                console.log("📤 Sending Data to Google Sheets:", JSON.stringify(dataToSend, null, 2));
-
-                fetch(GOOGLE_SHEETS_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ experimentData: dataToSend }),
-                    mode: "no-cors"
-                })
-                .then(() => console.log("✅ Google Sheets Request Sent."))
-                .catch(error => console.error("❌ Google Sheets Error:", error));
+                }, 1000);
             }
         };
         timeline.push(videoTrial);
