@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - ULTRA FINAL FIX (Button Always Shows)");
+console.log("ExperimentManual.js - FINAL FINAL (Button Forced to Show)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -105,31 +105,18 @@ document.addEventListener("DOMContentLoaded", function () {
             `,
             choices: "NO_KEYS",
             trial_duration: null,
-            on_finish: function () {
-                experimentData.push({
-                    participantID: participantID,
-                    date: new Date().toLocaleDateString(),
-                    videoNumber: index + 1,
-                    videoURL: videoURL,
-                    startTime: start,
-                    endTime: end,
-                    duration: end - start
-                });
-
-                sendToGoogleSheets(experimentData);
-            },
             on_load: function () {
                 setTimeout(() => {
                     let button = document.getElementById(`next-button-${index}`);
                     if (button) {
                         console.log(`✅ Button found for Video ${index + 1}, making visible.`);
-                        button.style.display = "block"; // Force it to show up
+                        button.style.display = "block"; // FORCE IT TO SHOW
                         button.onclick = function () {
                             console.log(`🖱️ Button clicked for Video ${index + 1}`);
                             jsPsych.finishTrial();
                         };
                     } else {
-                        console.error(`❌ Button NOT FOUND for Video ${index + 1}.`);
+                        console.error(`❌ BUTTON MISSING FOR VIDEO ${index + 1} - WTF IS HAPPENING.`);
                     }
                 }, (end - start + 1) * 1000);
             }
