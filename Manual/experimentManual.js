@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - ALL ISSUES FIXED");
+console.log("ExperimentManual.js - GOOGLE SHEETS DEBUG MODE");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -76,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
     videoList.sort(() => Math.random() - 0.5);
 
     videoList.forEach((videoURL, index) => {
-        let isLastVideo = (index === videoList.length - 1);
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -86,31 +85,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container-${index}" style="visibility: hidden;">
-                        <button id="next-button-${index}">${isLastVideo ? "Finish" : "Proceed to Next Trial"}</button>
-                    </div>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
-            on_start: function () {
-                console.log(`Starting Video ${index + 1}: ${videoURL}`);
-                setTimeout(() => {
-                    let button = document.getElementById(`next-button-${index}`);
-                    if (button) {
-                        console.log(`Button found for Video ${index + 1}, now clickable.`);
-                        button.style.visibility = "visible";
-                        button.onclick = function () {
-                            console.log(`Button clicked for Video ${index + 1}`);
-                            if (isLastVideo) {
-                                sendToGoogleSheets(experimentData);
-                                document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
-                            } else {
-                                jsPsych.finishTrial();
-                            }
-                        };
-                    }
-                }, 1000);
+            on_finish: function () {
+                console.log(`✅ Sending data for Video ${index + 1}`);
+                experimentData.push({
+                    participantID: participantID,
+                    videoURL: videoURL,
+                    timestamp: new Date().toISOString()
+                });
+
+                // Actually send the data
+                sendToGoogleSheets(experimentData);
             }
         };
         timeline.push(videoTrial);
@@ -120,13 +108,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function sendToGoogleSheets(data) {
-    console.log("Sending data to Google Sheets:", data);
-    fetch(GOOGLE_SHEETS_URL, {
+    console.log("⚡ Sending data to Google Sheets...");
+    console.log("📝 Data being sent:", JSON.stringify(data, null, 2));
+
+    fetch("https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ experimentData: data })
     })
-    .then(response => response.text())
-    .then(data => console.log("Google Sheets Response:", data))
-    .catch(error => console.error("Error sending to Google Sheets:", error));
+    .then(response => response.text()) // Read response as text
+    .then(text => {
+        console.log("✅ Google Sheets Response:", text);
+    })
+    .catch(error => {
+        console.error("❌ Error sending to Google Sheets:", error);
+    });
 }
