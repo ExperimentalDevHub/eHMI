@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FINAL FINAL (Fixing Button Disappearance)");
+console.log("ExperimentManual.js - ULTRA FINAL FIX (Button Always Shows)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -96,8 +96,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container-${index}" style="visibility: hidden; text-align: center; margin-top: 10px;">
-                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 20px;">
+                    <div id="next-button-container-${index}" style="text-align: center; margin-top: 10px;">
+                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 20px; display: none;">
                             ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
                         </button>
                     </div>
@@ -120,12 +120,10 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             on_load: function () {
                 setTimeout(() => {
-                    let buttonContainer = document.getElementById(`next-button-container-${index}`);
                     let button = document.getElementById(`next-button-${index}`);
-
-                    if (buttonContainer && button) {
-                        console.log(`✅ Button found for Video ${index + 1}, now clickable.`);
-                        buttonContainer.style.visibility = "visible";
+                    if (button) {
+                        console.log(`✅ Button found for Video ${index + 1}, making visible.`);
+                        button.style.display = "block"; // Force it to show up
                         button.onclick = function () {
                             console.log(`🖱️ Button clicked for Video ${index + 1}`);
                             jsPsych.finishTrial();
