@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - The FINAL FINAL Version");
+console.log("ExperimentManual.js - FINAL FINAL (For Real This Time)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     videoList.forEach((videoURL, index) => {
         let isLastVideo = (index === videoList.length - 1);
+
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -91,29 +92,36 @@ document.addEventListener("DOMContentLoaded", function () {
             `,
             choices: "NO_KEYS",
             trial_duration: null,
-            on_start: function () {
+            on_load: function () {
                 setTimeout(() => {
                     let iframe = document.getElementById(`experiment-video-${index}`);
-                    let player = new YT.Player(iframe, {
-                        events: {
-                            onStateChange: function (event) {
-                                if (event.data === YT.PlayerState.ENDED) {
-                                    setTimeout(() => {
-                                        document.getElementById(`next-button-container-${index}`).style.visibility = "visible";
-                                    }, 1000);
+                    if (iframe) {
+                        let player = new YT.Player(`experiment-video-${index}`, {
+                            events: {
+                                onStateChange: function (event) {
+                                    if (event.data === YT.PlayerState.ENDED) {
+                                        setTimeout(() => {
+                                            document.getElementById(`next-button-container-${index}`).style.visibility = "visible";
+                                        }, 1000);
+                                    }
                                 }
                             }
-                        }
-                    });
-                }, 500);
-
-                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
-                    if (isLastVideo) {
-                        document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
-                    } else {
-                        jsPsych.finishTrial();
+                        });
                     }
-                });
+                }, 1000);
+
+                setTimeout(() => {
+                    let button = document.getElementById(`next-button-${index}`);
+                    if (button) {
+                        button.addEventListener("click", () => {
+                            if (isLastVideo) {
+                                document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
+                            } else {
+                                jsPsych.finishTrial();
+                            }
+                        });
+                    }
+                }, 1500);
             }
         };
         timeline.push(videoTrial);
