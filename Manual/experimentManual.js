@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - The FINAL WORKING Version");
+console.log("ExperimentManual.js - The FINAL Working Version");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -56,18 +56,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const videoList = [
         // Manual driving condition
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&rel=0&modestbranding=1",
         // Manual pedestrian condition
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1",
-        "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1"
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1&rel=0&modestbranding=1",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1&rel=0&modestbranding=1"
     ];
     videoList.sort(() => Math.random() - 0.5);
 
@@ -93,26 +93,16 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 setTimeout(() => {
-                    let iframe = document.getElementById(`experiment-video-${index}`);
-                    let buttonContainer = document.getElementById(`next-button-container-${index}`);
-                    if (iframe) {
-                        let player = new YT.Player(`experiment-video-${index}`, {
-                            events: {
-                                onStateChange: function (event) {
-                                    if (event.data === YT.PlayerState.ENDED) {
-                                        setTimeout(() => {
-                                            buttonContainer.style.visibility = "visible";
-                                        }, 1000);
-                                    }
-                                }
+                    let button = document.getElementById(`next-button-${index}`);
+                    if (button) {
+                        button.addEventListener("click", () => {
+                            if (isLastVideo) {
+                                sendToGoogleSheets(experimentData);
+                                document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
+                            } else {
+                                jsPsych.finishTrial();
                             }
                         });
-
-                        // Backup: Show button at correct end time even if API event fails
-                        let videoEndTime = parseInt(videoURL.match(/end=(\d+)/)[1], 10);
-                        setTimeout(() => {
-                            buttonContainer.style.visibility = "visible";
-                        }, (videoEndTime - parseInt(videoURL.match(/start=(\d+)/)[1], 10) + 1) * 1000);
                     }
                 }, 1000);
             }
