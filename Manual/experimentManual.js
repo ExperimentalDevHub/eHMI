@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Final Fixed Version 2");
+console.log("ExperimentManual.js - Final Fixed Version 3");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -84,8 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}?autoplay=1&mute=1&enablejsapi=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container" style="visibility: hidden; text-align: center; margin-top: 10px;">
-                        <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
+                    <div id="next-button-container-${index}" style="visibility: hidden; text-align: center; margin-top: 10px;">
+                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 24px;">
                             ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
                         </button>
                     </div>
@@ -95,12 +95,13 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_start: function () {
                 let iframeID = `experiment-video-${index}`;
-                let player;
-
-                function waitForIframe() {
+                let nextButtonContainerID = `next-button-container-${index}`;
+                let nextButtonID = `next-button-${index}`;
+                
+                setTimeout(() => {
                     let iframe = document.getElementById(iframeID);
                     if (iframe) {
-                        player = new YT.Player(iframeID, {
+                        let player = new YT.Player(iframeID, {
                             events: {
                                 onReady: function () {
                                     videoStartTime = Date.now();
@@ -109,50 +110,40 @@ document.addEventListener("DOMContentLoaded", function () {
                                     if (event.data === YT.PlayerState.ENDED) {
                                         videoEndTime = Date.now();
                                         setTimeout(() => {
-                                            document.getElementById("next-button-container").style.visibility = "visible";
+                                            document.getElementById(nextButtonContainerID).style.visibility = "visible";
                                         }, 1000);
                                     }
                                 }
                             }
                         });
-                    } else {
-                        setTimeout(waitForIframe, 100);
                     }
-                }
-                waitForIframe();
+                }, 500);
 
-                document.addEventListener("keydown", function (event) {
-                    if (event.code === "Space") {
-                        spacebarPresses.push({ time: Date.now(), action: "press" });
+                setTimeout(() => {
+                    let nextButton = document.getElementById(nextButtonID);
+                    if (nextButton) {
+                        nextButton.addEventListener("click", () => {
+                            let duration = (videoEndTime && videoStartTime) ? (videoEndTime - videoStartTime) / 1000 : null;
+
+                            experimentData.push({
+                                participantID: participantID,
+                                date: new Date().toLocaleDateString(),
+                                videoURL: videoURL,
+                                startTime: videoStartTime ? (videoStartTime / 1000) : null,
+                                endTime: videoEndTime ? (videoEndTime / 1000) : null,
+                                duration: duration,
+                                spacebarData: spacebarPresses
+                            });
+
+                            if (isLastVideo) {
+                                sendToGoogleSheets(experimentData);
+                                document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
+                            } else {
+                                jsPsych.finishTrial();
+                            }
+                        });
                     }
-                });
-
-                document.addEventListener("keyup", function (event) {
-                    if (event.code === "Space") {
-                        spacebarPresses.push({ time: Date.now(), action: "release" });
-                    }
-                });
-
-                document.getElementById("next-button").addEventListener("click", () => {
-                    let duration = (videoEndTime && videoStartTime) ? (videoEndTime - videoStartTime) / 1000 : null;
-
-                    experimentData.push({
-                        participantID: participantID,
-                        date: new Date().toLocaleDateString(),
-                        videoURL: videoURL,
-                        startTime: videoStartTime ? (videoStartTime / 1000) : null,
-                        endTime: videoEndTime ? (videoEndTime / 1000) : null,
-                        duration: duration,
-                        spacebarData: spacebarPresses
-                    });
-
-                    if (isLastVideo) {
-                        sendToGoogleSheets(experimentData);
-                        document.body.innerHTML = `<div style='text-align: center; font-size: 24px; margin-top: 20vh;'>Thank you for completing this section</div>`;
-                    } else {
-                        jsPsych.finishTrial();
-                    }
-                });
+                }, 1000);
             }
         };
         timeline.push(videoTrial);
@@ -160,13 +151,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
     jsPsych.run(timeline);
 });
-
-function sendToGoogleSheets(data) {
-    fetch(GOOGLE_SHEETS_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ experimentData: data }),
-        mode: "no-cors"
-    }).then(() => console.log("Data sent to Google Sheets:", data))
-    .catch(error => console.error("Error sending to Google Sheets:", error));
-}
