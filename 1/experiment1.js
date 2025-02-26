@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 5");
+console.log("ExperimentManual.js - Version 6");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbza_CGn-Wom4EDtqagaofb-7oU9yaMbDC3w3G7QQD_IP3Qc_6OYYy4OQV4mvxBJItHZ3Q/exec";
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Restoring your exact video URLs
+    // ✅ Using your original video URLs
     const videoList = [
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -121,10 +121,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors"
-                        }).then(() => console.log("✅ Google Sheets Request Sent."))
-                          .catch(error => console.error("❌ Google Sheets Error:", error));
+                            body: JSON.stringify({ experimentData: dataToSend })
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log("✅ Google Sheets Response:", data))
+                        .catch(error => console.error("❌ Google Sheets Fetch Error:", error));
 
                         pressStart = null;
                     }
