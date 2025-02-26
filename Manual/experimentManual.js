@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - DEBUG MODE");
+console.log("ExperimentManual.js - FIXING BUTTON ISSUE");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -59,13 +59,11 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-        // Manual driving condition
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        // Manual pedestrian condition
         "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -79,15 +77,33 @@ document.addEventListener("DOMContentLoaded", function () {
         let isLastVideo = (index === videoList.length - 1);
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: `<p>Loading video ${index + 1} of ${videoList.length}</p>`,
+            stimulus: `
+                <div id="video-container">
+                    <p>Loading video ${index + 1} of ${videoList.length}</p>
+                    <iframe id="experiment-video-${index}" 
+                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
+                        src="${videoURL}" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                    </iframe>
+                    <div id="next-button-container-${index}" style="visibility: hidden;">
+                        <button id="next-button-${index}">${isLastVideo ? "Finish" : "Proceed to Next Trial"}</button>
+                    </div>
+                </div>
+            `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_start: function () {
                 console.log(`Starting Video ${index + 1}: ${videoURL}`);
+
                 setTimeout(() => {
-                    console.log(`Expected End Time Reached for Video ${index + 1}, showing button...`);
-                    document.getElementById(`next-button-${index}`).style.visibility = "visible";
-                }, 5000); // For debugging purposes, show button after 5 seconds
+                    let button = document.getElementById(`next-button-${index}`);
+                    if (button) {
+                        console.log(`Button found for Video ${index + 1}, showing now.`);
+                        button.style.visibility = "visible";
+                    } else {
+                        console.error(`Button NOT FOUND for Video ${index + 1}.`);
+                    }
+                }, 5000);
             }
         };
         timeline.push(videoTrial);
@@ -95,15 +111,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
     jsPsych.run(timeline);
 });
-
-function sendToGoogleSheets(data) {
-    console.log("Sending data to Google Sheets:", data);
-    fetch(GOOGLE_SHEETS_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ experimentData: data })
-    })
-    .then(response => response.text()) // Read response as text
-    .then(data => console.log("Google Sheets Response:", data))
-    .catch(error => console.error("Error sending to Google Sheets:", error));
-}
