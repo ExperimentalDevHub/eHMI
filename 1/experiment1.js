@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Debugging Version");
+console.log("experiment1.js - Version 1");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypUSRpw1vgkP_HwAMtlBwbb6UglGRdKS-93M-VqHeulrnHaahq5hNb1ersJUQAUZmH/exec";
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
@@ -122,8 +122,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors"
-                        }).then(() => console.log("✅ Google Sheets Request Sent."));
+                        })
+                        .then(response => response.text())  // Convert response to text to debug
+                        .then(data => console.log("🛠️ Google Sheets Response:", data))  // Print response
+                        .catch(error => console.error("❌ Google Sheets Error:", error));
+                        
 
                         pressStart = null;
                     }
