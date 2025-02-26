@@ -69,7 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     videoList.forEach((videoURL, index) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
-        
+        let videoNumber = index + 1; // Assign video number (1-6)
+
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -111,8 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNumber: index + 1,
-                            startTime: Number(correctedStartTime.toFixed(3)), // ✅ Ensuring correct number format
+                            videoNumber: videoNumber, // ✅ Include video number
+                            startTime: Number(correctedStartTime.toFixed(3)), 
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
