@@ -41,14 +41,17 @@ document.addEventListener("DOMContentLoaded", function () {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
-                <h2>Welcome to the eHMI Experiment</h2>
-                <p>In this experiment, you will be shown brief video clips to interact with. 
+                <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
+                <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
+                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
+                    In this experiment, you will be shown brief video clips to interact with. 
                     Please imagine yourself as a pedestrian attempting to cross the street. 
                     When you feel comfortable and safe crossing, press and hold the spacebar. 
                     If you ever feel unsafe, simply release the spacebar. 
                     After the video ends, a button will appear one second later to continue. 
                     The videos will autoplay, do not interact with their playback. 
-                    When you are ready to begin, select "Start Experiment."</p>
+                    When you are ready to begin, select "Start Experiment."
+                </p>
             </div>
         `,
         choices: ["Start Experiment"]
