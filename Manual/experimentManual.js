@@ -73,21 +73,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     videoList.forEach((videoURL, index) => {
         let isLastVideo = (index === videoList.length - 1);
-        let iframeID = `experiment-video-${index}`;
-        let buttonContainerID = `next-button-container-${index}`;
-        let buttonID = `next-button-${index}`;
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
-                    <iframe id="${iframeID}" 
+                    <iframe id="experiment-video" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="${buttonContainerID}" style="visibility: hidden; text-align: center; margin-top: 10px;">
-                        <button id="${buttonID}" style="padding: 15px 30px; font-size: 24px;">
+                    <div id="next-button-container" style="visibility: hidden; text-align: center; margin-top: 10px;">
+                        <button id="next-button" style="padding: 15px 30px; font-size: 24px;">
                             ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
                         </button>
                     </div>
@@ -96,21 +93,25 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_start: function () {
-                let iframe = document.getElementById(iframeID);
-                let player = new YT.Player(iframe, {
-                    events: {
-                        onStateChange: function (event) {
-                            if (event.data === YT.PlayerState.ENDED) {
-                                setTimeout(() => {
-                                    document.getElementById(buttonContainerID).style.visibility = "visible";
-                                }, 1000);
+                setTimeout(() => {
+                    let iframe = document.getElementById("experiment-video");
+                    if (iframe) {
+                        let player = new YT.Player(iframe, {
+                            events: {
+                                onStateChange: function (event) {
+                                    if (event.data === YT.PlayerState.ENDED) {
+                                        setTimeout(() => {
+                                            document.getElementById("next-button-container").style.visibility = "visible";
+                                        }, 1000);
+                                    }
+                                }
                             }
-                        }
+                        });
                     }
-                });
+                }, 500);
 
                 setTimeout(() => {
-                    let button = document.getElementById(buttonID);
+                    let button = document.getElementById("next-button");
                     if (button) {
                         button.addEventListener("click", () => {
                             if (isLastVideo) {
