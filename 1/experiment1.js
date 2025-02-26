@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 11");
+console.log("ExperimentManual.js - Version 12");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     videoList.forEach((videoURL, index) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
-        let videoNumber = index + 1; // Assign video number (1-6)
+        let videoNum = index + 1; // ✅ Ensure videoNum is assigned and used correctly
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -80,16 +80,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" class="next-button" style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
-                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
-                    </button>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let button = document.getElementById(`next-button-${index}`);
 
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
@@ -106,19 +102,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
                         let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
 
-                        console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
-
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNum: videoNumber, // ✅ FIXED: Ensure this is included
+                            videoNum: videoNum, // ✅ Make sure this is explicitly named and included
                             startTime: Number(correctedStartTime.toFixed(3)), 
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
 
-                        console.log("Data to send:", dataToSend);
+                        console.log("✅ Final Data to Send:", JSON.stringify(dataToSend));
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
@@ -130,9 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         pressStart = null;
                     }
                 });
-
-                // ✅ Ensuring Next Button Always Works
-                button.addEventListener("click", () => jsPsych.finishTrial());
             }
         };
         timeline.push(videoTrial);
