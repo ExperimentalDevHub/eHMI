@@ -90,22 +90,30 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
-                start = performance.now();
+                start = performance.now() / 1000; // Convert to seconds
+                console.log(`Start Time (seconds): ${start}`);
+            
                 setTimeout(() => {
                     let button = document.getElementById(`next-button-${index}`);
                     if (button) {
                         button.style.display = "block";
                         button.onclick = function () {
-                            let end = performance.now();
+                            let end = performance.now() / 1000; // Convert to seconds
+                            let duration = end - start; // Duration should now be reasonable
+                            console.log(`End Time (seconds): ${end}`);
+                            console.log(`Duration (seconds): ${duration}`);
+            
                             let dataToSend = {
                                 participantID: participantID,
                                 videoIndex: index + 1,
                                 videoURL: videoURL,
-                                startTime: start,
-                                endTime: end,
-                                duration: end - start
+                                startTime: start.toFixed(3),
+                                endTime: end.toFixed(3),
+                                duration: duration.toFixed(3)
                             };
+            
                             console.log("📤 Sending Data to Google Sheets:", JSON.stringify(dataToSend, null, 2));
+            
                             fetch(GOOGLE_SHEETS_URL, {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
@@ -113,11 +121,13 @@ document.addEventListener("DOMContentLoaded", function () {
                                 mode: "no-cors"
                             }).then(() => console.log("✅ Google Sheets Request Sent."))
                               .catch(error => console.error("❌ Google Sheets Error:", error));
+            
                             jsPsych.finishTrial();
                         };
                     }
                 }, 1000);
             }
+            
         };
         timeline.push(videoTrial);
     });
