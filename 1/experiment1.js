@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 7");
+console.log("ExperimentManual.js - Version 8");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Using your original video URLs
+    // ✅ Your original video URLs
     const videoList = [
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" style="display: none;">
+                    <button id="next-button-${index}" style="display: none; font-size: 18px; padding: 10px 20px;">
                         ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
                     </button>
                 </div>
@@ -90,59 +90,58 @@ document.addEventListener("DOMContentLoaded", function () {
             on_load: function () {
                 let pressStart = null;
                 let button = document.getElementById(`next-button-${index}`);
-    
+
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
-    
+
                 document.addEventListener("keyup", function (event) {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-    
+
                         let correctedStartTime = videoStartTime + pressStart;
                         let correctedEndTime = videoStartTime + pressEnd;
-    
+
                         console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
-    
+
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
                             videoNumber: index + 1,
-                            startTime: parseFloat(correctedStartTime.toFixed(3)), // ✅ Ensuring numerical values
-                            endTime: parseFloat(correctedEndTime.toFixed(3)),
-                            duration: parseFloat(pressDuration.toFixed(3))
+                            startTime: Number(correctedStartTime.toFixed(3)), // ✅ Convert string back to number
+                            endTime: Number(correctedEndTime.toFixed(3)),
+                            duration: Number(pressDuration.toFixed(3))
                         };
-    
-                        console.log("Data to send:", dataToSend); // Debugging
-    
+
+                        console.log("Data to send:", dataToSend);
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
                         }).then(() => console.log("✅ Google Sheets Request Sent."));
-    
+
                         pressStart = null;
                     }
                 });
-    
+
                 // ✅ Fix: Ensure Next Button Appears After Video Ends
                 setTimeout(() => {
                     if (button) {
                         button.style.display = "block";
                         button.addEventListener("click", () => jsPsych.finishTrial());
                     }
-                }, (videoStartTime * 1000) + 1000);
+                }, (videoStartTime * 1000) + 30000); // 30s after video start
             }
         };
         timeline.push(videoTrial);
     });
-    
 
     jsPsych.run(timeline);
 });
