@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - GOOGLE SHEETS DEBUG MODE");
+console.log("ExperimentManual.js - FIXING GOOGLE SHEETS & BUTTON");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -59,13 +59,11 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-        // Manual driving condition
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        // Manual pedestrian condition
         "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -76,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
     videoList.sort(() => Math.random() - 0.5);
 
     videoList.forEach((videoURL, index) => {
+        let isLastVideo = (index === videoList.length - 1);
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -85,6 +84,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
+                    <div id="next-button-container-${index}" style="visibility: hidden;">
+                        <button id="next-button-${index}">${isLastVideo ? "Finish" : "Proceed to Next Trial"}</button>
+                    </div>
                 </div>
             `,
             choices: "NO_KEYS",
@@ -97,8 +99,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     timestamp: new Date().toISOString()
                 });
 
-                // Actually send the data
                 sendToGoogleSheets(experimentData);
+            },
+            on_load: function () {
+                setTimeout(() => {
+                    let button = document.getElementById(`next-button-${index}`);
+                    if (button) {
+                        console.log(`Button found for Video ${index + 1}, now clickable.`);
+                        button.style.visibility = "visible";
+                        button.onclick = function () {
+                            console.log(`Button clicked for Video ${index + 1}`);
+                            jsPsych.finishTrial();
+                        };
+                    } else {
+                        console.error(`Button NOT FOUND for Video ${index + 1}.`);
+                    }
+                }, 1000);
             }
         };
         timeline.push(videoTrial);
@@ -111,12 +127,12 @@ function sendToGoogleSheets(data) {
     console.log("⚡ Sending data to Google Sheets...");
     console.log("📝 Data being sent:", JSON.stringify(data, null, 2));
 
-    fetch("https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec", {
+    fetch(GOOGLE_SHEETS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ experimentData: data })
     })
-    .then(response => response.text()) // Read response as text
+    .then(response => response.text())
     .then(text => {
         console.log("✅ Google Sheets Response:", text);
     })
