@@ -1,4 +1,18 @@
-console.log("ExperimentManual.js - Version 3");
+console.log("ExperimentManual.js - Final Fixed Version");
+
+// Load YouTube API if not already loaded
+if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
+    let tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+// Run experiment only after YouTube API is ready
+function onYouTubeIframeAPIReady() {
+    console.log("YouTube API Loaded");
+    runExperiment();
+}
 
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
@@ -11,7 +25,7 @@ function getParticipantID() {
     return participantID;
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+function runExperiment() {
     let jsPsych = initJsPsych();
     let timeline = [];
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
@@ -40,19 +54,19 @@ document.addEventListener("DOMContentLoaded", function () {
     timeline.push(startExperiment);
 
     const videoList = [
-               // Manual driving condition
-               "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1",
-               // Manual pedestrian condition
-               "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174&autoplay=1&mute=1",
-               "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218&autoplay=1&mute=1"
+        // Manual driving condition
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208",
+        // Manual pedestrian condition
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=3&end=32",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=36&end=65",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=69&end=98",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=102&end=131",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=135&end=174",
+        "https://www.youtube.com/embed/cWb-2C5mV20?start=178&end=218"
     ];
     videoList.sort(() => Math.random() - 0.5);
 
@@ -68,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div id="video-container" style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
                     <iframe id="experiment-video" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
-                        src="${videoURL}" 
+                        src="${videoURL}?autoplay=1&mute=1&enablejsapi=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
                     <div id="next-button-container" style="visibility: hidden; text-align: center; margin-top: 10px;">
@@ -85,11 +99,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 let player = new YT.Player(iframe, {
                     events: {
                         onReady: function () {
-                            videoStartTime = Date.now(); // Capture start time when video loads
+                            videoStartTime = Date.now();
                         },
                         onStateChange: function (event) {
                             if (event.data === YT.PlayerState.ENDED) {
-                                videoEndTime = Date.now(); // Capture end time
+                                videoEndTime = Date.now();
                                 setTimeout(() => {
                                     document.getElementById("next-button-container").style.visibility = "visible";
                                 }, 1000);
@@ -140,15 +154,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     jsPsych.run(timeline);
+}
 
-    function sendToGoogleSheets(data) {
-        fetch(GOOGLE_SHEETS_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ experimentData: data }),
-            mode: "no-cors"
-        })
-        .then(() => console.log("Data sent to Google Sheets:", data))
-        .catch(error => console.error("Error sending to Google Sheets:", error));
-    }
-});
+function sendToGoogleSheets(data) {
+    fetch(GOOGLE_SHEETS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ experimentData: data }),
+        mode: "no-cors"
+    })
+    .then(() => console.log("Data sent to Google Sheets:", data))
+    .catch(error => console.error("Error sending to Google Sheets:", error));
+}
