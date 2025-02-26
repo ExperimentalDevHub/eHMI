@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FIXING GOOGLE SHEETS & BUTTON AGAIN");
+console.log("ExperimentManual.js - FINAL FIX (Syntax & Everything)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </p>
             </div>
         `,
-        choices: ["Start Experiment"],
+        choices: ["Start Experiment"]
     };
     timeline.push(startExperiment);
 
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     videoList.sort(() => Math.random() - 0.5);
 
     videoList.forEach((videoURL, index) => {
-        let isLastVideo = (index === videoList.length - 1);
+        let isLastVideo = index === videoList.length - 1;
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -83,8 +83,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div id="next-button-container-${index}" style="visibility: hidden;">
-                        <button id="next-button-${index}">${isLastVideo ? "Finish" : "Proceed to Next Trial"}</button>
+                    <div id="next-button-container-${index}" style="visibility: hidden; text-align: center; margin-top: 10px;">
+                        <button id="next-button-${index}" style="padding: 15px 30px; font-size: 20px;">
+                            ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
+                        </button>
                     </div>
                 </div>
             `,
@@ -102,70 +104,20 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             on_load: function () {
                 setTimeout(() => {
+                    let buttonContainer = document.getElementById(`next-button-container-${index}`);
                     let button = document.getElementById(`next-button-${index}`);
-                    if (button) {
-                        console.log(`Button found for Video ${index + 1}, now clickable.`);
-                        button.style.visibility = "visible";
+
+                    if (buttonContainer && button) {
+                        console.log(`✅ Button found for Video ${index + 1}, now clickable.`);
+                        buttonContainer.style.visibility = "visible";
                         button.onclick = function () {
-                            console.log(`Button clicked for Video ${index + 1}`);
+                            console.log(`🖱️ Button clicked for Video ${index + 1}`);
                             jsPsych.finishTrial();
                         };
                     } else {
-                        console.error(`Button NOT FOUND for Video ${index + 1}.`);
+                        console.error(`❌ Button NOT FOUND for Video ${index + 1}.`);
                     }
                 }, 1000);
-            }
-        };
-        timeline.push(videoTrial);
-    });
-
-    jsPsych.run(timeline);
-});
-
-function sendToGoogleSheets(data) {
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
-    
-    console.log("⚡ Sending data to Google Sheets...");
-    console.log("📝 Data being sent:", JSON.stringify(data, null, 2));
-
-    fetch(GOOGLE_SHEETS_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ experimentData: data })
-    })
-    .then(response => response.text())
-    .then(text => {
-        console.log("✅ Google Sheets Response:", text);
-    })
-    .catch(error => {
-        console.error("❌ Error sending to Google Sheets:", error);
-    });
-}
-
-
-    videoList.forEach((videoURL, index) => {
-        let videoTrial = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: `
-                <div id="video-container">
-                    <iframe id="experiment-video-${index}" 
-                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px; margin-bottom: 20px;"  
-                        src="${videoURL}" 
-                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-                    </iframe>
-                </div>
-            `,
-            choices: "NO_KEYS",
-            trial_duration: null,
-            on_finish: function () {
-                console.log(`✅ Sending data for Video ${index + 1}`);
-                experimentData.push({
-                    participantID: participantID,
-                    videoURL: videoURL,
-                    timestamp: new Date().toISOString()
-                });
-
-                sendToGoogleSheets(experimentData);
             }
         };
         timeline.push(videoTrial);
