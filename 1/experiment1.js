@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX (Proceed Button & No Duplicates)");
+console.log("experiment1.js - FINAL UPDATE (FULL)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -26,7 +26,7 @@ function getParticipantID() {
     return participantID;
 }
 
-// Fisher-Yates shuffle to randomize array
+// Fisher-Yates shuffle while keeping pairs intact
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -34,25 +34,46 @@ function shuffleArray(array) {
     }
 }
 
-// Global event handlers
-let handleKeydown;
-let handleKeyup;
-let handleButtonClick;
+// 🔗 Pair videos with correct instructions
+let videoMessagePairs = [
+    {
+        video: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1",
+        message: "Press and hold the space bar when you would start slowing down and let go when you would speed up."
+    },
+    {
+        video: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1",
+        message: "Press and hold the space bar when you would start slowing down to yield."
+    },
+    {
+        video: "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1",
+        message: "Press and hold the space bar when you would start slowing down to yield."
+    },
+    {
+        video: "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1",
+        message: "Press and hold the space bar when you would start slowing down to yield."
+    },
+    {
+        video: "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1",
+        message: "Press and hold the space bar when you would start slowing down to yield."
+    },
+    {
+        video: "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1",
+        message: "Press and hold the space bar when you would start slowing down to yield."
+    }
+];
 
-function removeAllKeyListeners() {
-    console.log("🛑 Removing old event listeners before adding new ones...");
-    document.removeEventListener("keydown", handleKeydown);
-    document.removeEventListener("keyup", handleKeyup);
-}
+// 🔀 Shuffle all 6 videos while keeping their messages paired
+shuffleArray(videoMessagePairs);
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document Loaded, Initializing Experiment...");
     let jsPsych = initJsPsych();
     let timeline = [];
     let participantID = getParticipantID();
-    
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_URL_HERE/exec";
+
+    // 📌 INTRO SCREEN (not deleted this time)
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -61,8 +82,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                     In this experiment, you will be shown brief video clips to interact with. 
-                    Please imagine yourself as a pedestrian attempting to cross the street. 
-                    When you feel comfortable and safe crossing, press and hold the spacebar. 
+                    Please imagine yourself as the driver attempting to safely navigate the driving tasks. 
+                    When you feel comfortable and safe slowing/speeding, press and hold the spacebar. 
                     If you ever feel unsafe, simply release the spacebar. 
                     The videos will autoplay, do not interact with their playback. 
                     When you are ready to begin, select "Start Experiment."
@@ -73,34 +94,24 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Using your original video URLs
-    let videoList = [
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-    ];
-
-    // 🔀 Shuffle videos to show in random order
-    shuffleArray(videoList);
-
-    videoList.forEach((videoURL, index) => {
-        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]);
+    videoMessagePairs.forEach((pair, index) => {
+        let videoStartTime = parseFloat(pair.video.match(/start=(\d+)/)[1]);
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
+                <div style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px;">
+                    ${pair.message}
+                </div>
                 <div id="video-container">
                     <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
-                        src="${videoURL}" 
+                        src="${pair.video}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
                     <div style="text-align: right; margin-top: 20px;">
                         <button id="next-button-${index}" style="display: block;">
-                            ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                            ${index === videoMessagePairs.length - 1 ? "Finish" : "Proceed to Next Trial"}
                         </button>
                     </div>
                 </div>
@@ -108,20 +119,18 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
-                removeAllKeyListeners(); // 🔥 Clean up before adding new listeners
-
                 let pressStart = null;
                 let keyHandled = false;
 
-                handleKeydown = function(event) {
+                function handleKeydown(event) {
                     if (event.code === "Space" && !keyHandled) {
                         pressStart = performance.now() / 1000;
                         keyHandled = true; 
                         console.log(`🟢 Keydown Event Fired: Start Time = ${pressStart}`);
                     }
-                };
+                }
 
-                handleKeyup = function(event) {
+                function handleKeyup(event) {
                     if (event.code === "Space" && keyHandled) {
                         keyHandled = false; 
                         let pressEnd = performance.now() / 1000;
@@ -147,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             mode: "no-cors"
                         }).then(() => console.log("✅ Data Sent"));
                     }
-                };
+                }
 
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
