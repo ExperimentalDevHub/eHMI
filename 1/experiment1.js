@@ -1,6 +1,6 @@
-console.log("ExperimentManual.js - 7");
+console.log("ExperimentManual.js - 8");
 
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyPgKWOgkVO-LOb1QOe2UWmnoaODnc-eQFOXZTDhK1G8ZtOgaY0qpWd6wuCbNKHCn4g_g/exec";
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx5MHhPh6YTVK8F9xk1vRpiUadKb8C5p12qXaYgf2YzoHUFDF3Zazi_9bQ-WfJNtDcj9Q/exec";
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
