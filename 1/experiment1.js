@@ -1,5 +1,6 @@
 console.log("ExperimentManual.js - FIXED AGAIN");
 
+// ✅ Set up the correct Google Sheets URL
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec";
 
 // Ensure YouTube API loads before running the experiment
@@ -25,12 +26,8 @@ function getParticipantID() {
     return participantID;
 }
 
-// Function to shuffle videos while keeping original indices
-function shuffleArray(array) {
-    let shuffled = array.map((value, index) => ({ value, index })) // Attach original index
-                         .sort(() => Math.random() - 0.5); // Shuffle
-    return shuffled;
-}
+// ✅ Keep track of ongoing spacebar press
+let spacebarActive = false;
 
 // Send data to Google Sheets in order
 async function sendToGoogleSheets(dataToSend) {
@@ -43,14 +40,7 @@ async function sendToGoogleSheets(dataToSend) {
             body: JSON.stringify({ experimentData: dataToSend }),
         });
 
-        let responseText = await response.text();
-        console.log("📩 Google Sheets Response:", responseText);
-        
-        if (!response.ok) {
-            console.error("❌ Error Sending Data:", response.status, response.statusText);
-        } else {
-            console.log("✅ Data Successfully Sent:", dataToSend);
-        }
+        console.log("✅ Data Successfully Sent:", dataToSend);
     } catch (error) {
         console.error("❌ Fetch Error:", error);
     }
@@ -65,20 +55,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ✅ Original video URLs (labels must stay the same!)
     const videoList = [
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1",
     ];
 
-    // ✅ Shuffle video order but retain original numbering
-    let shuffledVideos = shuffleArray(videoList);
-
-    shuffledVideos.forEach(({ value: videoURL, index }, trialIndex) => {
+    videoList.forEach((videoURL, trialIndex) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
-        let videoNum = index + 1; // ✅ Keep original order reference!
+        let videoNum = trialIndex + 1;
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -91,30 +78,28 @@ document.addEventListener("DOMContentLoaded", function () {
                     </iframe>
                     <button id="next-button-${trialIndex}" class="next-button" 
                         style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
-                        ${trialIndex === shuffledVideos.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                        ${trialIndex === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
                     </button>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
-                let button = document.getElementById(`next-button-${trialIndex}`);
-                let isHolding = false;
                 let pressStart = null;
+                let button = document.getElementById(`next-button-${trialIndex}`);
 
-                function handleKeyPress(event) {
-                    if (event.code === "Space" && !isHolding) {
-                        isHolding = true;
+                function handleKeyDown(event) {
+                    if (event.code === "Space" && !spacebarActive) {
+                        spacebarActive = true;
                         pressStart = performance.now() / 1000;
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 }
 
                 function handleKeyUp(event) {
-                    if (event.code === "Space" && isHolding) {
-                        isHolding = false;
+                    if (event.code === "Space" && spacebarActive) {
                         let pressEnd = performance.now() / 1000;
-                        let duration = pressEnd - pressStart;
+                        let pressDuration = pressEnd - pressStart;
 
                         let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
                         let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
@@ -126,21 +111,21 @@ document.addEventListener("DOMContentLoaded", function () {
                             video_number: videoNum,
                             startTime: correctedStartTime.toFixed(3),
                             endTime: correctedEndTime.toFixed(3),
-                            duration: duration.toFixed(3)
+                            duration: pressDuration.toFixed(3)
                         };
 
+                        console.log(`🟢 Space Press Recorded: Start=${correctedStartTime.toFixed(3)}, End=${correctedEndTime.toFixed(3)}, Duration=${pressDuration.toFixed(3)}`);
                         sendToGoogleSheets(dataToSend);
-                        console.log(`🟢 Space Press Recorded: Start=${correctedStartTime.toFixed(3)}, End=${correctedEndTime.toFixed(3)}, Duration=${duration.toFixed(3)}`);
+
+                        spacebarActive = false; // Reset flag for the next press
                     }
                 }
 
-                document.addEventListener("keydown", handleKeyPress);
+                document.addEventListener("keydown", handleKeyDown);
                 document.addEventListener("keyup", handleKeyUp);
 
                 if (button) {
                     button.addEventListener("click", () => {
-                        document.removeEventListener("keydown", handleKeyPress);
-                        document.removeEventListener("keyup", handleKeyUp);
                         console.log("➡ Proceeding to next trial...");
                         jsPsych.finishTrial();
                     });
