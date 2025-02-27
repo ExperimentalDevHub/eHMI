@@ -1,6 +1,6 @@
-console.log("ExperimentManual.js - 4");
+console.log("ExperimentManual.js - 5");
 
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxI-7AnLInJceNPQBPW7sPoJ2YKMLvO5u_dbNT3_l0rAu38LOE2rccNajEhM96TES4k5w/exec";
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -27,7 +27,7 @@ function getParticipantID() {
 
 // Function to shuffle videos while keeping original indices
 function shuffleArray(array) {
-    let shuffled = array.map((value, index) => ({ value, originalIndex: index + 1 })) // Attach original index
+    let shuffled = array.map((value, index) => ({ value, index })) // Attach original index
                          .sort(() => Math.random() - 0.5); // Shuffle
     return shuffled;
 }
@@ -69,23 +69,22 @@ document.addEventListener("DOMContentLoaded", function () {
     // ✅ Shuffle video order but retain original numbering
     let shuffledVideos = shuffleArray(videoList);
 
-    shuffledVideos.forEach(({ value: videoURL, originalIndex }, orderIndex) => {
+    shuffledVideos.forEach(({ value: videoURL, index }, trialIndex) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
-        let videoNum = originalIndex; // ✅ Keep original reference
-        let isLastVideo = orderIndex === shuffledVideos.length - 1; // 🔥 Detect the last shown video dynamically
+        let videoNum = index + 1; // ✅ Keep original order reference!
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container">
-                    <iframe id="experiment-video-${videoNum}" 
+                    <iframe id="experiment-video-${trialIndex}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${videoNum}" class="next-button" 
+                    <button id="next-button-${trialIndex}" class="next-button" 
                         style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
-                        ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
+                        ${trialIndex === shuffledVideos.length - 1 ? "Finish" : "Proceed to Next Trial"}
                     </button>
                 </div>
             `,
@@ -93,20 +92,21 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let button = document.getElementById(`next-button-${videoNum}`);
-        
-                document.addEventListener("keydown", function (event) {
+                let button = document.getElementById(`next-button-${trialIndex}`);
+
+                // ✅ Ensure only one event listener per video
+                function handleKeyPress(event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
-                });
+                }
 
-                document.addEventListener("keyup", async function (event) {  
+                function handleKeyUp(event) {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-        
+
                         let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
                         let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
 
@@ -114,16 +114,23 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            video_number: videoNum,  // ✅ Ensuring correct videoNum is sent
+                            video_number: videoNum,  // ✅ Ensuring videoNum is sent even after shuffle
                             startTime: correctedStartTime.toFixed(3), 
                             endTime: correctedEndTime.toFixed(3),
                             duration: pressDuration.toFixed(3)
                         };
 
-                        await sendToGoogleSheets(dataToSend);  // 🔥 Ensures fetch happens in order
+                        sendToGoogleSheets(dataToSend);  // 🔥 Send requests in order
                         pressStart = null;
+
+                        // ✅ Remove event listeners to prevent duplicates
+                        document.removeEventListener("keydown", handleKeyPress);
+                        document.removeEventListener("keyup", handleKeyUp);
                     }
-                });
+                }
+
+                document.addEventListener("keydown", handleKeyPress);
+                document.addEventListener("keyup", handleKeyUp);
 
                 // ✅ Ensuring Next Button Always Works
                 if (button) {
