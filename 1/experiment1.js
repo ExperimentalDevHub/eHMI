@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 7");
+console.log("ExperimentManual.js - Version 1");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
