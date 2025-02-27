@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 9");
+console.log("ExperimentManual.js - Version 11");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Shuffle the videos before adding to timeline
     videoList = jsPsych.randomization.shuffle(videoList);
 
-    videoList.forEach((videoURL, index) => {
+    videoList.forEach((videoURL) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]);
 
         let videoTrial = {
@@ -80,29 +80,16 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button" style="display: none; margin-top: 20px;">
-                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
-                    </button>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let videoElement = document.getElementById("experiment-video");
-                let nextButton = document.getElementById("next-button");
                 
-                videoElement.addEventListener("ended", function () {
-                    setTimeout(() => {
-                        nextButton.style.display = "block";
-                        nextButton.addEventListener("click", () => jsPsych.finishTrial());
-                    }, 1000);
-                });
-
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
-                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
 
@@ -110,10 +97,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-                        let correctedStartTime = videoStartTime + pressStart;
-                        let correctedEndTime = videoStartTime + pressEnd;
-                        console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
-                        
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -122,14 +105,13 @@ document.addEventListener("DOMContentLoaded", function () {
                                     participantID: parseInt(participantID, 10),
                                     date: new Date().toISOString().split('T')[0],
                                     experimentCode: 1,
-                                    startTime: Number(correctedStartTime.toFixed(3)),
-                                    endTime: Number(correctedEndTime.toFixed(3)),
-                                    duration: Number(pressDuration.toFixed(3))
+                                    startTime: videoStartTime + pressStart,
+                                    endTime: videoStartTime + pressEnd,
+                                    duration: pressDuration
                                 }
                             }),
                             mode: "no-cors"
-                        }).then(() => console.log("✅ Google Sheets Request Sent."));
-
+                        });
                         pressStart = null;
                     }
                 });
