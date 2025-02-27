@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Your original video URLs
-    const videoList = [
+    // ✅ Your original video URLs, now shuffled for randomness
+    let videoList = [
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -66,6 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
     ];
+    
+    videoList = jsPsych.randomization.shuffle(videoList);
 
     videoList.forEach((videoURL, index) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
@@ -94,7 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
-                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
 
@@ -103,29 +104,22 @@ document.addEventListener("DOMContentLoaded", function () {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
 
-                        let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
-                        let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
-
-                        console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
-
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNumber: videoNum, // ✅ Added video number here
-                            startTime: Number(correctedStartTime.toFixed(3)),
-                            endTime: Number(correctedEndTime.toFixed(3)),
+                            videoNumber: videoNum, 
+                            startTime: Number(pressStart.toFixed(3)),
+                            endTime: Number(pressEnd.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
-
-                        console.log("Data to send:", dataToSend);
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        }).then(() => console.log("✅ Google Sheets Request Sent."));
+                        });
 
                         pressStart = null;
                     }
