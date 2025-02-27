@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 11");
+console.log("ExperimentManual.js - Version 7");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -11,6 +11,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("YouTube API already loaded.");
 }
 
+// Global function for YouTube API
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
@@ -18,6 +19,7 @@ function onYouTubeIframeAPIReady() {
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
+
     if (!participantID || participantID.length > 6) {
         participantID = Math.floor(100000 + Math.random() * 900000).toString();
         localStorage.setItem("participantID", participantID);
@@ -33,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx5MHhPh6YTVK8F9xk1vRpiUadKb8C5p12qXaYgf2YzoHUFDF3Zazi_9bQ-WfJNtDcj9Q/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
@@ -56,7 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    let videoList = [
+    // ✅ Using your original video URLs
+    const videoList = [
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -65,31 +68,32 @@ document.addEventListener("DOMContentLoaded", function () {
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
     ];
 
-    // Shuffle the videos before adding to timeline
-    videoList = jsPsych.randomization.shuffle(videoList);
-
-    videoList.forEach((videoURL) => {
-        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]);
-
+    videoList.forEach((videoURL, index) => {
+        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract the start timestamp from YouTube URL
+        
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container">
-                    <iframe id="experiment-video" 
+                    <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
+                    <button id="next-button-${index}" style="display: none;">
+                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                    </button>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                
+
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
+                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
 
@@ -97,21 +101,28 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
+
+                        let correctedStartTime = videoStartTime + pressStart;
+                        let correctedEndTime = videoStartTime + pressEnd;
+
+                        console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
+
+                        let dataToSend = {
+                            participantID: parseInt(participantID, 10),
+                            date: new Date().toISOString().split('T')[0],
+                            experimentCode: 1,
+                            startTime: Number(correctedStartTime.toFixed(3)),
+                            endTime: Number(correctedEndTime.toFixed(3)),
+                            duration: Number(pressDuration.toFixed(3))
+                        };
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                experimentData: {
-                                    participantID: parseInt(participantID, 10),
-                                    date: new Date().toISOString().split('T')[0],
-                                    experimentCode: 1,
-                                    startTime: videoStartTime + pressStart,
-                                    endTime: videoStartTime + pressEnd,
-                                    duration: pressDuration
-                                }
-                            }),
+                            body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        });
+                        }).then(() => console.log("✅ Google Sheets Request Sent."));
+
                         pressStart = null;
                     }
                 });
