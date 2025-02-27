@@ -1,4 +1,4 @@
-console.log("experiment1.js - FINAL UPDATE (FULL)");
+console.log("experiment1.js - STABLE FIX");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -26,7 +26,7 @@ function getParticipantID() {
     return participantID;
 }
 
-// Fisher-Yates shuffle while keeping pairs intact
+// Fisher-Yates shuffle to randomize array
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -62,7 +62,7 @@ let videoMessagePairs = [
     }
 ];
 
-// 🔀 Shuffle all 6 videos while keeping their messages paired
+// 🔀 Shuffle the videos while keeping their paired instructions intact
 shuffleArray(videoMessagePairs);
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_URL_HERE/exec";
 
-    // 📌 INTRO SCREEN (not deleted this time)
+    // 📌 INTRO SCREEN (kept intact)
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -109,9 +109,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${pair.video}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div style="text-align: right; margin-top: 20px;">
-                        <button id="next-button-${index}" style="display: block;">
-                            ${index === videoMessagePairs.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                        <button id="next-button-${index}">
+                            ${index === videoMessagePairs.length - 1 ? "Finish Section" : "Proceed to Next Trial"}
                         </button>
                     </div>
                 </div>
