@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 400px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Welcome to the Training Section</h2>
+                <h2 style="font-size: 36px;"><div style="margin-bottom: 40px;"></div><h2 style="font-size: 36px; margin-bottom: 40px;">Welcome to the Training Section</h2></h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                     In this experiment, you will be shown brief video clips to interact with. Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would using your computer's space bar.  
                     The videos will autoplay, please do not try to control their playback.
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="text-align: center;">
-                    <p style="font-size: 24px; font-weight: bold;">${video.message}</p>
+                    <p style="font-size: 24px; ">${video.message}</p>
                     <iframe id="training-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
