@@ -120,12 +120,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ experimentData: dataToSend })
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                participantID: parseInt(participantID, 10),
+                                date: new Date().toISOString().split('T')[0],
+                                experimentCode: "Training",
+                                startTime: Number((videoStartTime + pressStart).toFixed(3)),
+                                endTime: Number((videoStartTime + pressEnd).toFixed(3))
+                            })
                         })
-                        .then(response => response.json())  // ✅ Try to read JSON response
-                        .then(data => console.log("Success:", data))
-                        .catch(error => console.error("Error sending data:", error));
+                        .then(response => response.json())
+                        .then(data => console.log("✅ Success:", data))
+                        .catch(error => console.error("❌ Error sending data:", error));
+                        
                         
                         
                     }
