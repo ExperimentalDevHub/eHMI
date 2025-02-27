@@ -1,4 +1,4 @@
-console.log("experimentTraining.js - V 2");
+console.log("experimentTraining.js - V 3");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzv5UfpofQUMIHRNJmPCkzFo1KnB6I_on7l9Dd67SCnzmIFr4OfYgJNPeoSZgnmpuYnhg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwr1iMbsE-d6hCAJWN7X8N2wUw0cIbdynsBUMbFIxG2p_cOyktk-xQr6I6WwlbPetVnqA/exec";
 
     // Welcome screen
     timeline.push({
@@ -90,6 +90,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                        <button id="next-button-${index}" class="proceed-btn">
+                            ${index === videoList.length - 1 ? "Finish Training" : "Proceed to Next Trial"}
+                        </button>
+                    </div>
                 </div>
             `,
             choices: "NO_KEYS",
@@ -120,38 +125,30 @@ document.addEventListener("DOMContentLoaded", function () {
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
-                        
+
                         console.log("🚀 Sending Real Data:", dataToSend);
-                        
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: {
                               "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({
-                              experimentData: {
-                                participantID: participantID,
-                                date: new Date().toISOString().split('T')[0],
-                                experimentCode: "Training",
-                                startTime: Number((videoStartTime + pressStart).toFixed(3)),
-                                endTime: Number((videoStartTime + pressEnd).toFixed(3))
-                              }
-                            })
-                          })
-                          .then(response => response.json())  // Properly parse JSON response
-                          .then(data => console.log("✅ Data Sent Successfully:", data))
-                          .catch(error => console.error("❌ Fetch Request Error:", error));
-                          
-                          
-                          
-                        
-
-                        
+                            body: JSON.stringify({ experimentData: dataToSend })
+                        })
+                        .then(response => response.json())  
+                        .then(data => console.log("✅ Data Sent Successfully:", data))
+                        .catch(error => console.error("❌ Fetch Request Error:", error));
                     }
                 };
 
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
+
+                // 🚀 Fix: Add Click Event for "Proceed" Button
+                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
+                    console.log(`Proceed button clicked for trial ${index}`);
+                    jsPsych.finishTrial();
+                });
             }
         };
 
