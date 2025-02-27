@@ -121,9 +121,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors"
-                        });
+                            body: JSON.stringify({ experimentData: dataToSend })
+                        })
+                        .catch(error => console.error("Error sending data:", error));
+                        
                     }
                 };
 
