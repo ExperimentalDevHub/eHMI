@@ -15,6 +15,7 @@ function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
 
+// Generate a persistent participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
 
@@ -30,6 +31,7 @@ function getParticipantID() {
 let handleKeydown;
 let handleKeyup;
 
+// Remove old key listeners to avoid duplication
 function removeAllKeyListeners() {
     console.log("🛑 Removing old event listeners before adding new ones...");
     document.removeEventListener("keydown", handleKeydown);
@@ -38,14 +40,15 @@ function removeAllKeyListeners() {
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document Loaded, Initializing Experiment...");
+    
     let jsPsych = initJsPsych();
     let timeline = [];
     let participantID = getParticipantID();
     
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxPS-BE7ExI4fee8nsJq3Au1hjTRhFgkwbMzWtEf-aKG7zRjSnAxb0LRt3MC9UtDE2iSQ/exec";
 
-    // Welcome screen with updated title and button text for training
-    let startExperiment = {
+    // Welcome screen
+    timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
@@ -60,10 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         `,
         choices: ["Start Training"]
-    };
-    timeline.push(startExperiment);
+    });
 
-    // Video trials (fixed order)
+    // Video trials
     let videoList = [
         { 
             url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=166&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
@@ -76,7 +78,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     videoList.forEach((video, index) => {
-        // Extract the video start time from the URL (using a regex to find the start parameter)
         let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]);
 
         let videoTrial = {
@@ -89,11 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                        <button id="next-button-${index}">
-                            ${index === videoList.length - 1 ? "Finish training" : "Proceed to next trial"}
-                        </button>
-                    </div>
                 </div>
             `,
             choices: "NO_KEYS",
@@ -125,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
 
-                        // Log the collected space bar data
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
                         fetch(GOOGLE_SHEETS_URL, {  
@@ -133,42 +128,19 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            mode: "no-cors",
-                            body: JSON.stringify({
-                                experimentData: {
-                                    participantID: 999999,
-                                    date: "2025-02-27",
-                                    experimentCode: "DebugTest",
-                                    startTime: 123.456,
-                                    endTime: 789.012
-                                }
-                            })
+                            body: JSON.stringify({ experimentData: dataToSend })
                         })
-                        .then(response => console.log("✅ Debug Request Sent"))
+                        .then(response => response.json())
+                        .then(data => console.log("✅ Debug Request Success:", data))
                         .catch(error => console.error("❌ Debug Request Error:", error));
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                     }
                 };
 
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
-
-                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
-                    jsPsych.finishTrial();
-                });
             }
         };
+
         timeline.push(videoTrial);
     });
 
