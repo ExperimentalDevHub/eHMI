@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Log the collected space bar data
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch("https://script.google.com/macros/s/AKfycbxIZdR_ewCC_NPHMWZVONIQqhxuPhjG2iyXzmOk7Yl9X0l-7IX6GVao4ADD9AwrxEBUKg/exec", {  // 🔥 FIXED: Use the correct script URL
+                        fetch("https://script.google.com/macros/s/AKfycbxIZdR_ewCC_NPHMWZVONIQqhxuPhjG2iyXzmOk7Yl9X0l-7IX6GVao4ADD9AwrxEBUKg/exec", {  
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -146,6 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         .then(response => response.json())
                         .then(data => console.log("✅ Debug Request Success:", data))
                         .catch(error => console.error("❌ Debug Request Error:", error));
+                        
                         
                         
                         
