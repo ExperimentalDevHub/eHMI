@@ -1,4 +1,4 @@
-console.log("experimentTraining.js - V 5");
+console.log("experimentTraining.js - Version 1");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -15,7 +15,6 @@ function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
 
-// Generate a persistent participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
 
@@ -27,11 +26,18 @@ function getParticipantID() {
     return participantID;
 }
 
-// Global event handler variables
+// Fisher-Yates shuffle to randomize array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// Global event handlers
 let handleKeydown;
 let handleKeyup;
 
-// Remove old key listeners to avoid duplication
 function removeAllKeyListeners() {
     console.log("🛑 Removing old event listeners before adding new ones...");
     document.removeEventListener("keydown", handleKeydown);
@@ -40,85 +46,114 @@ function removeAllKeyListeners() {
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document Loaded, Initializing Experiment...");
-    
     let jsPsych = initJsPsych();
     let timeline = [];
     let participantID = getParticipantID();
     
-    // Replace with your own deployed Google Sheets Web App URL
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzgNP5d20HECJ8TWNquslX-7Dig5ZA_6DYlbpW-_X0obHnJ0ertWDD1v9QjgNric239Dw/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
-    // Welcome screen trial
-    timeline.push({
+    // Intro screen with updated title and paragraph
+    let startExperiment = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: `
-            <div style="text-align: center;">
+        stimulus: 
+            `<div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Welcome to the eHMI Training Section</h2>
+                <h2 style="font-size: 36px;">Experimental section</h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In this training, you will be shown brief video clips to interact with. 
-                    Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would.  
-                    The videos will autoplay, so please do not try to control their playback.
-                    When you are ready to begin, select "Start Training."
+                    In this experiment, you will be shown brief video clips to interact with. Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would using your computer's space bar. The videos will autoplay, please do not try to control their playback. When you are ready to begin, select "Start Training."
                 </p>
-            </div>
-        `,
+            </div>`,
         choices: ["Start Training"]
-    });
+    };
+    timeline.push(startExperiment);
 
-    // Define video trials
     let videoList = [
         { 
-            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=166&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=22&end=42&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down and let go when you would speed up"
+        },
+        {   //driver vids
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=65&end=85&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
             message: "Press and hold the space bar when you would start slowing down to yield"
         },
         { 
-            url: "https://www.youtube.com/embed/cWb-2C5mV20?start=57&end=62&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=106&end=128&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        },
+        { 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=149&end=171&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        },
+        { 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=194&end=216&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        },
+        { 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=238&end=257&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        },
+        {   //ped vids
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=284&end=304&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
             message: "Press and hold the space bar when you would feel safe crossing the road"
+        },
+        { 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=324&end=347&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would feel safe crossing the road"
+        },
+        { 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=368&end=390&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would feel safe crossing the road"
+        },
+        { 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=413&end=433&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would feel safe walking"
+        },
+        { 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=456&end=476&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would feel safe crossing the road"
+        },
+        { 
+            url: "https://www.youtube.com/embed/-vOQ9W__Vp0?start=497&end=519&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would feel safe walking"
         }
     ];
 
-    // Create a trial for each video
+    shuffleArray(videoList);
+
     videoList.forEach((video, index) => {
-        // Extract the video start time from the URL (assumes the parameter "start=" exists)
         let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]);
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: `
-                <div id="video-container" style="text-align: center;">
-                    <p style="font-size: 24px; font-weight: bold;">${video.message}</p>
+            stimulus: 
+                `<div id="video-container" style="text-align: center;">
+                    <p style="font-size: 18px;">${video.message}</p>
                     <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                        <button id="next-button-${index}" class="proceed-btn">
-                            ${index === videoList.length - 1 ? "Finish Training" : "Proceed to Next Trial"}
+                    <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 10px;">
+                        <button id="next-button-${index}">
+                            ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Trial"}
                         </button>
                     </div>
-                </div>
-            `,
+                </div>`,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
-                // Clear out previous key event listeners
                 removeAllKeyListeners();
 
                 let pressStart = null;
                 let keyHandled = false;
 
-                // Listen for keydown to record when the spacebar is pressed
                 handleKeydown = function(event) {
                     if (event.code === "Space" && !keyHandled) {
                         pressStart = performance.now() / 1000;
                         keyHandled = true; 
-                        console.log(`Spacebar pressed on trial ${index} at ${videoStartTime + pressStart}`);
                     }
                 };
 
-                // Listen for keyup to record when the spacebar is released and send data to Google Sheets
                 handleKeyup = function(event) {
                     if (event.code === "Space" && keyHandled) {
                         keyHandled = false; 
@@ -127,49 +162,37 @@ document.addEventListener("DOMContentLoaded", function () {
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
-                            experimentCode: "Training",
+                            experimentCode: 1,
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
 
-                        console.log("🚀 Sending Real Data:", dataToSend);
-
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
-                            mode: "no-cors",  // <--- no-cors added
-                            headers: {
-                              "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({ experimentData: dataToSend })
-                          })
-                          .then(() => console.log("Data sent (no-cors)."))
-                          .catch(error => console.error("Fetch error:", error));
-                          
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ experimentData: dataToSend }),
+                            mode: "no-cors"
+                        });
                     }
                 };
 
-                // Attach event listeners for spacebar key events
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
 
-                // Attach a click event to the proceed button to end the trial
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => {
-                    console.log(`Proceed button clicked for trial ${index}`);
                     jsPsych.finishTrial();
                 });
             }
         };
-
         timeline.push(videoTrial);
     });
 
-    // Completion screen trial
+    // Finished screen with removed period at the end
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: "<h2>Please inform the researcher that you have completed the training</h2>",
+        stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
         choices: []
     });
 
-    // Start the experiment
     jsPsych.run(timeline);
 });
