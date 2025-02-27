@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbze89UZ7jA6i4ENBfs_f_8cs0D7cztAO4aZ10aI8Oftq4lE8H_eFED7xVfohSH5438COw/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxL5HA7Ov-5JPFsa5H7pzbiiDnhS1X-Vt9i2uV0FPiskfE7Coop8fsxeJz7OdZuMWLH_Q/exec";
 
     // Welcome screen
     timeline.push({
