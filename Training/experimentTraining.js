@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzYnCunZffWpwkLh5h6mOo88Yu5vJDr6F2Jjc69rI-ZtaMRJHi6td2nlzHaJDNv7Djjyg/exec";
 
     // Welcome screen with updated title and button text for training
     let startExperiment = {
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors"
+                            
                         });
                     }
                 };
