@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX (No More Duplicates)");
+console.log("ExperimentManual.js - FINAL FIX (No More Messed Up Durations)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -119,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-                        let correctedStartTime = videoStartTime + pressStart;
-                        let correctedEndTime = videoStartTime + pressEnd;
+                        let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
+                        let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
 
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
@@ -142,8 +142,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
 
-                document.removeEventListener("keydown", handleKeydown);
-                document.removeEventListener("keyup", handleKeyup);
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
             }
