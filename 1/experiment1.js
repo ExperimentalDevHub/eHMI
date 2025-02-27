@@ -52,22 +52,17 @@ document.addEventListener("DOMContentLoaded", function () {
     
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
+    // Intro screen with updated title and paragraph
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: `
-            <div style="text-align: center;">
+        stimulus: 
+            `<div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
+                <h2 style="font-size: 36px;">Experimental section</h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In this experiment, you will be shown brief video clips to interact with. 
-                    Please imagine yourself as a pedestrian attempting to cross the street. 
-                    When you feel comfortable and safe crossing, press and hold the spacebar. 
-                    If you ever feel unsafe, simply release the spacebar. 
-                    The videos will autoplay, do not interact with their playback. 
-                    When you are ready to begin, select "Start Experiment."
+                    In this experiment, you will be shown brief video clips to interact with. Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would using your computer's space bar. The videos will autoplay, please do not try to control their playback. When you are ready to begin, select "Start Experiment."
                 </p>
-            </div>
-        `,
+            </div>`,
         choices: ["Start Experiment"]
     };
     timeline.push(startExperiment);
@@ -106,21 +101,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: `
-                <div id="video-container" style="text-align: center;">
-                    <p style="font-size: 24px; font-weight: bold;">${video.message}</p>
+            stimulus: 
+                `<div id="video-container" style="text-align: center;">
+                    <p style="font-size: 18px;">${video.message}</p>
                     <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 10px;">
                         <button id="next-button-${index}">
                             ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Trial"}
                         </button>
                     </div>
-                </div>
-            `,
+                </div>`,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
@@ -169,9 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
         timeline.push(videoTrial);
     });
 
+    // Finished screen with removed period at the end
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: "<h2>Please inform the researcher that you have completed this section.</h2>",
+        stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
         choices: []
     });
 
