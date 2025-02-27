@@ -1,6 +1,6 @@
-console.log("ExperimentManual.js - Debugging Version");
+console.log("ExperimentManual.js - FIXED");
 
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx5MHhPh6YTVK8F9xk1vRpiUadKb8C5p12qXaYgf2YzoHUFDF3Zazi_9bQ-WfJNtDcj9Q/exec";
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec";
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -32,21 +32,18 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-// Send data to Google Sheets
+// Send data to Google Sheets in order
 async function sendToGoogleSheets(dataToSend) {
-    dataToSend.timestamp = performance.now();  // Add timestamp to track order
-
-    console.log(`📤 Sending Data at ${dataToSend.timestamp}: ${JSON.stringify(dataToSend)}`);
+    console.log("⏳ Sending Data to Google Sheets:", JSON.stringify(dataToSend));
 
     try {
-        let response = await fetch(GOOGLE_SHEETS_URL, {
+        await fetch(GOOGLE_SHEETS_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ experimentData: dataToSend }),
             mode: "no-cors"
         });
-
-        console.log(`✅ Data Sent! Response:`, response);
+        console.log("✅ Data Successfully Sent:", dataToSend);
     } catch (error) {
         console.error("❌ Fetch Error:", error);
     }
@@ -95,33 +92,51 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let button = document.getElementById(`next-button-${trialIndex}`);
+                let spacePresses = [];
 
-                // ✅ Ensure multiple spacebar presses are logged
-                document.addEventListener("keyup", function (event) {  
+                function handleKeyPress(event) {
                     if (event.code === "Space") {
                         let pressTime = performance.now() / 1000;
-                        console.log(`🟢 Space Press Detected: ${pressTime}`);
-
                         let correctedStartTime = videoStartTime + (pressTime - videoStartTime);
-                        let correctedEndTime = correctedStartTime + 0.1; // Small offset
 
-                        let dataToSend = {
-                            participantID: parseInt(participantID, 10),
-                            date: new Date().toISOString().split('T')[0],
-                            experimentCode: 1,
-                            video_number: videoNum,  // ✅ Ensuring videoNum is sent even after shuffle
-                            startTime: correctedStartTime.toFixed(3), 
-                            endTime: correctedEndTime.toFixed(3),
-                            duration: (correctedEndTime - correctedStartTime).toFixed(3)
-                        };
-
-                        sendToGoogleSheets(dataToSend);
+                        if (spacePresses.length === 0 || correctedStartTime !== spacePresses[spacePresses.length - 1].startTime) {
+                            spacePresses.push({ startTime: correctedStartTime });
+                            console.log(`🟢 Space Press Detected: ${correctedStartTime.toFixed(3)}`);
+                        }
                     }
-                });
+                }
 
-                // ✅ Ensuring Next Button Always Works
+                function handleKeyUp(event) {
+                    if (event.code === "Space" && spacePresses.length > 0) {
+                        let pressTime = performance.now() / 1000;
+                        let lastPress = spacePresses[spacePresses.length - 1];
+
+                        if (!lastPress.endTime) {
+                            lastPress.endTime = videoStartTime + (pressTime - videoStartTime);
+                            lastPress.duration = lastPress.endTime - lastPress.startTime;
+
+                            let dataToSend = {
+                                participantID: parseInt(participantID, 10),
+                                date: new Date().toISOString().split('T')[0],
+                                experimentCode: 1,
+                                video_number: videoNum,  
+                                startTime: lastPress.startTime.toFixed(3),
+                                endTime: lastPress.endTime.toFixed(3),
+                                duration: lastPress.duration.toFixed(3)
+                            };
+
+                            sendToGoogleSheets(dataToSend);
+                        }
+                    }
+                }
+
+                document.addEventListener("keydown", handleKeyPress);
+                document.addEventListener("keyup", handleKeyUp);
+
                 if (button) {
                     button.addEventListener("click", () => {
+                        document.removeEventListener("keydown", handleKeyPress);
+                        document.removeEventListener("keyup", handleKeyUp);
                         console.log("➡ Proceeding to next trial...");
                         jsPsych.finishTrial();
                     });
