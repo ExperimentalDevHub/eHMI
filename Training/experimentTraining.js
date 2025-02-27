@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbznf_f1jrWkLIxig2GBwfzfO8lT25qhWzVtFHmSTWaT_LNFmmeSiQXdRtwAkIa7BbEPVw/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz-Ehp95oA9WKWU95T-Ts_vlW7HfgfxwfxC0vcOBHPioouU5QpQ5FHCtYwyZyzb447S6Q/exec";
 
     // Welcome screen
     timeline.push({
@@ -123,20 +123,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch("https://script.google.com/macros/s/AKfycbznf_f1jrWkLIxig2GBwfzfO8lT25qhWzVtFHmSTWaT_LNFmmeSiQXdRtwAkIa7BbEPVw/exec", {  
+                        fetch(GOOGLE_SHEETS_URL, {  
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify({
                                 experimentData: {
-                                    participantID: 999999,
-                                    date: "2025-02-27",
-                                    experimentCode: "DebugTest",
-                                    startTime: 123.456,
-                                    endTime: 789.012
+                                    participantID: participantID,
+                                    date: new Date().toISOString().split('T')[0],
+                                    experimentCode: "Training",
+                                    startTime: pressStart.toFixed(3),
+                                    endTime: pressEnd.toFixed(3)
                                 }
                             })
+                            
                         })
                         .then(response => response.json())
                         .then(data => console.log("✅ Debug Request Success:", data))
