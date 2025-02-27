@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxIZdR_ewCC_NPHMWZVONIQqhxuPhjG2iyXzmOk7Yl9X0l-7IX6GVao4ADD9AwrxEBUKg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyQV0_hDgzCy-yDOqOpJLys4yCSzQn_PbdUAZq6cfCtEptovWeugKPN0BGxE_wBUCqY/exec";
 
     // Welcome screen with updated title and button text for training
     let startExperiment = {
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Log the collected space bar data
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch("https://script.google.com/macros/s/AKfycbxIZdR_ewCC_NPHMWZVONIQqhxuPhjG2iyXzmOk7Yl9X0l-7IX6GVao4ADD9AwrxEBUKg/exec", {  
+                        fetch("https://script.google.com/macros/s/AKfycbyQV0_hDgzCy-yDOqOpJLys4yCSzQn_PbdUAZq6cfCtEptovWeugKPN0BGxE_wBUCqY/exec", {  
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -146,6 +146,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         .then(response => response.json())
                         .then(data => console.log("✅ Debug Request Success:", data))
                         .catch(error => console.error("❌ Debug Request Error:", error));
+                        
+                        
+                        
                         
                         
                         
