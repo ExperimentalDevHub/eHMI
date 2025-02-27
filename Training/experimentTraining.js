@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Log the collected space bar data
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch("YOUR_ACTUAL_GOOGLE_APPS_SCRIPT_URL", {  // 🔥 FIXED: Use the correct script URL
+                        fetch("https://script.google.com/macros/s/AKfycbxIZdR_ewCC_NPHMWZVONIQqhxuPhjG2iyXzmOk7Yl9X0l-7IX6GVao4ADD9AwrxEBUKg/exec", {  // 🔥 FIXED: Use the correct script URL
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
