@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyQV0_hDgzCy-yDOqOpJLys4yCSzQn_PbdUAZq6cfCtEptovWeugKPN0BGxE_wBUCqY/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxhBaEcyiGXTHYxM5C6E6ACZ1yfFHKB1WSs6G1MYFKUzgotRxHnYY4Cet0CG-HfH7uC8Q/exec";
 
     // Welcome screen with updated title and button text for training
     let startExperiment = {
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Log the collected space bar data
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch("https://script.google.com/macros/s/AKfycbwdhqmBWToq3vZmp5ojCrqyxLLlSi2ZzLW9PMaHwB5xn3Eq6DxlTdKBYwrioTMc20vs/exec", {  
+                        fetch(GOOGLE_SHEETS_URL, {  
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
