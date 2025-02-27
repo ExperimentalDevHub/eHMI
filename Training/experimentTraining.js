@@ -123,16 +123,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch(GOOGLE_SHEETS_URL, {  
+                        fetch("YOUR_NEW_DEPLOYMENT_URL_HERE", {  
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({ experimentData: dataToSend })
+                            body: JSON.stringify({
+                                experimentData: {
+                                    participantID: 999999,
+                                    date: "2025-02-27",
+                                    experimentCode: "DebugTest",
+                                    startTime: 123.456,
+                                    endTime: 789.012
+                                }
+                            })
                         })
                         .then(response => response.json())
                         .then(data => console.log("✅ Debug Request Success:", data))
                         .catch(error => console.error("❌ Debug Request Error:", error));
+                        
                     }
                 };
 
