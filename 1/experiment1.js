@@ -89,24 +89,33 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-
+            
+                // Show the button immediately when the video loads
+                let nextButton = document.getElementById(`next-button-${index}`);
+                if (nextButton) {
+                    nextButton.style.display = "block";
+                    nextButton.addEventListener("click", function () {
+                        jsPsych.finishTrial(); // Move to the next trial
+                    });
+                }
+            
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
-
+            
                 document.addEventListener("keyup", function (event) {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-
+            
                         let correctedStartTime = videoStartTime + pressStart;
                         let correctedEndTime = videoStartTime + pressEnd;
-
+            
                         console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
-
+            
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
@@ -115,18 +124,19 @@ document.addEventListener("DOMContentLoaded", function () {
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
-
+            
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
                         }).then(() => console.log("✅ Google Sheets Request Sent."));
-
+            
                         pressStart = null;
                     }
                 });
             }
+            
         };
         timeline.push(videoTrial);
     });
