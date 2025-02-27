@@ -121,11 +121,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
 
-                        fetch("https://script.google.com/macros/s/AKfycbzjNodqNBY5TkzrWTG3xC2NiKTea4MpcldJj1INyS7ZxrcikFnKmJloAqXDuI5q4-_bfw/exec", {  // Use the new URL from Step 3
+                        fetch("https://script.google.com/macros/s/AKfycbwCEuwvfaae7KJ1LUU1Dnt1Pa9FLB961EmtF__4jORon3y0ABrfSqbWsaF6m40wKKOzyg/exec", {
                             method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
+                            headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
                                 participantID: parseInt(participantID, 10),
                                 date: new Date().toISOString().split('T')[0],
@@ -134,17 +132,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                 endTime: Number((videoStartTime + pressEnd).toFixed(3))
                             })
                         })
-                        .then(response => response.text())  // Log raw response first
-                        .then(data => {
-                            console.log("🔎 Raw Response:", data);
-                            try {
-                                let jsonData = JSON.parse(data);
-                                console.log("✅ Success:", jsonData);
-                            } catch (error) {
-                                console.error("❌ Response isn't JSON. Google Apps Script might be sending an error page.");
-                            }
-                        })
+                        .then(response => response.json()) 
+                        .then(data => console.log("✅ Success:", data))
                         .catch(error => console.error("❌ Fetch Error:", error));
+                        
                         
                         
                         
