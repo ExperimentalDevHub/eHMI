@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 6");
+console.log("ExperimentManual.js - FINAL FIX");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -101,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let isPressing = false; // Prevents duplicate keydown events
 
                 let nextButton = document.getElementById(`next-button-${index}`);
                 if (nextButton) {
@@ -111,15 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 function handleKeydown(event) {
-                    if (event.code === "Space" && !isPressing) {
-                        isPressing = true; 
+                    if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                     }
                 }
 
                 function handleKeyup(event) {
-                    if (event.code === "Space" && isPressing) {
-                        isPressing = false; 
+                    if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
                         let correctedStartTime = videoStartTime + pressStart;
@@ -141,15 +138,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             mode: "no-cors"
                         });
 
-                        // Allow multiple presses in the same trial
-                        pressStart = null;
+                        pressStart = null; // Reset for multiple presses
                     }
                 }
 
-                // Make sure each trial removes previous listeners
                 document.removeEventListener("keydown", handleKeydown);
                 document.removeEventListener("keyup", handleKeyup);
-
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
             }
