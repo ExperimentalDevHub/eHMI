@@ -1,8 +1,5 @@
 console.log("experimentTraining.js");
 
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwuFimIMDPopSopmjS2ggY5QNo0k_RLEJxCouvmUMBuzg1O3XCqX9Dwsr12EscGQWCZQA/exec";
-
-
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("Loading YouTube API...");
@@ -45,16 +42,17 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwGR4c3CDDj3lKFHXVYvezgw3IO4-O9xR0g3ipn3u3_IcjZZBwcScFzk-Dzo3jxcyHh7Q/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
     let startTraining = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Welcome to the Training Section</h2>
+                <h2 style="font-size: 36px;">Welcome to the Training Section</h2></h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                     In this experiment, you will be shown brief video clips to interact with. Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would using your computer's space bar. The videos will autoplay, please do not try to control their playback. When you are ready to begin, select "Start Training."
+                    When you are ready to begin, select "Start Experiment."
                 </p>
             </div>
         `,
@@ -80,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="text-align: center;">
-                    <p style="font-size: 18px;">${video.message}</p>
+                    <p style="font-size: 18px; ">${video.message}</p>
                     <iframe id="training-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
@@ -121,26 +119,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
 
-                        fetch("https://script.google.com/macros/s/AKfycbwCEuwvfaae7KJ1LUU1Dnt1Pa9FLB961EmtF__4jORon3y0ABrfSqbWsaF6m40wKKOzyg/exec", {
+                        fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                participantID: parseInt(participantID, 10),
-                                date: new Date().toISOString().split('T')[0],
-                                experimentCode: "Training",
-                                startTime: Number((videoStartTime + pressStart).toFixed(3)),
-                                endTime: Number((videoStartTime + pressEnd).toFixed(3))
-                            })
-                        })
-                        .then(response => response.json()) 
-                        .then(data => console.log("✅ Success:", data))
-                        .catch(error => console.error("❌ Fetch Error:", error));
-                        
-                        
-                        
-                        
-                        
-                        
+                            body: JSON.stringify({ experimentData: dataToSend }),
+                            mode: "no-cors"
+                        });
                     }
                 };
 
