@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - 2");
+console.log("ExperimentManual.js - 3");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -23,6 +23,30 @@ function getParticipantID() {
     return participantID;
 }
 
+// Function to shuffle videos while keeping original indices
+function shuffleArray(array) {
+    let shuffled = array.map((value, index) => ({ value, index })) // Attach original index
+                         .sort(() => Math.random() - 0.5); // Shuffle
+    return shuffled;
+}
+
+// Send data to Google Sheets in order
+async function sendToGoogleSheets(dataToSend) {
+    console.log("⏳ Sending Data to Google Sheets:", JSON.stringify(dataToSend));
+
+    try {
+        await fetch(GOOGLE_SHEETS_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ experimentData: dataToSend }),
+            mode: "no-cors"
+        });
+        console.log("✅ Data Successfully Sent:", dataToSend);
+    } catch (error) {
+        console.error("❌ Fetch Error:", error);
+    }
+}
+
 // Run experiment
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document Loaded, Initializing Experiment...");
@@ -32,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxI-7AnLInJceNPQBPW7sPoJ2YKMLvO5u_dbNT3_l0rAu38LOE2rccNajEhM96TES4k5w/exec";
 
-    // ✅ Your original video URLs
+    // ✅ Original video URLs (labels must stay the same!)
     const videoList = [
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -42,20 +66,23 @@ document.addEventListener("DOMContentLoaded", function () {
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
     ];
 
-    videoList.forEach((videoURL, index) => {
+    // ✅ Shuffle video order but retain original numbering
+    let shuffledVideos = shuffleArray(videoList);
+
+    shuffledVideos.forEach(({ value: videoURL, index }) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
-        let videoNum = index + 1; // ✅ Ensure videoNum is assigned and used correctly
+        let videoNum = index + 1; // ✅ Keep original order reference!
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container">
-                    <iframe id="experiment-video-${index}" 
+                    <iframe id="experiment-video-${videoNum}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" class="next-button" 
+                    <button id="next-button-${videoNum}" class="next-button" 
                         style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
                         ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
                     </button>
@@ -65,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let button = document.getElementById(`next-button-${index}`);
+                let button = document.getElementById(`next-button-${videoNum}`);
         
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
@@ -74,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
         
-                document.addEventListener("keyup", function (event) {
+                document.addEventListener("keyup", async function (event) {  
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
@@ -86,23 +113,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            video_number: videoNum,  // ✅ Ensuring videoNum is sent
+                            video_number: videoNum,  // ✅ Ensuring videoNum is sent even after shuffle
                             startTime: correctedStartTime.toFixed(3), 
                             endTime: correctedEndTime.toFixed(3),
                             duration: pressDuration.toFixed(3)
                         };
-                        
-                        console.log("✅ Final Data to Send (Check Google Sheets):", JSON.stringify(dataToSend));
-                        
-                        fetch(GOOGLE_SHEETS_URL, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors"
-                        }).then(() => console.log("✅ Google Sheets Request Sent."))
-                        .catch(error => console.error("❌ Fetch Error:", error));
-                        
-        
+
+                        await sendToGoogleSheets(dataToSend);  // 🔥 Ensures fetch happens in order
                         pressStart = null;
                     }
                 });
