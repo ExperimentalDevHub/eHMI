@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Fixed");
+console.log("ExperimentManual.js - Debugging Version");
 
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx5MHhPh6YTVK8F9xk1vRpiUadKb8C5p12qXaYgf2YzoHUFDF3Zazi_9bQ-WfJNtDcj9Q/exec";
 
@@ -16,6 +16,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
 // Generate or retrieve a unique participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
+
     if (!participantID || participantID.length > 6) {
         participantID = Math.floor(100000 + Math.random() * 900000).toString();
         localStorage.setItem("participantID", participantID);
@@ -26,21 +27,26 @@ function getParticipantID() {
 
 // Function to shuffle videos while keeping original indices
 function shuffleArray(array) {
-    return array.map((value, index) => ({ value, index })) // Attach original index
-                .sort(() => Math.random() - 0.5); // Shuffle
+    let shuffled = array.map((value, index) => ({ value, index })) // Attach original index
+                         .sort(() => Math.random() - 0.5); // Shuffle
+    return shuffled;
 }
 
-// Send data to Google Sheets in order
+// Send data to Google Sheets
 async function sendToGoogleSheets(dataToSend) {
-    console.log("⏳ Sending Data to Google Sheets:", JSON.stringify(dataToSend));
+    dataToSend.timestamp = performance.now();  // Add timestamp to track order
+
+    console.log(`📤 Sending Data at ${dataToSend.timestamp}: ${JSON.stringify(dataToSend)}`);
+
     try {
-        await fetch(GOOGLE_SHEETS_URL, {
+        let response = await fetch(GOOGLE_SHEETS_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ experimentData: dataToSend }),
             mode: "no-cors"
         });
-        console.log("✅ Data Successfully Sent:", dataToSend);
+
+        console.log(`✅ Data Sent! Response:`, response);
     } catch (error) {
         console.error("❌ Fetch Error:", error);
     }
@@ -88,35 +94,30 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
-                let pressStart = null;
                 let button = document.getElementById(`next-button-${trialIndex}`);
 
-                document.addEventListener("keydown", function handleKeyPress(event) {
-                    if (event.code === "Space" && pressStart === null) {
-                        pressStart = performance.now() / 1000;
-                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
-                    }
-                }, { once: true }); // ✅ Ensures only one event listener per trial
+                // ✅ Ensure multiple spacebar presses are logged
+                document.addEventListener("keyup", function (event) {  
+                    if (event.code === "Space") {
+                        let pressTime = performance.now() / 1000;
+                        console.log(`🟢 Space Press Detected: ${pressTime}`);
 
-                document.addEventListener("keyup", function handleKeyUp(event) {
-                    if (event.code === "Space" && pressStart !== null) {
-                        let pressEnd = performance.now() / 1000;
-                        let pressDuration = pressEnd - pressStart;
+                        let correctedStartTime = videoStartTime + (pressTime - videoStartTime);
+                        let correctedEndTime = correctedStartTime + 0.1; // Small offset
 
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
                             video_number: videoNum,  // ✅ Ensuring videoNum is sent even after shuffle
-                            startTime: pressStart.toFixed(3), 
-                            endTime: pressEnd.toFixed(3),
-                            duration: pressDuration.toFixed(3)
+                            startTime: correctedStartTime.toFixed(3), 
+                            endTime: correctedEndTime.toFixed(3),
+                            duration: (correctedEndTime - correctedStartTime).toFixed(3)
                         };
-                        
-                        sendToGoogleSheets(dataToSend);  // 🔥 Send requests in order
-                        pressStart = null;
+
+                        sendToGoogleSheets(dataToSend);
                     }
-                }, { once: true }); // ✅ Ensures only one event listener per trial
+                });
 
                 // ✅ Ensuring Next Button Always Works
                 if (button) {
@@ -129,7 +130,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         };
+
         timeline.push(videoTrial);
     });
+
     jsPsych.run(timeline);
 });
