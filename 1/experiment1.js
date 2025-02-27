@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 1");
+console.log("ExperimentManual.js - Version 2");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -80,42 +80,44 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" style="display: none;">
-                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
-                    </button>
+                    <div style="text-align: right; margin-top: 20px;">
+                        <button id="next-button-${index}" style="display: block;">
+                            ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                        </button>
+                    </div>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-            
-                // Show the button immediately when the video loads
+                let hasSubmitted = false; // Prevents duplicate submissions
+
                 let nextButton = document.getElementById(`next-button-${index}`);
                 if (nextButton) {
-                    nextButton.style.display = "block";
                     nextButton.addEventListener("click", function () {
                         jsPsych.finishTrial(); // Move to the next trial
                     });
                 }
-            
-                document.addEventListener("keydown", function (event) {
+
+                function handleKeydown(event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
-                });
-            
-                document.addEventListener("keyup", function (event) {
-                    if (event.code === "Space" && pressStart !== null) {
+                }
+
+                function handleKeyup(event) {
+                    if (event.code === "Space" && pressStart !== null && !hasSubmitted) {
+                        hasSubmitted = true; // Prevents duplicate submissions
+
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-            
                         let correctedStartTime = videoStartTime + pressStart;
                         let correctedEndTime = videoStartTime + pressEnd;
-            
+
                         console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
-            
+
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
@@ -124,19 +126,24 @@ document.addEventListener("DOMContentLoaded", function () {
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
-            
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
                         }).then(() => console.log("✅ Google Sheets Request Sent."));
-            
+
                         pressStart = null;
                     }
-                });
+                }
+
+                // Remove any existing event listeners first
+                document.removeEventListener("keydown", handleKeydown);
+                document.removeEventListener("keyup", handleKeyup);
+                document.addEventListener("keydown", handleKeydown);
+                document.addEventListener("keyup", handleKeyup);
             }
-            
         };
         timeline.push(videoTrial);
     });
