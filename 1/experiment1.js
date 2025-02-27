@@ -67,12 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ✅ Using your original video URLs
     let videoList = [
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0",
     ];
 
     // 🔀 Shuffle videos to show in random order
@@ -101,26 +101,34 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
+                let keyupHandled = false; // Prevent duplicate keyup events
 
                 let nextButton = document.getElementById(`next-button-${index}`);
                 if (nextButton) {
                     nextButton.addEventListener("click", function () {
-                        jsPsych.finishTrial(); // Move to the next trial
+                        console.log("➡️ Proceed Button Clicked: Moving to Next Trial");
+                        jsPsych.finishTrial();
                     });
                 }
 
                 function handleKeydown(event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
+                        keyupHandled = false; // Reset when a new press happens
+                        console.log(`🟢 Keydown Event Fired: Start Time = ${pressStart}`);
                     }
                 }
 
                 function handleKeyup(event) {
-                    if (event.code === "Space" && pressStart !== null) {
+                    if (event.code === "Space" && pressStart !== null && !keyupHandled) {
+                        keyupHandled = true; // Prevent duplicate entries
+
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-                        let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
-                        let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
+                        let correctedStartTime = videoStartTime + pressStart;
+                        let correctedEndTime = videoStartTime + pressEnd;
+
+                        console.log(`🔴 Keyup Event Fired: Start Time = ${correctedStartTime}, End Time = ${correctedEndTime}, Duration = ${pressDuration}`);
 
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
@@ -131,16 +139,21 @@ document.addEventListener("DOMContentLoaded", function () {
                             duration: Number(pressDuration.toFixed(3))
                         };
 
+                        console.log("📤 Sending Data:", dataToSend);
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        });
+                        }).then(() => console.log("✅ Data Sent"));
 
-                        pressStart = null; // Reset for multiple presses
+                        pressStart = null;
                     }
                 }
+
+                document.removeEventListener("keydown", handleKeydown);
+                document.removeEventListener("keyup", handleKeyup);
 
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
