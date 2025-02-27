@@ -81,11 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            vidNumber: videoNum,  // 🔥 Renaming videoNum → vidNumber
+                            video_ID: videoNum,  // 🔥 Renaming vidNumber → video_ID
                             startTime: correctedStartTime.toFixed(3), 
                             endTime: correctedEndTime.toFixed(3),
                             duration: pressDuration.toFixed(3)
                         };
+                        
                         
                         console.log("✅ Final Data to Send (Check Google Sheets):", JSON.stringify(dataToSend));
                         
