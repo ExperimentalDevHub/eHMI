@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - 8");
+console.log("ExperimentManual.js - 9");
 
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx5MHhPh6YTVK8F9xk1vRpiUadKb8C5p12qXaYgf2YzoHUFDF3Zazi_9bQ-WfJNtDcj9Q/exec";
 
@@ -32,7 +32,7 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-// Send data to Google Sheets in order
+// Send data to Google Sheets
 async function sendToGoogleSheets(dataToSend) {
     console.log("⏳ Sending Data to Google Sheets:", JSON.stringify(dataToSend));
 
@@ -94,15 +94,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 let pressStart = null;
                 let button = document.getElementById(`next-button-${trialIndex}`);
 
-                // ✅ Ensure only one event listener per video
-                function handleKeyPress(event) {
-                    if (event.code === "Space" && pressStart === null) {
-                        pressStart = performance.now() / 1000;
-                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
+                // ✅ Allow multiple space presses
+                document.addEventListener("keydown", function (event) {
+                    if (event.code === "Space") {
+                        if (pressStart === null) {
+                            pressStart = performance.now() / 1000;
+                            console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
+                        }
                     }
-                }
+                });
 
-                function handleKeyUp(event) {
+                document.addEventListener("keyup", function (event) {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
@@ -120,17 +122,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             duration: pressDuration.toFixed(3)
                         };
 
-                        sendToGoogleSheets(dataToSend);  // 🔥 Send requests in order
-                        pressStart = null;
-
-                        // ✅ Remove event listeners to prevent duplicates
-                        document.removeEventListener("keydown", handleKeyPress);
-                        document.removeEventListener("keyup", handleKeyUp);
+                        sendToGoogleSheets(dataToSend);  // 🔥 Logs every spacebar press
+                        pressStart = null; // ✅ Reset for multiple presses
                     }
-                }
-
-                document.addEventListener("keydown", handleKeyPress);
-                document.addEventListener("keyup", handleKeyUp);
+                });
 
                 // ✅ Ensuring Next Button Always Works
                 if (button) {
