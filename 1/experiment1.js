@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 2");
+console.log("ExperimentManual.js - Version 3");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -48,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     Please imagine yourself as a pedestrian attempting to cross the street. 
                     When you feel comfortable and safe crossing, press and hold the spacebar. 
                     If you ever feel unsafe, simply release the spacebar. 
-                    After the video ends, a button will appear one second later to continue. 
                     The videos will autoplay, do not interact with their playback. 
                     When you are ready to begin, select "Start Experiment."
                 </p>
@@ -91,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let hasSubmitted = false; // Prevents duplicate submissions
 
                 let nextButton = document.getElementById(`next-button-${index}`);
                 if (nextButton) {
@@ -100,17 +98,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
 
-                function handleKeydown(event) {
+                document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
-                }
+                });
 
-                function handleKeyup(event) {
-                    if (event.code === "Space" && pressStart !== null && !hasSubmitted) {
-                        hasSubmitted = true; // Prevents duplicate submissions
-
+                document.addEventListener("keyup", function (event) {
+                    if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
                         let correctedStartTime = videoStartTime + pressStart;
@@ -134,15 +130,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             mode: "no-cors"
                         }).then(() => console.log("✅ Google Sheets Request Sent."));
 
-                        pressStart = null;
+                        pressStart = null; // Reset for next press
                     }
-                }
-
-                // Remove any existing event listeners first
-                document.removeEventListener("keydown", handleKeydown);
-                document.removeEventListener("keyup", handleKeyup);
-                document.addEventListener("keydown", handleKeydown);
-                document.addEventListener("keyup", handleKeyup);
+                });
             }
         };
         timeline.push(videoTrial);
