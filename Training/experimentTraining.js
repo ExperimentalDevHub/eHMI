@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz9L1a9a4Phc5trTlQ1OviwzGmH7IVssnHbkoiedU31-ldQxsoszXT-egBkcgUm5hUzkw/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwnDAYc-hCzaTu-xKto7bW2vYwr-EnuiU9be5v3Bu0-GwMGm-bXuF7ct_IaOFtpzwRlug/exec";
 
     // Welcome screen
     timeline.push({
@@ -123,17 +123,25 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                         console.log("🚀 Sending Real Data:", dataToSend);
                         
-                        fetch(GOOGLE_SHEETS_URL, {  
+                        fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: {
-                                "Content-Type": "application/json"
+                              "Content-Type": "application/json"
                             },
-                            mode: "cors", // Ensure CORS is enabled
-                            body: JSON.stringify({ experimentData: dataToSend }) // Send actual data
-                        })
-                        .then(response => response.json())
-                        .then(data => console.log("✅ Fetch Request Success:", data))
-                        .catch(error => console.error("❌ Fetch Request Error:", error));
+                            body: JSON.stringify({
+                              experimentData: {
+                                participantID: participantID,
+                                date: new Date().toISOString().split('T')[0],
+                                experimentCode: "Training",
+                                startTime: Number((videoStartTime + pressStart).toFixed(3)),
+                                endTime: Number((videoStartTime + pressEnd).toFixed(3))
+                              }
+                            })
+                          })
+                          .then(response => response.json())  // Properly parse JSON response
+                          .then(data => console.log("✅ Data Sent Successfully:", data))
+                          .catch(error => console.error("❌ Fetch Request Error:", error));
+                          
                         
 
                         
