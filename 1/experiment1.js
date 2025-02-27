@@ -1,5 +1,7 @@
 console.log("ExperimentManual.js - 3");
 
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxI-7AnLInJceNPQBPW7sPoJ2YKMLvO5u_dbNT3_l0rAu38LOE2rccNajEhM96TES4k5w/exec";
+
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("Loading YouTube API...");
