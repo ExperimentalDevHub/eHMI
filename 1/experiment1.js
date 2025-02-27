@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - 1");
+console.log("ExperimentManual.js - 2");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxI-7AnLInJceNPQBPW7sPoJ2YKMLvO5u_dbNT3_l0rAu38LOE2rccNajEhM96TES4k5w/exec";
 
     // ✅ Your original video URLs
     const videoList = [
@@ -99,7 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        }).then(() => console.log("✅ Google Sheets Request Sent."));
+                        }).then(() => console.log("✅ Google Sheets Request Sent."))
+                        .catch(error => console.error("❌ Fetch Error:", error));
+                        
         
                         pressStart = null;
                     }
