@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 4");
+console.log("ExperimentManual.js - Version 5");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -103,30 +103,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 let pressStart = null;
                 let isPressing = false; // Prevents duplicate keydown events
 
-                let nextButton = document.getElementById(`next-button-${index}`);
-                if (nextButton) {
-                    nextButton.addEventListener("click", function () {
-                        jsPsych.finishTrial(); // Move to the next trial
-                    });
-                }
-
                 function handleKeydown(event) {
                     if (event.code === "Space" && !isPressing) {
-                        isPressing = true; // Mark that space is being held
+                        isPressing = true; 
                         pressStart = performance.now() / 1000;
-                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 }
 
                 function handleKeyup(event) {
                     if (event.code === "Space" && isPressing) {
-                        isPressing = false; // Reset so another keypress can be registered
+                        isPressing = false; 
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
                         let correctedStartTime = videoStartTime + pressStart;
                         let correctedEndTime = videoStartTime + pressEnd;
-
-                        console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
 
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
@@ -142,7 +132,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        }).then(() => console.log("✅ Google Sheets Request Sent."));
+                        });
+
+                        document.removeEventListener("keydown", handleKeydown);
+                        document.removeEventListener("keyup", handleKeyup);
                     }
                 }
 
