@@ -131,17 +131,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "cors"  // Fixes CORS issue
+                            body: JSON.stringify({ experimentData: dataToSend })
                         })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => console.log("Success:", data))
-                        .catch(error => console.error("Fetch Error:", error));
+                        .then(response => response.json())
+                        .then(data => console.log("✅ Success:", data))
+                        .catch(error => console.error("❌ Fetch Error:", error));
+                        
                         
                         
                         
