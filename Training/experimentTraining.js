@@ -123,10 +123,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
-                            headers: { "Content-Type": "application/json" },
+                            headers: { "Content-Type": "text/plain" }, // Change from JSON to text/plain to avoid triggering a preflight request
                             body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "cors"
-                        })
+                            mode: "no-cors" // Prevents preflight request
+                        });
+
+                        console.log("🚀 Sending data:", dataToSend);
+console.log("📡 Attempting fetch to:", GOOGLE_SHEETS_URL);
+
+                        
                         .then(response => response.json())
                         .then(data => console.log("✅ Success:", data))
                         .catch(error => console.error("❌ Error:", error));
