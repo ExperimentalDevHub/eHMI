@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX (Button Alignment, 'Finish Section' & End Message)");
+console.log("ExperimentManual.js - Debugging Version");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -9,10 +9,6 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 } else {
     console.log("YouTube API already loaded.");
-}
-
-function onYouTubeIframeAPIReady() {
-    console.log("YouTube API Loaded and Ready.");
 }
 
 function getParticipantID() {
@@ -34,27 +30,26 @@ function shuffleArray(array) {
     }
 }
 
-// Global event handlers
-let handleKeydown = function(event) {
+// Spacebar event handlers
+let keyPressStart = null;
+
+document.addEventListener("keydown", function (event) {
     if (event.code === "Space") {
-        console.log("⏳ Spacebar Pressed");
+        if (keyPressStart === null) {
+            keyPressStart = performance.now();
+            console.log("⏳ Spacebar Pressed at:", keyPressStart);
+        }
     }
-};
+});
 
-let handleKeyup = function(event) {
-    if (event.code === "Space") {
-        console.log("✅ Spacebar Released");
+document.addEventListener("keyup", function (event) {
+    if (event.code === "Space" && keyPressStart !== null) {
+        let keyPressEnd = performance.now();
+        let pressDuration = (keyPressEnd - keyPressStart) / 1000;
+        console.log("✅ Spacebar Released. Duration:", pressDuration, "seconds");
+        keyPressStart = null;
     }
-};
-
-document.addEventListener("keydown", handleKeydown);
-document.addEventListener("keyup", handleKeyup);
-
-function removeAllKeyListeners() {
-    console.log("🛑 Removing old event listeners before adding new ones...");
-    document.removeEventListener("keydown", handleKeydown);
-    document.removeEventListener("keyup", handleKeyup);
-}
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document Loaded, Initializing Experiment...");
@@ -68,25 +63,24 @@ document.addEventListener("DOMContentLoaded", function () {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
-                <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Experimental Section</h2>
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In this experiment, you will be shown brief video clips to interact with. Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would using your computer's space bar. The videos will autoplay, please do not try to control their playback. When you are ready to begin, select "Start Experiment."
-                </p>
+                <h2>Experimental Section</h2>
+                <p>Press spacebar when you want to slow down.</p>
+                <button id="start-experiment-btn">Start Experiment</button>
             </div>
         `,
-        choices: ["Start Experiment"]
+        choices: []
     };
+
     timeline.push(startExperiment);
 
     let videoList = [
         { 
-            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
-            message: "Press and hold the space bar when you would start slowing down and let go when you would speed up"
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1",
+            message: "Press space when you would slow down"
         },
         { 
-            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
-            message: "Press and hold the space bar when you would start slowing down to yield"
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1",
+            message: "Press space when you would yield"
         }
     ];
 
@@ -96,29 +90,52 @@ document.addEventListener("DOMContentLoaded", function () {
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
-                <div id="video-container" style="text-align: center;">
-                    <p style="font-size: 18px;">${video.message}</p>
-                    <iframe id="experiment-video-${index}" 
-                        style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
+                <div style="text-align: center;">
+                    <p>${video.message}</p>
+                    <iframe style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                        <button id="next-button-${index}">
-                            ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Trial"}
-                        </button>
-                    </div>
+                    <button id="next-button-${index}">${index === videoList.length - 1 ? "Finish Section" : "Next Video"}</button>
                 </div>
             `,
             choices: "NO_KEYS",
-            trial_duration: null
+            trial_duration: null,
+            on_load: function () {
+                let nextButton = document.getElementById(`next-button-${index}`);
+                if (nextButton) {
+                    nextButton.addEventListener("click", function () {
+                        console.log(`➡️ Button Clicked: Proceeding from Trial ${index}`);
+                        jsPsych.finishTrial();
+                    });
+                }
+            },
+            on_finish: function (data) {
+                let dataToSend = {
+                    participantID: participantID,
+                    trialIndex: index,
+                    videoURL: video.url,
+                    responseTime: data.rt
+                };
+
+                console.log("📤 Sending data to Google Sheets:", dataToSend);
+
+                fetch(GOOGLE_SHEETS_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ experimentData: dataToSend }),
+                    mode: "no-cors"
+                })
+                .then(() => console.log("✅ Data Sent"))
+                .catch(error => console.error("❌ Error sending data:", error));
+            }
         };
         timeline.push(videoTrial);
     });
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
+        stimulus: "<h2>Experiment Complete. Inform the researcher.</h2>",
         choices: []
     });
 
