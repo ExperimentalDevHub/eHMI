@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FIXED");
+console.log("ExperimentManual.js - FIXED AGAIN");
 
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec";
 
@@ -37,13 +37,20 @@ async function sendToGoogleSheets(dataToSend) {
     console.log("⏳ Sending Data to Google Sheets:", JSON.stringify(dataToSend));
 
     try {
-        await fetch(GOOGLE_SHEETS_URL, {
+        let response = await fetch(GOOGLE_SHEETS_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ experimentData: dataToSend }),
-            mode: "no-cors"
         });
-        console.log("✅ Data Successfully Sent:", dataToSend);
+
+        let responseText = await response.text();
+        console.log("📩 Google Sheets Response:", responseText);
+        
+        if (!response.ok) {
+            console.error("❌ Error Sending Data:", response.status, response.statusText);
+        } else {
+            console.log("✅ Data Successfully Sent:", dataToSend);
+        }
     } catch (error) {
         console.error("❌ Fetch Error:", error);
     }
@@ -92,41 +99,38 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let button = document.getElementById(`next-button-${trialIndex}`);
-                let spacePresses = [];
+                let isHolding = false;
+                let pressStart = null;
 
                 function handleKeyPress(event) {
-                    if (event.code === "Space") {
-                        let pressTime = performance.now() / 1000;
-                        let correctedStartTime = videoStartTime + (pressTime - videoStartTime);
-
-                        if (spacePresses.length === 0 || correctedStartTime !== spacePresses[spacePresses.length - 1].startTime) {
-                            spacePresses.push({ startTime: correctedStartTime });
-                            console.log(`🟢 Space Press Detected: ${correctedStartTime.toFixed(3)}`);
-                        }
+                    if (event.code === "Space" && !isHolding) {
+                        isHolding = true;
+                        pressStart = performance.now() / 1000;
+                        console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 }
 
                 function handleKeyUp(event) {
-                    if (event.code === "Space" && spacePresses.length > 0) {
-                        let pressTime = performance.now() / 1000;
-                        let lastPress = spacePresses[spacePresses.length - 1];
+                    if (event.code === "Space" && isHolding) {
+                        isHolding = false;
+                        let pressEnd = performance.now() / 1000;
+                        let duration = pressEnd - pressStart;
 
-                        if (!lastPress.endTime) {
-                            lastPress.endTime = videoStartTime + (pressTime - videoStartTime);
-                            lastPress.duration = lastPress.endTime - lastPress.startTime;
+                        let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
+                        let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
 
-                            let dataToSend = {
-                                participantID: parseInt(participantID, 10),
-                                date: new Date().toISOString().split('T')[0],
-                                experimentCode: 1,
-                                video_number: videoNum,  
-                                startTime: lastPress.startTime.toFixed(3),
-                                endTime: lastPress.endTime.toFixed(3),
-                                duration: lastPress.duration.toFixed(3)
-                            };
+                        let dataToSend = {
+                            participantID: parseInt(participantID, 10),
+                            date: new Date().toISOString().split('T')[0],
+                            experimentCode: 1,
+                            video_number: videoNum,
+                            startTime: correctedStartTime.toFixed(3),
+                            endTime: correctedEndTime.toFixed(3),
+                            duration: duration.toFixed(3)
+                        };
 
-                            sendToGoogleSheets(dataToSend);
-                        }
+                        sendToGoogleSheets(dataToSend);
+                        console.log(`🟢 Space Press Recorded: Start=${correctedStartTime.toFixed(3)}, End=${correctedEndTime.toFixed(3)}, Duration=${duration.toFixed(3)}`);
                     }
                 }
 
