@@ -27,7 +27,7 @@ function getParticipantID() {
 
 // Function to shuffle videos while keeping original indices
 function shuffleArray(array) {
-    let shuffled = array.map((value, index) => ({ value, index })) // Attach original index
+    let shuffled = array.map((value, index) => ({ value, originalIndex: index + 1 })) // Attach original index
                          .sort(() => Math.random() - 0.5); // Shuffle
     return shuffled;
 }
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let jsPsych = initJsPsych();
     let timeline = [];
     let participantID = getParticipantID();
-    
+
     // ✅ Original video URLs (labels must stay the same!)
     const videoList = [
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -69,11 +69,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // ✅ Shuffle video order but retain original numbering
     let shuffledVideos = shuffleArray(videoList);
 
-    // ✅ Ensure videos are **displayed in shuffled order** but **labels stay correct**
-    shuffledVideos.forEach(({ value: videoURL, index }, shuffledIndex) => {
+    shuffledVideos.forEach(({ value: videoURL, originalIndex }, orderIndex) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
-        let videoNum = index + 1; // ✅ Keep original order reference!
-        let isLastVideo = shuffledIndex === shuffledVideos.length - 1; // ✅ Detect the actual last video
+        let videoNum = originalIndex; // ✅ Keep original reference
+        let isLastVideo = orderIndex === shuffledVideos.length - 1; // 🔥 Detect the last shown video dynamically
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -102,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
-        
+
                 document.addEventListener("keyup", async function (event) {  
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
@@ -110,12 +109,12 @@ document.addEventListener("DOMContentLoaded", function () {
         
                         let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
                         let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
-        
+
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            video_number: videoNum,  // ✅ Ensuring videoNum is sent even after shuffle
+                            video_number: videoNum,  // ✅ Ensuring correct videoNum is sent
                             startTime: correctedStartTime.toFixed(3), 
                             endTime: correctedEndTime.toFixed(3),
                             duration: pressDuration.toFixed(3)
