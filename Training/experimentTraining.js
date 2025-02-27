@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzMGUxuAGA4h1bQC7xHgIPnjhbGCgE8MpRUAcCaZg6dWSmwD9XtqWa7ducwxxe61V3Jpg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxPS-BE7ExI4fee8nsJq3Au1hjTRhFgkwbMzWtEf-aKG7zRjSnAxb0LRt3MC9UtDE2iSQ/exec";
 
     // Welcome screen with updated title and button text for training
     let startExperiment = {
