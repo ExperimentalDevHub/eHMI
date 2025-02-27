@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL DEBUGGING & FIX");
+console.log("ExperimentManual.js - FINAL FIX");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -11,12 +11,10 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("YouTube API already loaded.");
 }
 
-// Global function for YouTube API
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
 
-// Generate or retrieve a unique participant ID
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
 
@@ -80,8 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
     shuffleArray(videoList);
 
     videoList.forEach((videoURL, index) => {
-        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract the start timestamp from YouTube URL
-        
+        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]);
+
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -102,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let keyupHandled = false;
+                let keyHandled = false;
 
                 let nextButton = document.getElementById(`next-button-${index}`);
                 if (nextButton) {
@@ -113,23 +111,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 function handleKeydown(event) {
-                    if (event.code === "Space" && pressStart === null) {
+                    if (event.code === "Space" && !keyHandled) {
                         pressStart = performance.now() / 1000;
-                        keyupHandled = false;
+                        keyHandled = true; // Ensures only one press per keydown
                         console.log(`🟢 Keydown Event Fired: Start Time = ${pressStart}`);
                     }
                 }
 
                 function handleKeyup(event) {
-                    if (event.code === "Space" && pressStart !== null && !keyupHandled) {
-                        keyupHandled = true;
-
+                    if (event.code === "Space" && keyHandled) {
+                        keyHandled = false; // Resets after keyup
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
                         let correctedStartTime = videoStartTime + pressStart;
                         let correctedEndTime = videoStartTime + pressEnd;
 
-                        console.log(`🔴 Keyup Fired - Start: ${pressStart}, End: ${pressEnd}, Duration: ${pressDuration}`);
+                        console.log(`🔴 Keyup Fired: Start Time = ${correctedStartTime}, End Time = ${correctedEndTime}, Duration = ${pressDuration}`);
 
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
@@ -148,13 +145,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
                         }).then(() => console.log("✅ Data Sent"));
-
-                        pressStart = null;
                     }
                 }
 
-                document.removeEventListener("keydown", handleKeydown);
-                document.removeEventListener("keyup", handleKeyup);
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
             }
