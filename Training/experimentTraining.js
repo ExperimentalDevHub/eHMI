@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
 
-                        fetch(GOOGLE_SHEETS_URL, {
+                        fetch("https://script.google.com/macros/s/AKfycbzjNodqNBY5TkzrWTG3xC2NiKTea4MpcldJj1INyS7ZxrcikFnKmJloAqXDuI5q4-_bfw/exec", {  // Use the new URL from Step 3
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -131,17 +131,18 @@ document.addEventListener("DOMContentLoaded", function () {
                                 endTime: Number((videoStartTime + pressEnd).toFixed(3))
                             })
                         })
-                        .then(response => response.text())  // 🔥 Read raw text instead of JSON
+                        .then(response => response.text())  // Log raw response first
                         .then(data => {
-                            console.log("🔎 Raw Response:", data);  // 🔥 Log full response for debugging
+                            console.log("🔎 Raw Response:", data);
                             try {
-                                let jsonData = JSON.parse(data);  
+                                let jsonData = JSON.parse(data);
                                 console.log("✅ Success:", jsonData);
                             } catch (error) {
                                 console.error("❌ Response isn't JSON. Google Apps Script might be sending an error page.");
                             }
                         })
                         .catch(error => console.error("❌ Fetch Error:", error));
+                        
                         
                         
                         
