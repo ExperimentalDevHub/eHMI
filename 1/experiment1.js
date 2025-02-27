@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 10");
+console.log("ExperimentManual.js - Version 12");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -80,20 +80,21 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
+                    <button id="next-button-${index}" class="next-button" style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">Proceed to Next Video</button>
                 </div>`
             ,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-
-                function handleKeydown(event) {
+                
+                document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                     }
-                }
+                });
                 
-                function handleKeyup(event) {
+                document.addEventListener("keyup", function (event) {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
@@ -119,15 +120,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                         pressStart = null;
                     }
-                }
-                
-                document.addEventListener("keydown", handleKeydown);
-                document.addEventListener("keyup", handleKeyup);
-                
-                jsPsych.getDisplayElement().addEventListener("removed", () => {
-                    document.removeEventListener("keydown", handleKeydown);
-                    document.removeEventListener("keyup", handleKeyup);
                 });
+
+                document.getElementById(`next-button-${index}`).addEventListener("click", () => jsPsych.finishTrial());
             }
         };
         timeline.push(videoTrial);
