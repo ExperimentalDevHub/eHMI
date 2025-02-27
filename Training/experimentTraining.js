@@ -1,4 +1,4 @@
-console.log("experimentTraining.js - V 1");
+console.log("experimentTraining.js - V 2");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
