@@ -1,4 +1,4 @@
-console.log("experiment1.js - FINAL UPDATE (FULL)");
+console.log("experiment1.js - FINAL UPDATE (RIGHT-ALIGNED BUTTONS)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_URL_HERE/exec";
 
-    // 📌 INTRO SCREEN (not deleted this time)
+    // 📌 INTRO SCREEN (kept intact)
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </iframe>
                     <div style="text-align: right; margin-top: 20px;">
                         <button id="next-button-${index}" style="display: block;">
-                            ${index === videoMessagePairs.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                            ${index === videoMessagePairs.length - 1 ? "Finish Section" : "Proceed to Next Trial"}
                         </button>
                     </div>
                 </div>
@@ -172,6 +172,18 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         timeline.push(videoTrial);
     });
+
+    // 📌 FINAL SCREEN AFTER "FINISH SECTION"
+    let finalScreen = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div style="text-align: center; font-size: 24px; font-weight: bold;">
+                Please let the researcher know that you have finished this section.
+            </div>
+        `,
+        choices: []
+    };
+    timeline.push(finalScreen);
 
     jsPsych.run(timeline);
 });
