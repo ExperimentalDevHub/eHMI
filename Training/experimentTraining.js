@@ -1,4 +1,4 @@
-console.log("experimentTraining.js - V 4");
+console.log("experimentTraining.js - V 5");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -45,9 +45,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxL5HA7Ov-5JPFsa5H7pzbiiDnhS1X-Vt9i2uV0FPiskfE7Coop8fsxeJz7OdZuMWLH_Q/exec";
+    // Replace with your own deployed Google Sheets Web App URL
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzgNP5d20HECJ8TWNquslX-7Dig5ZA_6DYlbpW-_X0obHnJ0ertWDD1v9QjgNric239Dw/exec";
 
-    // Welcome screen
+    // Welcome screen trial
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -65,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         choices: ["Start Training"]
     });
 
-    // Video trials
+    // Define video trials
     let videoList = [
         { 
             url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=166&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
@@ -77,7 +78,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     ];
 
+    // Create a trial for each video
     videoList.forEach((video, index) => {
+        // Extract the video start time from the URL (assumes the parameter "start=" exists)
         let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]);
 
         let videoTrial = {
@@ -100,11 +103,13 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
+                // Clear out previous key event listeners
                 removeAllKeyListeners();
 
                 let pressStart = null;
                 let keyHandled = false;
 
+                // Listen for keydown to record when the spacebar is pressed
                 handleKeydown = function(event) {
                     if (event.code === "Space" && !keyHandled) {
                         pressStart = performance.now() / 1000;
@@ -113,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 };
 
+                // Listen for keyup to record when the spacebar is released and send data to Google Sheets
                 handleKeyup = function(event) {
                     if (event.code === "Space" && keyHandled) {
                         keyHandled = false; 
@@ -133,27 +139,19 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: {
                               "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({
-                              experimentData: {
-                                participantID: participantID,
-                                date: new Date().toISOString().split('T')[0],
-                                experimentCode: "Training",
-                                startTime: Number((videoStartTime + pressStart).toFixed(3)),
-                                endTime: Number((videoStartTime + pressEnd).toFixed(3))
-                              }
-                            })
+                            body: JSON.stringify({ experimentData: dataToSend })
                         })
                         .then(response => response.json())
                         .then(data => console.log("✅ Data Sent Successfully:", data))
                         .catch(error => console.error("❌ Fetch Request Error:", error));
-                        
                     }
                 };
 
+                // Attach event listeners for spacebar key events
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
 
-                // 🚀 Fix: Add Click Event for "Proceed" Button
+                // Attach a click event to the proceed button to end the trial
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => {
                     console.log(`Proceed button clicked for trial ${index}`);
                     jsPsych.finishTrial();
@@ -164,12 +162,13 @@ document.addEventListener("DOMContentLoaded", function () {
         timeline.push(videoTrial);
     });
 
-    // Completion screen
+    // Completion screen trial
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: "<h2>Please inform the researcher that you have completed the training</h2>",
         choices: []
     });
 
+    // Start the experiment
     jsPsych.run(timeline);
 });
