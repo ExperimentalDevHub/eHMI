@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - 3");
+console.log("ExperimentManual.js - 4");
 
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxI-7AnLInJceNPQBPW7sPoJ2YKMLvO5u_dbNT3_l0rAu38LOE2rccNajEhM96TES4k5w/exec";
 
@@ -56,8 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxI-7AnLInJceNPQBPW7sPoJ2YKMLvO5u_dbNT3_l0rAu38LOE2rccNajEhM96TES4k5w/exec";
-
     // ✅ Original video URLs (labels must stay the same!)
     const videoList = [
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -71,9 +69,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // ✅ Shuffle video order but retain original numbering
     let shuffledVideos = shuffleArray(videoList);
 
-    shuffledVideos.forEach(({ value: videoURL, index }) => {
+    // ✅ Ensure videos are **displayed in shuffled order** but **labels stay correct**
+    shuffledVideos.forEach(({ value: videoURL, index }, shuffledIndex) => {
         let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
         let videoNum = index + 1; // ✅ Keep original order reference!
+        let isLastVideo = shuffledIndex === shuffledVideos.length - 1; // ✅ Detect the actual last video
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </iframe>
                     <button id="next-button-${videoNum}" class="next-button" 
                         style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
-                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                        ${isLastVideo ? "Finish" : "Proceed to Next Trial"}
                     </button>
                 </div>
             `,
