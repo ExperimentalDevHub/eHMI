@@ -81,22 +81,21 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNum: videoNum, // ✅ Check if this appears in Google Sheets
+                            vidNumber: videoNum,  // 🔥 Renaming videoNum → vidNumber
                             startTime: correctedStartTime.toFixed(3), 
                             endTime: correctedEndTime.toFixed(3),
                             duration: pressDuration.toFixed(3)
                         };
-
+                        
                         console.log("✅ Final Data to Send (Check Google Sheets):", JSON.stringify(dataToSend));
-
+                        
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        })
-                        .then(() => console.log("✅ Google Sheets Request Sent."))
-                        .catch((error) => console.error("❌ Fetch Error:", error));
+                        }).then(() => console.log("✅ Google Sheets Request Sent."));
+                        
 
                         pressStart = null;
                     }
