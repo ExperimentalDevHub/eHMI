@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX");
+console.log("ExperimentManual.js - FINAL FIX (Listener Cleanup)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -33,6 +33,16 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+
+// Global event handlers to ensure cleanup
+function removeAllKeyListeners() {
+    console.log("🛑 Removing old event listeners before adding new ones...");
+    document.removeEventListener("keydown", handleKeydown);
+    document.removeEventListener("keyup", handleKeyup);
+}
+
+let handleKeydown;
+let handleKeyup;
 
 // Run experiment
 document.addEventListener("DOMContentLoaded", function () {
@@ -99,28 +109,22 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
+                removeAllKeyListeners(); // 🔥 Clean up before adding new listeners
+
                 let pressStart = null;
                 let keyHandled = false;
 
-                let nextButton = document.getElementById(`next-button-${index}`);
-                if (nextButton) {
-                    nextButton.addEventListener("click", function () {
-                        console.log("➡️ Proceed Button Clicked: Moving to Next Trial");
-                        jsPsych.finishTrial();
-                    });
-                }
-
-                function handleKeydown(event) {
+                handleKeydown = function(event) {
                     if (event.code === "Space" && !keyHandled) {
                         pressStart = performance.now() / 1000;
-                        keyHandled = true; // Ensures only one press per keydown
+                        keyHandled = true; 
                         console.log(`🟢 Keydown Event Fired: Start Time = ${pressStart}`);
                     }
-                }
+                };
 
-                function handleKeyup(event) {
+                handleKeyup = function(event) {
                     if (event.code === "Space" && keyHandled) {
-                        keyHandled = false; // Resets after keyup
+                        keyHandled = false; 
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
                         let correctedStartTime = videoStartTime + pressStart;
@@ -146,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             mode: "no-cors"
                         }).then(() => console.log("✅ Data Sent"));
                     }
-                }
+                };
 
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
