@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX (Listener Cleanup)");
+console.log("ExperimentManual.js - FINAL FIX (Proceed Button & No Duplicates)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -34,17 +34,17 @@ function shuffleArray(array) {
     }
 }
 
-// Global event handlers to ensure cleanup
+// Global event handlers
+let handleKeydown;
+let handleKeyup;
+let handleButtonClick;
+
 function removeAllKeyListeners() {
     console.log("🛑 Removing old event listeners before adding new ones...");
     document.removeEventListener("keydown", handleKeydown);
     document.removeEventListener("keyup", handleKeyup);
 }
 
-let handleKeydown;
-let handleKeyup;
-
-// Run experiment
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document Loaded, Initializing Experiment...");
     let jsPsych = initJsPsych();
@@ -64,7 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     Please imagine yourself as a pedestrian attempting to cross the street. 
                     When you feel comfortable and safe crossing, press and hold the spacebar. 
                     If you ever feel unsafe, simply release the spacebar. 
-                    After the video ends, a button will appear one second later to continue. 
                     The videos will autoplay, do not interact with their playback. 
                     When you are ready to begin, select "Start Experiment."
                 </p>
@@ -141,8 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             duration: Number(pressDuration.toFixed(3))
                         };
 
-                        console.log("📤 Sending This Data:", JSON.stringify(dataToSend, null, 2));
-
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -154,6 +151,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
+
+                let nextButton = document.getElementById(`next-button-${index}`);
+                if (nextButton) {
+                    nextButton.addEventListener("click", function () {
+                        console.log("➡️ Proceed Button Clicked: Moving to Next Trial");
+                        jsPsych.finishTrial();
+                    });
+                }
             }
         };
         timeline.push(videoTrial);
