@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            video_number: videoNum,  // 🔥 Renaming videoNum again to "video_number"
+                            video_number: videoNum,  // ✅ Ensuring videoNum is sent
                             startTime: correctedStartTime.toFixed(3), 
                             endTime: correctedEndTime.toFixed(3),
                             duration: pressDuration.toFixed(3)
@@ -94,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                         console.log("✅ Final Data to Send (Check Google Sheets):", JSON.stringify(dataToSend));
                         
-        
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -105,13 +104,21 @@ document.addEventListener("DOMContentLoaded", function () {
                         pressStart = null;
                     }
                 });
-        
+
                 // ✅ Ensuring Next Button Always Works
-                button.addEventListener("click", () => jsPsych.finishTrial());
+                if (button) {
+                    button.addEventListener("click", () => {
+                        console.log("➡ Proceeding to next trial...");
+                        jsPsych.finishTrial();
+                    });
+                } else {
+                    console.error("❌ Button not found in DOM!");
+                }
             }
         };
+
         timeline.push(videoTrial);
-        
+    });
 
     jsPsych.run(timeline);
 });
