@@ -128,12 +128,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Log the collected space bar data
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch("https://script.google.com/macros/s/AKfycbxYM1FNJq7OnnEwQUnBHFahMih86uxArZBKJ05-oHRT3BlLaqB0_zSJ4ewWDrh65vPjkg/exec", {  // 🔥 REPLACE WITH YOUR NEW URL
+                        fetch("https://script.google.com/macros/s/AKfycbwdhqmBWToq3vZmp5ojCrqyxLLlSi2ZzLW9PMaHwB5xn3Eq6DxlTdKBYwrioTMc20vs/exec", {  
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            mode: "cors",  // 🔥 Ensures cross-origin requests are allowed
+                            mode: "no-cors",
                             body: JSON.stringify({
                                 experimentData: {
                                     participantID: 999999,
@@ -144,9 +144,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                 }
                             })
                         })
-                        .then(response => response.json())
-                        .then(data => console.log("✅ Debug Request Success:", data))
+                        .then(response => console.log("✅ Debug Request Sent"))
                         .catch(error => console.error("❌ Debug Request Error:", error));
+                        
                         
                         
                         
