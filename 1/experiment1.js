@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Debug Mode");
+console.log("ExperimentManual.js - 1");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
