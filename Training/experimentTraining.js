@@ -44,26 +44,26 @@ document.addEventListener("DOMContentLoaded", function () {
     
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
-    // Welcome screen
+    // Welcome screen with updated title and button text for training
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
+                <h2 style="font-size: 36px;">Welcome to the eHMI Training Section</h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In this experiment, you will be shown brief video clips to interact with. 
+                    In this training, you will be shown brief video clips to interact with. 
                     Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would.  
                     The videos will autoplay, so please do not try to control their playback.
-                    When you are ready to begin, select "Start Experiment."
+                    When you are ready to begin, select "Start Training."
                 </p>
             </div>
         `,
-        choices: ["Start Experiment"]
+        choices: ["Start Training"]
     };
     timeline.push(startExperiment);
 
-    // Video trials (in fixed order)
+    // Video trials (fixed order)
     let videoList = [
         { 
             url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=166&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && !keyHandled) {
                         pressStart = performance.now() / 1000;
                         keyHandled = true; 
+                        console.log(`Spacebar pressed on trial ${index} at ${videoStartTime + pressStart}`);
                     }
                 };
 
@@ -123,6 +124,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
+
+                        // Log the collected space bar data
+                        console.log(`Trial ${index} spacebar data:`, dataToSend);
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
