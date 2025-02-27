@@ -100,6 +100,12 @@ document.addEventListener("DOMContentLoaded", function () {
             `,
             choices: "NO_KEYS",
             trial_duration: null,
+            on_load: function () {
+                document.querySelector(`#next-button-${index}`).addEventListener("click", function () {
+                    console.log("➡️ Proceed Button Clicked: Moving to Next Trial");
+                    jsPsych.finishTrial();
+                });
+            },
             on_finish: function (data) {
                 let dataToSend = {
                     participantID: participantID,
@@ -113,7 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ experimentData: dataToSend }),
                     mode: "no-cors"
-                }).then(() => console.log("✅ Data Sent"));
+                }).then(() => console.log("✅ Data Sent"))
+                .catch(error => console.error("❌ Error sending data:", error));
             }
         };
         timeline.push(videoTrial);
