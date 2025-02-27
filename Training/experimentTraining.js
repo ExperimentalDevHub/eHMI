@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycby0st3FMIJGF2MfkSFr9W8RStK-w6DWTtvB7nG5iUHClKw84BpiVT97rVzeiIGbCzqAUA/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzv5UfpofQUMIHRNJmPCkzFo1KnB6I_on7l9Dd67SCnzmIFr4OfYgJNPeoSZgnmpuYnhg/exec";
 
     // Welcome screen
     timeline.push({
@@ -141,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
                           .then(response => response.json())  // Properly parse JSON response
                           .then(data => console.log("✅ Data Sent Successfully:", data))
                           .catch(error => console.error("❌ Fetch Request Error:", error));
+                          
                           
                           
                         
