@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzgD-8M5h5gIttrr0sZH_GJpxxZ5eEQj8Jk1yePNi2lO9PsecQ4FaspaFCMAW8Z-IQrkg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzN66a3x1N2RBQ7zVhamuhWOKktXpiXalDKpbXD3kFMFnXxNSAktMLe9sDcFY1v5si8MA/exec";
 
     // Welcome screen with updated title and button text for training
     let startExperiment = {
@@ -131,11 +131,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
+                            mode: "cors",  // Enables cross-origin requests
                             body: JSON.stringify({ experimentData: dataToSend })
                         })
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
                         .then(data => console.log("✅ Success:", data))
                         .catch(error => console.error("❌ Fetch Error:", error));
+                        
                         
                         
                         
