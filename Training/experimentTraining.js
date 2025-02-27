@@ -63,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let trainingVideos = [
         { 
-            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=153&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=150&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
             message: "Press and hold the space bar when you would start slowing down to yield. When you have completed the task, select 'Proceed to next video.'"
         },
         { 
-            url: "https://www.youtube.com/embed/cWb-2C5mV20?start=44&end=62&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            url: "https://www.youtube.com/embed/cWb-2C5mV20?start=41&end=62&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
             message: "Press and hold the space bar when you would feel safe crossing the road. When you have completed the task, please select 'Finish Training.'"
         }
     ];
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="text-align: center;">
-                    <p style="font-size: 24px; ">${video.message}</p>
+                    <p style="font-size: 18px; ">${video.message}</p>
                     <iframe id="training-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
