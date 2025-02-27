@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX");
+console.log("ExperimentManual.js - FINAL FIX (No More Duplicates)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
