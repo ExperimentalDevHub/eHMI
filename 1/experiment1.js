@@ -1,4 +1,4 @@
-console.log("experiment1.js - Version 10");
+console.log("ExperimentManual.js - Version 7");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbypG7XgkVT1GEV55kzwEt5K5hjxmVPdwWg35zHWyRtOKrXnkyXJaO0e-t3eGy68x7PI5g/exec";
 
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     Please imagine yourself as a pedestrian attempting to cross the street. 
                     When you feel comfortable and safe crossing, press and hold the spacebar. 
                     If you ever feel unsafe, simply release the spacebar. 
+                    After the video ends, a button will appear one second later to continue. 
                     The videos will autoplay, do not interact with their playback. 
                     When you are ready to begin, select "Start Experiment."
                 </p>
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Your original video URLs
+    // ✅ Using your original video URLs
     const videoList = [
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -68,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     videoList.forEach((videoURL, index) => {
-        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
+        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract the start timestamp from YouTube URL
         
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -79,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" class="next-button" style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
+                    <button id="next-button-${index}" style="display: none;">
                         ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
                     </button>
                 </div>
@@ -88,11 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let button = document.getElementById(`next-button-${index}`);
-
-                if (button) {
-                    button.addEventListener("click", () => jsPsych.finishTrial());
-                }
 
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
@@ -106,8 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
 
-                        let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
-                        let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
+                        let correctedStartTime = videoStartTime + pressStart;
+                        let correctedEndTime = videoStartTime + pressEnd;
 
                         console.log(`🔴 Space Press End: ${pressEnd.toFixed(3)} | Duration: ${pressDuration.toFixed(3)}`);
 
@@ -115,13 +111,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNumber: index + 1,
-                            startTime: Number(correctedStartTime.toFixed(3)), // ✅ Ensuring correct number format
+                            startTime: Number(correctedStartTime.toFixed(3)),
                             endTime: Number(correctedEndTime.toFixed(3)),
                             duration: Number(pressDuration.toFixed(3))
                         };
-
-                        console.log("Data to send:", dataToSend);
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
