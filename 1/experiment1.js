@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX (Proceed Button & No Duplicates)");
+console.log("ExperimentManual.js - FINAL FIX (Correct Messages, Proceed Button & No Duplicates)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -73,29 +73,46 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Using your original video URLs
     let videoList = [
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        { 
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down and let go when you would speed up"
+        },
+        { 
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        },
+        { 
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        },
+        { 
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        },
+        { 
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        },
+        { 
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
+        }
     ];
 
-    // 🔀 Shuffle videos to show in random order
     shuffleArray(videoList);
 
-    videoList.forEach((videoURL, index) => {
-        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]);
+    videoList.forEach((video, index) => {
+        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]);
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container">
+                    <p style="font-size: 24px; font-weight: bold; text-align: center;">${video.message}</p>
                     <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
-                        src="${videoURL}" 
+                        src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
                     <div style="text-align: right; margin-top: 20px;">
@@ -108,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
-                removeAllKeyListeners(); // 🔥 Clean up before adding new listeners
+                removeAllKeyListeners();
 
                 let pressStart = null;
                 let keyHandled = false;
@@ -117,7 +134,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && !keyHandled) {
                         pressStart = performance.now() / 1000;
                         keyHandled = true; 
-                        console.log(`🟢 Keydown Event Fired: Start Time = ${pressStart}`);
                     }
                 };
 
@@ -125,19 +141,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && keyHandled) {
                         keyHandled = false; 
                         let pressEnd = performance.now() / 1000;
-                        let pressDuration = pressEnd - pressStart;
-                        let correctedStartTime = videoStartTime + pressStart;
-                        let correctedEndTime = videoStartTime + pressEnd;
-
-                        console.log(`🔴 Keyup Fired: Start Time = ${correctedStartTime}, End Time = ${correctedEndTime}, Duration = ${pressDuration}`);
-
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
-                            date: new Date().toISOString().split('T')[0],
-                            experimentCode: 1,
-                            startTime: Number(correctedStartTime.toFixed(3)),
-                            endTime: Number(correctedEndTime.toFixed(3)),
-                            duration: Number(pressDuration.toFixed(3))
+                            startTime: videoStartTime + pressStart,
+                            endTime: videoStartTime + pressEnd
                         };
 
                         fetch(GOOGLE_SHEETS_URL, {
@@ -145,20 +152,16 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        }).then(() => console.log("✅ Data Sent"));
+                        });
                     }
                 };
 
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
 
-                let nextButton = document.getElementById(`next-button-${index}`);
-                if (nextButton) {
-                    nextButton.addEventListener("click", function () {
-                        console.log("➡️ Proceed Button Clicked: Moving to Next Trial");
-                        jsPsych.finishTrial();
-                    });
-                }
+                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
+                    jsPsych.finishTrial();
+                });
             }
         };
         timeline.push(videoTrial);
