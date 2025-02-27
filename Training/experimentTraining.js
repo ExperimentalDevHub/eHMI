@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Log the collected space bar data
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch("Yhttps://script.google.com/macros/s/AKfycbx9A8p-OwW6t9V70-GOtfPbd7viaEGQh0rmvhhcROZsIl-np5wpE7opTBpIOC9PISMlWw/execE", {  // 🔥 REPLACE WITH YOUR NEW URL
+                        fetch("https://script.google.com/macros/s/AKfycbx9A8p-OwW6t9V70-GOtfPbd7viaEGQh0rmvhhcROZsIl-np5wpE7opTBpIOC9PISMlWw/execE", {  // 🔥 REPLACE WITH YOUR NEW URL
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
