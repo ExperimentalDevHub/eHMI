@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX (No More Messed Up Durations)");
+console.log("ExperimentManual.js - FINAL DEBUGGING & FIX");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     Please imagine yourself as a pedestrian attempting to cross the street. 
                     When you feel comfortable and safe crossing, press and hold the spacebar. 
                     If you ever feel unsafe, simply release the spacebar. 
+                    After the video ends, a button will appear one second later to continue. 
                     The videos will autoplay, do not interact with their playback. 
                     When you are ready to begin, select "Start Experiment."
                 </p>
@@ -67,12 +68,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ✅ Using your original video URLs
     let videoList = [
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0",
-        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
     ];
 
     // 🔀 Shuffle videos to show in random order
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let keyupHandled = false; // Prevent duplicate keyup events
+                let keyupHandled = false;
 
                 let nextButton = document.getElementById(`next-button-${index}`);
                 if (nextButton) {
@@ -114,21 +115,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 function handleKeydown(event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
-                        keyupHandled = false; // Reset when a new press happens
+                        keyupHandled = false;
                         console.log(`🟢 Keydown Event Fired: Start Time = ${pressStart}`);
                     }
                 }
 
                 function handleKeyup(event) {
                     if (event.code === "Space" && pressStart !== null && !keyupHandled) {
-                        keyupHandled = true; // Prevent duplicate entries
+                        keyupHandled = true;
 
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
                         let correctedStartTime = videoStartTime + pressStart;
                         let correctedEndTime = videoStartTime + pressEnd;
 
-                        console.log(`🔴 Keyup Event Fired: Start Time = ${correctedStartTime}, End Time = ${correctedEndTime}, Duration = ${pressDuration}`);
+                        console.log(`🔴 Keyup Fired - Start: ${pressStart}, End: ${pressEnd}, Duration: ${pressDuration}`);
 
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
@@ -139,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             duration: Number(pressDuration.toFixed(3))
                         };
 
-                        console.log("📤 Sending Data:", dataToSend);
+                        console.log("📤 Sending This Data:", JSON.stringify(dataToSend, null, 2));
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
@@ -154,7 +155,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 document.removeEventListener("keydown", handleKeydown);
                 document.removeEventListener("keyup", handleKeyup);
-
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
             }
