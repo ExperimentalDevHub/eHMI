@@ -121,20 +121,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         console.log("🚀 Sending data to Google Sheets:", dataToSend);
 
+                        // Fixed fetch call
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
-                            headers: { "Content-Type": "text/plain" }, // Change from JSON to text/plain to avoid triggering a preflight request
+                            headers: { "Content-Type": "text/plain" }, // Avoids triggering CORS preflight
                             body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors" // Prevents preflight request
+                            mode: "no-cors" // Prevents CORS issues
                         });
 
-                        console.log("🚀 Sending data:", dataToSend);
-console.log("📡 Attempting fetch to:", GOOGLE_SHEETS_URL);
-
-                        
-                        .then(response => response.json())
-                        .then(data => console.log("✅ Success:", data))
-                        .catch(error => console.error("❌ Error:", error));
+                        console.log("📡 Fetch request sent (no-cors). Data may not be visible in console.");
                     }
                 };
 
