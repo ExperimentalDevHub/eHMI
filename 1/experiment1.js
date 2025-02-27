@@ -57,21 +57,19 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
-    // ✅ Your original video URLs, now shuffled for randomness
-    let videoList = [
+    // ✅ Shuffle video order for randomness
+    let videoList = jsPsych.randomization.shuffle([
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         "https://www.youtube.com/embed/Tgeko5J1z2I?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-    ];
-    
-    videoList = jsPsych.randomization.shuffle(videoList);
+    ]);
 
     videoList.forEach((videoURL, index) => {
-        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]); // Extract correct video start timestamp
-        let videoNum = index + 1; // Assign video number 1-6
+        let videoStartTime = parseFloat(videoURL.match(/start=(\d+)/)[1]);
+        let videoNum = index + 1;
         
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -82,24 +80,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" class="next-button" style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
-                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
-                    </button>
                 </div>`
             ,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let button = document.getElementById(`next-button-${index}`);
 
-                document.addEventListener("keydown", function (event) {
+                function handleKeydown(event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                     }
-                });
-
-                document.addEventListener("keyup", function (event) {
+                }
+                
+                function handleKeyup(event) {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
@@ -114,18 +108,26 @@ document.addEventListener("DOMContentLoaded", function () {
                             duration: Number(pressDuration.toFixed(3))
                         };
 
+                        console.log("✅ Data to send:", dataToSend);
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
                         });
-
+                        
                         pressStart = null;
                     }
+                }
+                
+                document.addEventListener("keydown", handleKeydown);
+                document.addEventListener("keyup", handleKeyup);
+                
+                jsPsych.getDisplayElement().addEventListener("removed", () => {
+                    document.removeEventListener("keydown", handleKeydown);
+                    document.removeEventListener("keyup", handleKeyup);
                 });
-
-                button.addEventListener("click", () => jsPsych.finishTrial());
             }
         };
         timeline.push(videoTrial);
