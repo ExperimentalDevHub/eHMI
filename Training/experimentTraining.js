@@ -1,4 +1,4 @@
-console.log("experimentTraining.js");
+console.log("ExperimentManual.js - FINAL FIX (Button Alignment, 'Finish Section' & End Message)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -26,6 +26,14 @@ function getParticipantID() {
     return participantID;
 }
 
+// Fisher-Yates shuffle to randomize array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
 // Global event handlers
 let handleKeydown;
 let handleKeyup;
@@ -37,103 +45,75 @@ function removeAllKeyListeners() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Document Loaded, Initializing Training Block...");
+    console.log("Document Loaded, Initializing Experiment...");
     let jsPsych = initJsPsych();
     let timeline = [];
     let participantID = getParticipantID();
     
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
-    let startTraining = {
+    let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Welcome to the Training Section</h2></h2>
+                <h2 style="font-size: 36px;">Experimental Section</h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In this experiment, you will be shown brief video clips to interact with. Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would using your computer's space bar. The videos will autoplay, please do not try to control their playback. When you are ready to begin, select "Start Training."
-                    When you are ready to begin, select "Start Experiment."
+                    In this experiment, you will be shown brief video clips to interact with. Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would using your computer's space bar. The videos will autoplay, please do not try to control their playback. When you are ready to begin, select "Start Experiment."
                 </p>
             </div>
         `,
-        choices: ["Start Training"]
+        choices: ["Start Experiment"]
     };
-    timeline.push(startTraining);
+    timeline.push(startExperiment);
 
-    let trainingVideos = [
+    let videoList = [
         { 
-            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=150&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
-            message: "Press and hold the space bar when you would start slowing down to yield. When you have completed the task, select 'Proceed to next video.'"
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down and let go when you would speed up"
         },
         { 
-            url: "https://www.youtube.com/embed/cWb-2C5mV20?start=41&end=62&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
-            message: "Press and hold the space bar when you would feel safe crossing the road. When you have completed the task, please select 'Finish Training.'"
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield"
         }
     ];
 
-    trainingVideos.forEach((video, index) => {
-        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]);
+    shuffleArray(videoList);
 
+    videoList.forEach((video, index) => {
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="text-align: center;">
-                    <p style="font-size: 18px; ">${video.message}</p>
-                    <iframe id="training-video-${index}" 
+                    <p style="font-size: 18px;">${video.message}</p>
+                    <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 10px;">
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                         <button id="next-button-${index}">
-                            ${index === trainingVideos.length - 1 ? "Finish Training" : "Proceed to Next Video"}
+                            ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Trial"}
                         </button>
                     </div>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
-            on_load: function () {
-                removeAllKeyListeners();
-
-                let pressStart = null;
-                let keyHandled = false;
-
-                handleKeydown = function(event) {
-                    if (event.code === "Space" && !keyHandled) {
-                        pressStart = performance.now() / 1000;
-                        keyHandled = true; 
-                    }
+            on_finish: function (data) {
+                let dataToSend = {
+                    participantID: participantID,
+                    trialIndex: index,
+                    videoURL: video.url,
+                    responseTime: data.rt
                 };
 
-                handleKeyup = function(event) {
-                    if (event.code === "Space" && keyHandled) {
-                        keyHandled = false; 
-                        let pressEnd = performance.now() / 1000;
-
-                        let dataToSend = {
-                            participantID: parseInt(participantID, 10),
-                            date: new Date().toISOString().split('T')[0],
-                            experimentCode: "Training",
-                            startTime: Number((videoStartTime + pressStart).toFixed(3)),
-                            endTime: Number((videoStartTime + pressEnd).toFixed(3))
-                        };
-
-                        fetch(GOOGLE_SHEETS_URL, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors"
-                        });
-                    }
-                };
-
-                document.addEventListener("keydown", handleKeydown);
-                document.addEventListener("keyup", handleKeyup);
-
-                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
-                    jsPsych.finishTrial();
-                });
+                fetch(GOOGLE_SHEETS_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ experimentData: dataToSend }),
+                    mode: "no-cors"
+                }).then(() => console.log("✅ Data Sent"));
             }
         };
         timeline.push(videoTrial);
@@ -141,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: "<h2>Please inform the researcher that you have completed the training</h2>",
+        stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
         choices: []
     });
 
