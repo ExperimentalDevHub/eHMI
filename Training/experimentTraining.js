@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyiz5xuJHDASIZB24jOxg_H1dEFKrzCDz3d-hxZ9g91_-7HG27tYvPozNxz1PFfAUx45A/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxIZdR_ewCC_NPHMWZVONIQqhxuPhjG2iyXzmOk7Yl9X0l-7IX6GVao4ADD9AwrxEBUKg/exec";
 
     // Welcome screen with updated title and button text for training
     let startExperiment = {
@@ -128,20 +128,25 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Log the collected space bar data
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch(GOOGLE_SHEETS_URL, {
+                        fetch("YOUR_ACTUAL_GOOGLE_APPS_SCRIPT_URL", {  // 🔥 FIXED: Use the correct script URL
                             method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            mode: "cors",  // Enables cross-origin requests
-                            body: JSON.stringify({ experimentData: dataToSend })
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                experimentData: {
+                                    participantID: 999999,
+                                    date: "2025-02-27",
+                                    experimentCode: "DebugTest",
+                                    startTime: 123.456,
+                                    endTime: 789.012
+                                }
+                            })
                         })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => console.log("✅ Success:", data))
-                        .catch(error => console.error("❌ Fetch Error:", error));
+                        .then(response => response.json())
+                        .then(data => console.log("✅ Debug Request Success:", data))
+                        .catch(error => console.error("❌ Debug Request Error:", error));
+                        
                         
                         
                         
