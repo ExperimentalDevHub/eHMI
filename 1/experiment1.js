@@ -55,56 +55,63 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
+                    <button id="next-button-${index}" class="next-button" 
+                        style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
+                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
+                    </button>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-
+                let button = document.getElementById(`next-button-${index}`);
+        
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
                         pressStart = performance.now() / 1000;
                         console.log(`🟢 Space Press Start: ${pressStart.toFixed(3)}`);
                     }
                 });
-
+        
                 document.addEventListener("keyup", function (event) {
                     if (event.code === "Space" && pressStart !== null) {
                         let pressEnd = performance.now() / 1000;
                         let pressDuration = pressEnd - pressStart;
-
+        
                         let correctedStartTime = videoStartTime + (pressStart - videoStartTime);
                         let correctedEndTime = videoStartTime + (pressEnd - videoStartTime);
-
+        
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            video_ID: videoNum,  // 🔥 Renaming vidNumber → video_ID
+                            video_number: videoNum,  // 🔥 Renaming videoNum again to "video_number"
                             startTime: correctedStartTime.toFixed(3), 
                             endTime: correctedEndTime.toFixed(3),
                             duration: pressDuration.toFixed(3)
                         };
                         
-                        
                         console.log("✅ Final Data to Send (Check Google Sheets):", JSON.stringify(dataToSend));
                         
+        
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
                         }).then(() => console.log("✅ Google Sheets Request Sent."));
-                        
-
+        
                         pressStart = null;
                     }
                 });
+        
+                // ✅ Ensuring Next Button Always Works
+                button.addEventListener("click", () => jsPsych.finishTrial());
             }
         };
         timeline.push(videoTrial);
-    });
+        
 
     jsPsych.run(timeline);
 });
