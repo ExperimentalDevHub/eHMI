@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 13");
+console.log("ExperimentManual.js - Version 14");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                         pressStart = null;
                     }
-                }, { once: true });
+                });
 
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => jsPsych.finishTrial());
             }
