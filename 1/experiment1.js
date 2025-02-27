@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - FINAL FIX (Correct Messages, Proceed Button & No Duplicates)");
+console.log("ExperimentManual.js - FINAL FIX (Buttons Right-Aligned & Data Adjustments)");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -51,8 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
+    // Update with your own Google Sheets URL
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
 
+    // Start screen
     let startExperiment = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -73,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(startExperiment);
 
+    // Video list with assigned messages
     let videoList = [
         { 
             url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
@@ -100,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     ];
 
+    // Shuffle videos
     shuffleArray(videoList);
 
     videoList.forEach((video, index) => {
@@ -109,14 +113,16 @@ document.addEventListener("DOMContentLoaded", function () {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container">
-                    <p style="font-size: 24px; font-weight: bold; text-align: center;">${video.message}</p>
+                    <p style="font-size: 24px; font-weight: bold; text-align: center;">
+                        ${video.message}
+                    </p>
                     <iframe id="experiment-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
                     <div style="text-align: right; margin-top: 20px;">
-                        <button id="next-button-${index}" style="display: block;">
+                        <button id="next-button-${index}" style="display: inline-block;">
                             ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
                         </button>
                     </div>
@@ -141,10 +147,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && keyHandled) {
                         keyHandled = false; 
                         let pressEnd = performance.now() / 1000;
+
+                        // Build data object
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
-                            startTime: videoStartTime + pressStart,
-                            endTime: videoStartTime + pressEnd
+                            date: new Date().toLocaleDateString("en-US"),  // e.g. "02/27/2025"
+                            experimentCode: 1,
+                            startTime: Number((videoStartTime + pressStart).toFixed(4)),
+                            endTime: Number((videoStartTime + pressEnd).toFixed(4))
                         };
 
                         fetch(GOOGLE_SHEETS_URL, {
@@ -152,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        });
+                        }).then(() => console.log("✅ Data Sent:", dataToSend));
                     }
                 };
 
@@ -160,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.addEventListener("keyup", handleKeyup);
 
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => {
+                    console.log("➡️ Proceed Button Clicked: Next Trial");
                     jsPsych.finishTrial();
                 });
             }
@@ -167,5 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
         timeline.push(videoTrial);
     });
 
+    // Run the experiment
     jsPsych.run(timeline);
 });
