@@ -1,6 +1,6 @@
 console.log("experimentTraining.js");
 
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxtX8SYfQIWMS4S1AMxnzL8YtD0-iIwKKSQ1UPca8ToQGt5RGQLvrJ1C2rqtGuphGsUYA/exec";
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwuFimIMDPopSopmjS2ggY5QNo0k_RLEJxCouvmUMBuzg1O3XCqX9Dwsr12EscGQWCZQA/exec";
 
 
 // Ensure YouTube API loads before running the experiment
