@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxPS-BE7ExI4fee8nsJq3Au1hjTRhFgkwbMzWtEf-aKG7zRjSnAxb0LRt3MC9UtDE2iSQ/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbznf_f1jrWkLIxig2GBwfzfO8lT25qhWzVtFHmSTWaT_LNFmmeSiQXdRtwAkIa7BbEPVw/exec";
 
     // Welcome screen
     timeline.push({
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         console.log(`Trial ${index} spacebar data:`, dataToSend);
 
-                        fetch("YOUR_NEW_DEPLOYMENT_URL_HERE", {  
+                        fetch("https://script.google.com/macros/s/AKfycbznf_f1jrWkLIxig2GBwfzfO8lT25qhWzVtFHmSTWaT_LNFmmeSiQXdRtwAkIa7BbEPVw/exec", {  
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
