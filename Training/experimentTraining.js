@@ -1,4 +1,4 @@
-console.log("experimentTraining.js - V 3");
+console.log("experimentTraining.js - V 4");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
     let participantID = getParticipantID();
     
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwr1iMbsE-d6hCAJWN7X8N2wUw0cIbdynsBUMbFIxG2p_cOyktk-xQr6I6WwlbPetVnqA/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbze89UZ7jA6i4ENBfs_f_8cs0D7cztAO4aZ10aI8Oftq4lE8H_eFED7xVfohSH5438COw/exec";
 
     // Welcome screen
     timeline.push({
@@ -133,11 +133,20 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: {
                               "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({ experimentData: dataToSend })
+                            body: JSON.stringify({
+                              experimentData: {
+                                participantID: participantID,
+                                date: new Date().toISOString().split('T')[0],
+                                experimentCode: "Training",
+                                startTime: Number((videoStartTime + pressStart).toFixed(3)),
+                                endTime: Number((videoStartTime + pressEnd).toFixed(3))
+                              }
+                            })
                         })
-                        .then(response => response.json())  
+                        .then(response => response.json())
                         .then(data => console.log("✅ Data Sent Successfully:", data))
                         .catch(error => console.error("❌ Fetch Request Error:", error));
+                        
                     }
                 };
 
