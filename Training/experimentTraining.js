@@ -35,8 +35,20 @@ function shuffleArray(array) {
 }
 
 // Global event handlers
-let handleKeydown;
-let handleKeyup;
+let handleKeydown = function(event) {
+    if (event.code === "Space") {
+        console.log("⏳ Spacebar Pressed");
+    }
+};
+
+let handleKeyup = function(event) {
+    if (event.code === "Space") {
+        console.log("✅ Spacebar Released");
+    }
+};
+
+document.addEventListener("keydown", handleKeydown);
+document.addEventListener("keyup", handleKeyup);
 
 function removeAllKeyListeners() {
     console.log("🛑 Removing old event listeners before adding new ones...");
@@ -99,29 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             choices: "NO_KEYS",
-            trial_duration: null,
-            on_load: function () {
-                document.querySelector(`#next-button-${index}`).addEventListener("click", function () {
-                    console.log("➡️ Proceed Button Clicked: Moving to Next Trial");
-                    jsPsych.finishTrial();
-                });
-            },
-            on_finish: function (data) {
-                let dataToSend = {
-                    participantID: participantID,
-                    trialIndex: index,
-                    videoURL: video.url,
-                    responseTime: data.rt
-                };
-
-                fetch(GOOGLE_SHEETS_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ experimentData: dataToSend }),
-                    mode: "no-cors"
-                }).then(() => console.log("✅ Data Sent"))
-                .catch(error => console.error("❌ Error sending data:", error));
-            }
+            trial_duration: null
         };
         timeline.push(videoTrial);
     });
