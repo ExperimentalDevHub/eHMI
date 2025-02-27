@@ -1,4 +1,4 @@
-console.log("experimentTraining.js");
+console.log("experimentTraining.js - V 1");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -120,37 +120,21 @@ document.addEventListener("DOMContentLoaded", function () {
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
-
-                        console.log("🚀 Sending Fetch Request to Google Apps Script...");
-
-fetch("https://script.google.com/macros/s/AKfycbz-Ehp95oA9WKWU95T-Ts_vlW7HfgfxwfxC0vcOBHPioouU5QpQ5FHCtYwyZyzb447S6Q/exec", {  
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    mode: "cors",
-    body: JSON.stringify({
-        experimentData: {
-            participantID: 123456,
-            date: new Date().toISOString().split('T')[0],
-            experimentCode: "Training",
-            startTime: 111.111,
-            endTime: 222.222
-        }
-    })
-})
-.then(response => response.text()) // Change to text() so we can catch HTML errors
-.then(data => {
-    console.log("✅ Fetch Request Success. Response:");
-    console.log(data);
-    try {
-        let jsonResponse = JSON.parse(data);
-        console.log("✅ Parsed JSON:", jsonResponse);
-    } catch (error) {
-        console.error("❌ JSON Parse Error. Server returned non-JSON data:", data);
-    }
-})
-.catch(error => console.error("❌ Fetch Request Error:", error));
+                        
+                        console.log("🚀 Sending Real Data:", dataToSend);
+                        
+                        fetch(GOOGLE_SHEETS_URL, {  
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            mode: "cors", // Ensure CORS is enabled
+                            body: JSON.stringify({ experimentData: dataToSend }) // Send actual data
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log("✅ Fetch Request Success:", data))
+                        .catch(error => console.error("❌ Fetch Request Error:", error));
+                        
 
                         
                     }
