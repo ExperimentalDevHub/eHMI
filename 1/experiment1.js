@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 5");
+console.log("ExperimentManual.js - Version 6");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -103,6 +103,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 let pressStart = null;
                 let isPressing = false; // Prevents duplicate keydown events
 
+                let nextButton = document.getElementById(`next-button-${index}`);
+                if (nextButton) {
+                    nextButton.addEventListener("click", function () {
+                        jsPsych.finishTrial(); // Move to the next trial
+                    });
+                }
+
                 function handleKeydown(event) {
                     if (event.code === "Space" && !isPressing) {
                         isPressing = true; 
@@ -134,10 +141,14 @@ document.addEventListener("DOMContentLoaded", function () {
                             mode: "no-cors"
                         });
 
-                        document.removeEventListener("keydown", handleKeydown);
-                        document.removeEventListener("keyup", handleKeyup);
+                        // Allow multiple presses in the same trial
+                        pressStart = null;
                     }
                 }
+
+                // Make sure each trial removes previous listeners
+                document.removeEventListener("keydown", handleKeydown);
+                document.removeEventListener("keyup", handleKeyup);
 
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
