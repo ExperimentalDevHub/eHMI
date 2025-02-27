@@ -1,4 +1,4 @@
-console.log("ExperimentManual.js - Version 13");
+console.log("ExperimentManual.js - Debug Mode");
 
 // Ensure YouTube API loads before running the experiment
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
@@ -9,11 +9,6 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 } else {
     console.log("YouTube API already loaded.");
-}
-
-// Global function for YouTube API
-function onYouTubeIframeAPIReady() {
-    console.log("YouTube API Loaded and Ready.");
 }
 
 // Generate or retrieve a unique participant ID
@@ -36,26 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let participantID = getParticipantID();
     
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyIqBDrQm2DjrKPk4srrDsPnxO3-0zwKGxw4bmChUzHXSTl3tf05nFTmuo4IzrmgRHwPg/exec";
-
-    let startExperiment = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `
-            <div style="text-align: center;">
-                <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Welcome to the eHMI Experiment</h2>
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In this experiment, you will be shown brief video clips to interact with. 
-                    Please imagine yourself as a pedestrian attempting to cross the street. 
-                    When you feel comfortable and safe crossing, press and hold the spacebar. 
-                    If you ever feel unsafe, simply release the spacebar. 
-                    The videos will autoplay, do not interact with their playback. 
-                    When you are ready to begin, select "Start Experiment."
-                </p>
-            </div>
-        `,
-        choices: ["Start Experiment"]
-    };
-    timeline.push(startExperiment);
 
     // ✅ Your original video URLs
     const videoList = [
@@ -80,17 +55,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${videoURL}" 
                         frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
-                    <button id="next-button-${index}" class="next-button" 
-                        style="display: block; font-size: 18px; padding: 10px 20px; margin-top: 20px;">
-                        ${index === videoList.length - 1 ? "Finish" : "Proceed to Next Trial"}
-                    </button>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 let pressStart = null;
-                let button = document.getElementById(`next-button-${index}`);
 
                 document.addEventListener("keydown", function (event) {
                     if (event.code === "Space" && pressStart === null) {
@@ -111,27 +81,26 @@ document.addEventListener("DOMContentLoaded", function () {
                             participantID: parseInt(participantID, 10),
                             date: new Date().toISOString().split('T')[0],
                             experimentCode: 1,
-                            videoNum: String(videoNum), // ✅ Force it to be a string
+                            videoNum: videoNum, // ✅ Check if this appears in Google Sheets
                             startTime: correctedStartTime.toFixed(3), 
                             endTime: correctedEndTime.toFixed(3),
                             duration: pressDuration.toFixed(3)
                         };
 
-                        console.log("✅ Final Data to Send:", JSON.stringify(dataToSend));
+                        console.log("✅ Final Data to Send (Check Google Sheets):", JSON.stringify(dataToSend));
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        }).then(() => console.log("✅ Google Sheets Request Sent."));
+                        })
+                        .then(() => console.log("✅ Google Sheets Request Sent."))
+                        .catch((error) => console.error("❌ Fetch Error:", error));
 
                         pressStart = null;
                     }
                 });
-
-                // ✅ Ensuring Next Button Always Works
-                button.addEventListener("click", () => jsPsych.finishTrial());
             }
         };
         timeline.push(videoTrial);
