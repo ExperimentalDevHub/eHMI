@@ -48,11 +48,13 @@ document.addEventListener("DOMContentLoaded", function () {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
-                <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
+                <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 400px; margin-bottom: 20px;">
                 <h2 style="font-size: 36px;">Welcome to the Training Block</h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In this training session, you will watch two short videos and respond by pressing the space bar according to the given instructions. 
-                    When you are ready, select "Start Training."
+                    In this experiment, you will be shown brief video clips to interact with. 
+                    Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would.  
+                    The videos will autoplay, please do not try to control their playback.
+                    When you are ready to begin, select "Start Training."
                 </p>
             </div>
         `,
@@ -62,12 +64,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let trainingVideos = [
         { 
-            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=166&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
-            message: "Press and hold the space bar when you would start slowing down to yield"
+            url: "https://www.youtube.com/embed/Tgeko5J1z2I?start=156&end=170&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would start slowing down to yield. When you have completed the task, please select 'Proceed to next video.'"
         },
         { 
-            url: "https://www.youtube.com/embed/cWb-2C5mV20?start=57&end=62&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
-            message: "Press and hold the space bar when you would feel safe crossing the road"
+            url: "https://www.youtube.com/embed/cWb-2C5mV20?start=47&end=62&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+            message: "Press and hold the space bar when you would feel safe crossing the road. When you have completed the task, please select 'Finish Training.'"
         }
     ];
 
