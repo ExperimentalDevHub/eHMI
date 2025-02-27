@@ -22,7 +22,7 @@ function getParticipantID() {
         participantID = Math.floor(100000 + Math.random() * 900000).toString();
         localStorage.setItem("participantID", participantID);
     }
-    console.log("Participant ID:", participantID);
+    console.log("✅ Participant ID:", participantID);
     return participantID;
 }
 
@@ -37,7 +37,7 @@ function removeAllKeyListeners() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Document Loaded, Initializing Training Block...");
+    console.log("📌 Document Loaded, Initializing Training Block...");
     let jsPsych = initJsPsych();
     let timeline = [];
     let participantID = getParticipantID();
@@ -49,10 +49,9 @@ document.addEventListener("DOMContentLoaded", function () {
         stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Welcome to the Training Section</h2></h2>
+                <h2 style="font-size: 36px;">Welcome to the Training Section</h2>
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                     In this experiment, you will be shown brief video clips to interact with. Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks as you normally would using your computer's space bar. The videos will autoplay, please do not try to control their playback. When you are ready to begin, select "Start Training."
-                    When you are ready to begin, select "Start Experiment."
                 </p>
             </div>
         `,
@@ -78,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div id="video-container" style="text-align: center;">
-                    <p style="font-size: 18px; ">${video.message}</p>
+                    <p style="font-size: 18px;">${video.message}</p>
                     <iframe id="training-video-${index}" 
                         style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                         src="${video.url}" 
@@ -102,7 +101,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 handleKeydown = function(event) {
                     if (event.code === "Space" && !keyHandled) {
                         pressStart = performance.now() / 1000;
-                        keyHandled = true; 
+                        keyHandled = true;
+                        console.log("🔵 Space key pressed at:", pressStart);
                     }
                 };
 
@@ -119,12 +119,17 @@ document.addEventListener("DOMContentLoaded", function () {
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
 
+                        console.log("🚀 Sending data to Google Sheets:", dataToSend);
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors"
-                        });
+                            mode: "cors"
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log("✅ Success:", data))
+                        .catch(error => console.error("❌ Error:", error));
                     }
                 };
 
