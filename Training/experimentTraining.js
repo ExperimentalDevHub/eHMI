@@ -136,14 +136,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
+                            mode: "no-cors",  // <--- no-cors added
                             headers: {
                               "Content-Type": "application/json"
                             },
                             body: JSON.stringify({ experimentData: dataToSend })
-                        })
-                        .then(response => response.json())
-                        .then(data => console.log("✅ Data Sent Successfully:", data))
-                        .catch(error => console.error("❌ Fetch Request Error:", error));
+                          })
+                          .then(() => console.log("Data sent (no-cors)."))
+                          .catch(error => console.error("Fetch error:", error));
+                          
                     }
                 };
 
