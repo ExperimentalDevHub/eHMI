@@ -123,7 +123,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend })
                         })
+                        .then(response => response.json())  // ✅ Try to read JSON response
+                        .then(data => console.log("Success:", data))
                         .catch(error => console.error("Error sending data:", error));
+                        
                         
                     }
                 };
