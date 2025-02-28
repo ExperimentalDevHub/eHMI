@@ -67,7 +67,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
     // 6d) Google Apps Script URL .
     //    (Replace this with your own working URL if needed)
-    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxyWu6TdzxRb2v7Uw7O6F5UC_6Ry3GY6yUzBJqZME4KkC6KtOmgmZ64jvOTRPUXDcYZLQ/exec";
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx6xCm0X8YsL49Ln9LaisumLaiWT6ojwqJj3Y0hv95WAr1GGQJV2fQaL9BlBBnxCBIP/exec";
   
     // 6e) Intro trial
     let startExperiment = {
