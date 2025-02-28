@@ -1,8 +1,8 @@
 /****************************************************
- * experiment1.js - Debug Version 2
+ * experiment1.js - Version 2 (Mirrors Working PoC)
  ****************************************************/
 
-// 1) YouTube API check
+// 1) Check for YouTube API
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("Loading YouTube API...");
     let tag = document.createElement("script");
@@ -29,7 +29,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     return participantID;
   }
   
-  // 4) Shuffle function
+  // 4) Shuffle array
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -37,7 +37,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     }
   }
   
-  // 5) Global references for key handlers
+  // 5) Key handler references
   let handleKeydown;
   let handleKeyup;
   
@@ -49,43 +49,31 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 6) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("Document Loaded, Initializing Experiment...");
+    console.log("experiment1.js - Version 2 (Mirrors Working PoC)");
+    console.log("Document loaded. Initializing experiment...");
   
     // 6a) Initialize jsPsych
     let jsPsych = initJsPsych({
-      on_finish: () => {
+      on_finish: function() {
         console.log("Experiment finished.");
       }
     });
   
-    // 6b) Create timeline
+    // 6b) Timeline
     let timeline = [];
   
     // 6c) Get participant ID
     let participantID = getParticipantID();
   
-    // 6d) Your Google Apps Script endpoint
-    //     (MUST match your deployed "Web App" URL in script.google.com)
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxBXwp3EP7ib0c0eIzGzSoMvhTAnI3sVW0DKcuZh1V9Eu4NYTc_l7hCB8IRSlSfXBv1/exec";
-    
-    // --- DEBUG STEP #1: Check if server is reachable via GET ---
-    fetch(GOOGLE_SHEETS_URL + "?test=connectivity")
-      .then(response => response.text())
-      .then(txt => {
-        console.log("GET response from server (doGet):", txt);
-        // If you see { "status":"success", "message":"Hello from doGet!", ... }
-        // it means the web app is reachable and set to "Anyone" or "Anyone with the link."
-      })
-      .catch(err => {
-        console.error("GET request failed. Check your Web App URL or permissions:", err);
-      });
+    // 6d) Google Apps Script URL
+    //    (Replace this with your own working URL if needed)
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxyWu6TdzxRb2v7Uw7O6F5UC_6Ry3GY6yUzBJqZME4KkC6KtOmgmZ64jvOTRPUXDcYZLQ/exec";
   
-    // 6e) Intro screen
+    // 6e) Intro trial
     let startExperiment = {
       type: jsPsychHtmlButtonResponse,
       stimulus: `
         <div style="text-align: center;">
-            <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
             <h2 style="font-size: 36px;">Experimental section</h2>
             <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                 In this experiment, you will be shown brief video clips to interact with. 
@@ -100,7 +88,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     };
     timeline.push(startExperiment);
   
-    // 6f) Video list
+    // 6f) Video list (shuffle if you like)
     let videoList = [
       { 
         url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
@@ -127,15 +115,10 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         message: "Press and hold the space bar when you would start slowing down to yield"
       }
     ];
-  
-    // Shuffle the video order
     shuffleArray(videoList);
   
-    // 6g) Build trials for each video
+    // 6g) Build a trial for each video
     videoList.forEach((video, index) => {
-      // Grab the "start=" param to align timing
-      let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]) || 0;
-  
       let videoTrial = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
@@ -154,62 +137,48 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
           </div>
         `,
         choices: "NO_KEYS",
-        trial_duration: null,
-        on_load: function () {
+        on_load: function() {
           // Remove old listeners
           removeAllKeyListeners();
   
-          let pressStart = null;
-          let keyHandled = false;
+          let keyIsDown = false;
   
-          // 6g-i) Keydown
           handleKeydown = function(event) {
-            if (event.code === "Space" && !keyHandled) {
-              pressStart = performance.now() / 1000; 
-              keyHandled = true;
-              console.log("Space bar DOWN at", pressStart, "s (video start:", videoStartTime, ")");
+            if (event.code === "Space" && !keyIsDown) {
+              keyIsDown = true;
+              console.log("Space bar pressed (DOWN).");
             }
           };
   
-          // 6g-ii) Keyup
           handleKeyup = function(event) {
-            if (event.code === "Space" && keyHandled) {
-              keyHandled = false; 
-              let pressEnd = performance.now() / 1000;
-              console.log("Space bar UP at", pressEnd, "s");
+            if (event.code === "Space" && keyIsDown) {
+              keyIsDown = false;
+              console.log("Space bar released (UP).");
   
-              // Build data object. 
-              // doPost(e) expects [ participantID, date, experimentCode ]
+              // 6g-i) This is where we do the "on_finish" logic from your working PoC:
+              // Build the data object
               let dataToSend = {
-                participantID: parseInt(participantID, 10),
-                date: new Date().toISOString(),
+                participantID: participantID, // a string
+                date: new Date().toISOString().split('T')[0], // from the working code
                 experimentCode: 1
               };
   
-              // Debug info for start/end times:
-              let startTimeCalc = (videoStartTime + pressStart).toFixed(3);
-              let endTimeCalc = (videoStartTime + pressEnd).toFixed(3);
-              console.log("Approx startTime:", startTimeCalc);
-              console.log("Approx endTime:", endTimeCalc);
-  
-              // POST request
               console.log("Sending data to Google Sheets (no-cors):", dataToSend);
+  
+              // Send data
               fetch(GOOGLE_SHEETS_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ experimentData: dataToSend }),
                 mode: "no-cors"
               })
-              .then(() => {
-                console.log("POST request finished (no-cors). If there's no fetch error, it was sent.");
-              })
               .catch(err => {
-                console.error("POST request encountered an error:", err);
+                console.error("Error sending data:", err);
               });
             }
           };
   
-          // Attach new listeners
+          // Add the event listeners
           document.addEventListener("keydown", handleKeydown);
           document.addEventListener("keyup", handleKeyup);
   
@@ -225,11 +194,13 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     // 6h) Final screen
     timeline.push({
       type: jsPsychHtmlButtonResponse,
-      stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
+      stimulus: `
+        <h2>Please inform the researcher that you have completed this section</h2>
+      `,
       choices: []
     });
   
-    // 6i) Run jsPsych
+    // 6i) Run the experiment
     jsPsych.run(timeline);
   });
   
