@@ -1,5 +1,5 @@
 /****************************************************
- * ExperimentManual.js - Version 4
+ * ExperimentManual.js - Version 5
  ****************************************************/
 
 // Ensure YouTube API loads before running the experiment
@@ -60,8 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Retrieve (or create) participant ID
     let participantID = getParticipantID();
 
-    // Your Google Apps Script endpoint
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyiOfOZB1JKufXdhuRLjzleRSUg2tMpEBYrADm0NR1b8on1DDcvBw_hzqWpVBDBXDja/exec";
+    // Your existing Google Apps Script endpoint
+    let GOOGLE_SHEETS_URL = "YOUR_GOOGLE_WEB_APP_URL";
 
     // Intro screen
     let startExperiment = {
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Build trials for each video
     videoList.forEach((video, index) => {
         // Grab the "start=" query param to align with timing
-        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]);
+        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]) || 0;
 
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -139,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
+                // Remove old listeners to prevent duplicates
                 removeAllKeyListeners();
 
                 let pressStart = null;
@@ -146,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 handleKeydown = function(event) {
                     if (event.code === "Space" && !keyHandled) {
-                        pressStart = performance.now() / 1000;
+                        pressStart = performance.now() / 1000; // seconds since page load
                         keyHandled = true; 
                     }
                 };
@@ -156,14 +157,16 @@ document.addEventListener("DOMContentLoaded", function () {
                         keyHandled = false; 
                         let pressEnd = performance.now() / 1000;
 
-                        // Build the data object
+                        // Build the data object with your desired columns
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
-                            date: new Date().toISOString().split('T')[0],
-                            experimentCode: 1,
+                            dateTime: new Date().toISOString(),   // Full date & time
+                            experimentBlock: 1,                  // Or any block number you want
+                            videoNumber: index + 1,              // (1-6)
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
+
                         console.log("Sending data:", dataToSend);
 
                         // Send to Google Sheets via Apps Script
@@ -171,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
-                            mode: "no-cors"
+                            mode: "no-cors" // We'll skip reading the response
                         })
                         .then(() => {
                             console.log("Data sent successfully (no-cors, no response).");
@@ -182,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 };
 
-                // Attach key listeners
+                // Attach new key listeners
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
 
