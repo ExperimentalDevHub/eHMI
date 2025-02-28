@@ -79,7 +79,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
     // 7d) Google Apps Script Web App URL
     //     (Replace with your final working script URL)
-    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx6xCm0X8YsL49Ln9LaisumLaiWT6ojwqJj3Y0hv95WAr1GGQJV2fQaL9BlBBnxCBIP/exec";
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
   
     // 7e) Intro screen
     let startExperiment = {
