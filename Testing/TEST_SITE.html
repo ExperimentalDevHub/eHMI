@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple jsPsych Experiment</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspsych@7.3.1/css/jspsych.css">
+  <style>
+    body { background: white; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <div id="jspsych-target"></div>
+  <!-- jsPsych core and plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/jspsych@7.3.1/jspsych.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspsych@7.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+  <script>
+    // Initialize jsPsych
+    const jsPsych = initJsPsych({
+      on_finish: function() {
+        console.log("Experiment finished.");
+      }
+    });
+
+    // Define a trial that listens for a space bar press
+    const trial = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "<h1>YES, the website is working!</h1><p>Press the space bar to record your tap.</p>",
+      choices: [" "], // Only the space bar is accepted
+      on_finish: function(data) {
+        console.log("Space bar pressed!", data);
+      }
+    };
+
+    // Run the experiment with the single trial
+    jsPsych.run([trial]);
+  </script>
+</body>
+</html>
