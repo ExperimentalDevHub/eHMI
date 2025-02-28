@@ -65,7 +65,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     // 6c) Get participant ID
     let participantID = getParticipantID();
   
-    // 6d) Google Apps Script URL
+    // 6d) Google Apps Script URL .
     //    (Replace this with your own working URL if needed)
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxyWu6TdzxRb2v7Uw7O6F5UC_6Ry3GY6yUzBJqZME4KkC6KtOmgmZ64jvOTRPUXDcYZLQ/exec";
   
