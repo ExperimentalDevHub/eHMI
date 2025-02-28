@@ -1,5 +1,6 @@
 /****************************************************
- * experiment1.js - Version 3 (6-Field Data Output)
+ * experiment1.js - Version 4
+ * (6-Field Data Output, nicer date/time, original video #)
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -29,7 +30,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     return participantID;
   }
   
-  // 4) Shuffle array
+  // 4) Utility: shuffle array
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -37,7 +38,19 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     }
   }
   
-  // 5) Global key handler references
+  // 5) Utility: format date/time as YYYY-MM-DD HH:MM:SS
+  function getFormattedDateTime() {
+    let d = new Date();
+    let year = d.getFullYear();
+    let month = String(d.getMonth() + 1).padStart(2, "0");
+    let day = String(d.getDate()).padStart(2, "0");
+    let hour = String(d.getHours()).padStart(2, "0");
+    let minute = String(d.getMinutes()).padStart(2, "0");
+    let second = String(d.getSeconds()).padStart(2, "0");
+    return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+  }
+  
+  // 6) Global key handler references
   let handleKeydown;
   let handleKeyup;
   function removeAllKeyListeners() {
@@ -46,28 +59,29 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     document.removeEventListener("keyup", handleKeyup);
   }
   
-  // 6) Main experiment code
+  // 7) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 3 (6-Field Data Output)");
+    console.log("experiment1.js - Version 4 (Nicer Date/Time, Original Video #)");
     console.log("Document loaded. Initializing experiment...");
   
-    // 6a) Initialize jsPsych
+    // 7a) Initialize jsPsych
     let jsPsych = initJsPsych({
       on_finish: function() {
         console.log("Experiment finished.");
       }
     });
   
-    // 6b) Timeline array
+    // 7b) Timeline array
     let timeline = [];
   
-    // 6c) Retrieve Participant ID
+    // 7c) Retrieve (or create) participant ID
     let participantID = getParticipantID();
   
-    // 6d) Google Apps Script Web App URL (update to your working URL)
-    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxfBoI8n1nCSv-1QkPHpipsUhxNdXs3FsiyJRbZqxLhCTcVo9x2A5F3r0BIA9XUw5JzhQ/exec";
+    // 7d) Google Apps Script Web App URL
+    //     (Replace with your final working script URL)
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx6xCm0X8YsL49Ln9LaisumLaiWT6ojwqJj3Y0hv95WAr1GGQJV2fQaL9BlBBnxCBIP/exec";
   
-    // 6e) Intro trial
+    // 7e) Intro screen
     let startExperiment = {
       type: jsPsychHtmlButtonResponse,
       stimulus: `
@@ -85,38 +99,46 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     };
     timeline.push(startExperiment);
   
-    // 6f) Define video list (and shuffle if desired)
+    // 7f) Define video list, giving each a "number" for the original order
     let videoList = [
       { 
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+        number: 1,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would start slowing down and let go when you would speed up"
       },
       { 
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+        number: 2,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would start slowing down to yield"
       },
       { 
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+        number: 3,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would start slowing down to yield"
       },
       { 
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+        number: 4,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would start slowing down to yield"
       },
       { 
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+        number: 5,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would start slowing down to yield"
       },
       { 
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
+        number: 6,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would start slowing down to yield"
       }
     ];
+  
+    // Shuffle the video array
     shuffleArray(videoList);
   
-    // 6g) Build a trial for each video
+    // 7g) Build a trial for each video
     videoList.forEach((video, index) => {
-      // Parse the start time from the video URL
+      // Extract the "start=" param so we can align press times
       let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]) || 0;
   
       let videoTrial = {
@@ -124,7 +146,8 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         stimulus: `
           <div id="video-container" style="text-align: center;">
             <p style="font-size: 18px;">${video.message}</p>
-            <iframe id="experiment-video-${index}" 
+            <iframe 
+                id="experiment-video-${index}" 
                 style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"  
                 src="${video.url}" 
                 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
@@ -139,43 +162,42 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         choices: "NO_KEYS",
         trial_duration: null,
         on_load: function () {
-          // Remove old key listeners to avoid duplicates
+          // Remove old listeners
           removeAllKeyListeners();
-    
-          // Declare variables to record press times
+  
           let pressStart = null;
           let pressEnd = null;
           let keyIsDown = false;
-    
-          // Keydown: record when space is pressed
+  
+          // Keydown: record press start
           handleKeydown = function(event) {
             if (event.code === "Space" && !keyIsDown) {
               keyIsDown = true;
-              pressStart = performance.now() / 1000; 
+              pressStart = performance.now() / 1000;
               console.log("Space bar pressed (DOWN) at", pressStart, "seconds");
             }
           };
-    
-          // Keyup: record when space is released, then send data
+  
+          // Keyup: record press end, then send data
           handleKeyup = function(event) {
             if (event.code === "Space" && keyIsDown) {
               keyIsDown = false;
               pressEnd = performance.now() / 1000;
               console.log("Space bar released (UP) at", pressEnd, "seconds");
-    
-              // Build the data object with 6 fields:
+  
+              // 7g-i) Build the 6-field data object
               let dataToSend = {
-                participantID: participantID,                           // Participant ID
-                dateTime: new Date().toISOString(),                      // Date and Time
-                experimentBlock: 1,                                      // Experiment Block (change as needed)
-                videoNumber: index + 1,                                  // Video Number (1-6)
-                startTime: Number((videoStartTime + pressStart).toFixed(3)), // Start Time
-                endTime: Number((videoStartTime + pressEnd).toFixed(3))      // End Time
+                participantID: participantID,                             // e.g. 458474
+                dateTime: getFormattedDateTime(),                         // e.g. "2025-02-28 17:45:01"
+                experimentBlock: 1,                                       // you can change if you have multiple blocks
+                videoNumber: video.number,                                // original # from the array
+                startTime: Number((videoStartTime + pressStart).toFixed(3)),
+                endTime: Number((videoStartTime + pressEnd).toFixed(3))
               };
-    
+  
               console.log("Sending data to Google Sheets (no-cors):", dataToSend);
-    
-              // POST the data using no-cors mode (response is opaque)
+  
+              // Send data to your Google Apps Script
               fetch(GOOGLE_SHEETS_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -187,12 +209,12 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
               });
             }
           };
-    
-          // Attach the key event listeners
+  
+          // Attach key listeners
           document.addEventListener("keydown", handleKeydown);
           document.addEventListener("keyup", handleKeyup);
-    
-          // Next/Finish button handler ends the trial
+  
+          // Next/Finish button to end the trial
           document.getElementById(`next-button-${index}`).addEventListener("click", () => {
             jsPsych.finishTrial();
           });
@@ -200,17 +222,15 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       };
       timeline.push(videoTrial);
     });
-    
-    // 6h) Final screen
+  
+    // 7h) Final screen
     timeline.push({
       type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <h2>Please inform the researcher that you have completed this section</h2>
-      `,
+      stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
       choices: []
     });
-    
-    // 6i) Run the experiment
+  
+    // 7i) Run the experiment
     jsPsych.run(timeline);
   });
   
