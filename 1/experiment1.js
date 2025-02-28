@@ -1,8 +1,9 @@
 /****************************************************
- * experiment1.js - Version 5
- * - Bigger gray "Proceed" button
- * - Instruction page before each video
+ * experiment1.js - Version 6
+ * - Restored original intro
+ * - Instruction page + video page
  * - 6-field data output
+ * - Bigger proceed button
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -32,7 +33,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     return participantID;
   }
   
-  // 4) Utility: shuffle array
+  // 4) Shuffle array
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -52,7 +53,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
   }
   
-  // 6) Global key handler references
+  // 6) Global references for key handlers
   let handleKeydown;
   let handleKeyup;
   function removeAllKeyListeners() {
@@ -63,7 +64,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 7) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 5");
+    console.log("experiment1.js - Version 6");
     console.log("Document loaded. Initializing experiment...");
   
     // 7a) Initialize jsPsych
@@ -73,26 +74,27 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       }
     });
   
-    // 7b) Timeline array
+    // 7b) Create a timeline array
     let timeline = [];
   
-    // 7c) Retrieve (or create) participant ID
+    // 7c) Get (or create) participant ID
     let participantID = getParticipantID();
   
-    // 7d) Google Apps Script Web App URL (replace with your own)
-    const GOOGLE_SHEETS_URL = "YOUR_GOOGLE_WEB_APP_URL";
+    // 7d) Your Google Apps Script endpoint
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
   
-    // 7e) Intro screen (overall instructions)
+    // 7e) Intro screen (restored original style)
     let startExperiment = {
       type: jsPsychHtmlButtonResponse,
       stimulus: `
         <div style="text-align: center;">
-            <h2 style="font-size: 36px;">Welcome to the Experiment</h2>
+            <h2 style="font-size: 36px;">Experimental section</h2>
             <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                In this experiment, you will see brief video clips one by one. 
-                For each video, you will press the space bar as instructed. 
-                After finishing each video, click the "Proceed" button to move on. 
-                When you're ready, click "Start Experiment."
+                In this experiment, you will be shown brief video clips to interact with. 
+                Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
+                and navigate the tasks as you normally would using your computer's space bar. 
+                The videos will autoplay, so please do not try to control their playback. 
+                When you are ready to begin, select "Start Experiment."
             </p>
         </div>
       `,
@@ -100,96 +102,90 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     };
     timeline.push(startExperiment);
   
-    // 7f) Define video list
-    //    Each video has a "number" (1-6), a "url", a "instruction" screen text, and a "message" for the actual video page
+    // 7f) Define video list, each with an instruction page + a main message
     let videoList = [
       {
         number: 1,
         instruction: `
           <h2>Video #1 Instructions</h2>
-          <p style="font-size: 20px; max-width: 800px; margin: auto;">
-            In the upcoming video, imagine you are driving. 
-            Press and hold the space bar whenever you would slow down, 
+          <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
+            Imagine you are the driver. Press and hold the space bar when you would start slowing down
             and release it when you would speed up again.
           </p>
         `,
         url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=3&end=32&autoplay=1&mute=1&disablekb=1&modestbranding=1&rel=0",
-        message: "Press and hold the space bar to slow down, release to speed up."
+        message: "Press and hold space to slow, release to speed up."
       },
       {
         number: 2,
         instruction: `
           <h2>Video #2 Instructions</h2>
-          <p style="font-size: 20px; max-width: 800px; margin: auto;">
-            In this next video, imagine you are a pedestrian. 
-            Press and hold the space bar whenever you would feel safe crossing, 
-            and release when you would stop.
+          <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
+            Imagine you are the driver, approaching a crosswalk. 
+            Press and hold space to yield, release to continue.
           </p>
         `,
         url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=36&end=65&autoplay=1&mute=1&disablekb=1&modestbranding=1&rel=0",
-        message: "Press and hold the space bar when you'd cross, release when you'd stop."
+        message: "Press space to yield, release to continue."
       },
       {
         number: 3,
         instruction: `
           <h2>Video #3 Instructions</h2>
-          <p style="font-size: 20px; max-width: 800px; margin: auto;">
-            Imagine you are a cyclist. 
-            Press and hold space bar to indicate when you'd slow down or yield, 
-            then release it when you'd continue.
+          <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
+            Imagine you are a cyclist. Press and hold space to slow or yield,
+            release to resume normal speed.
           </p>
         `,
         url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=69&end=98&autoplay=1&mute=1&disablekb=1&modestbranding=1&rel=0",
-        message: "Press space bar to slow/yield, release to continue."
+        message: "Press space to slow/yield, release to speed up."
       },
       {
         number: 4,
         instruction: `
           <h2>Video #4 Instructions</h2>
-          <p style="font-size: 20px; max-width: 800px; margin: auto;">
+          <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
             Another driving scenario. 
             Press and hold space whenever you'd slow down for safety, 
             and release when you'd speed up.
           </p>
         `,
         url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&disablekb=1&modestbranding=1&rel=0",
-        message: "Press space bar to slow, release to speed up."
+        message: "Press space to slow, release to speed up."
       },
       {
         number: 5,
         instruction: `
           <h2>Video #5 Instructions</h2>
-          <p style="font-size: 20px; max-width: 800px; margin: auto;">
-            A pedestrian scenario again. 
-            Press space to indicate crossing, release if you'd stop or wait.
+          <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
+            Imagine you are a pedestrian. Press space to indicate crossing, 
+            release if you'd stop or wait.
           </p>
         `,
         url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=146&end=175&autoplay=1&mute=1&disablekb=1&modestbranding=1&rel=0",
-        message: "Press space bar to cross, release to stop/wait."
+        message: "Press space to cross, release to wait."
       },
       {
         number: 6,
         instruction: `
           <h2>Video #6 Instructions</h2>
-          <p style="font-size: 20px; max-width: 800px; margin: auto;">
-            Final scenario. 
-            Press space bar whenever you'd slow or yield, release to resume normal speed.
+          <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
+            Final scenario. Press space bar whenever you'd slow or yield,
+            release to resume normal speed.
           </p>
         `,
         url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=179&end=208&autoplay=1&mute=1&disablekb=1&modestbranding=1&rel=0",
-        message: "Press space bar to slow, release to speed up."
+        message: "Press space to slow, release to speed up."
       }
     ];
   
-    // Shuffle the video array so the order is random
+    // Shuffle them so the order is random
     shuffleArray(videoList);
   
-    // 7g) For each video, we create TWO trials:
-    //     1) An instruction page (just text, no video)
-    //     2) The actual video page with space bar logic
+    // 7g) For each video, create 2 trials: instruction → video
     videoList.forEach((video, index) => {
   
-      // (A) Instruction trial
+      // (A) Instruction page
       let instructionTrial = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -200,8 +196,8 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         choices: ["Begin Video"]
       };
   
-      // (B) Video trial
-      let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]) || 0;
+      // (B) The video trial with space bar logic
+      let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
   
       let videoTrial = {
         type: jsPsychHtmlKeyboardResponse,
@@ -215,7 +211,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
             </iframe>
             <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 10px;">
               <button id="next-button-${index}"
-                style="font-size: 18px; padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
+                      style="font-size: 18px; padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
                 ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Trial"}
               </button>
             </div>
@@ -227,7 +223,6 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
           removeAllKeyListeners();
   
           let pressStart = null;
-          let pressEnd = null;
           let keyIsDown = false;
   
           handleKeydown = function(event) {
@@ -241,10 +236,10 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
           handleKeyup = function(event) {
             if (event.code === "Space" && keyIsDown) {
               keyIsDown = false;
-              pressEnd = performance.now() / 1000;
+              let pressEnd = performance.now() / 1000;
               console.log("Space bar released (UP) at", pressEnd, "seconds");
   
-              // Build the 6-field data object
+              // Build 6-field data
               let dataToSend = {
                 participantID: participantID,
                 dateTime: getFormattedDateTime(),
@@ -268,18 +263,18 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
             }
           };
   
-          // Add event listeners
+          // Attach new key listeners
           document.addEventListener("keydown", handleKeydown);
           document.addEventListener("keyup", handleKeyup);
   
-          // "Next" or "Finish" button
+          // Next/Finish button
           document.getElementById(`next-button-${index}`).addEventListener("click", () => {
             jsPsych.finishTrial();
           });
         }
       };
   
-      // Push both trials into the timeline
+      // Add both trials to the timeline
       timeline.push(instructionTrial);
       timeline.push(videoTrial);
     });
@@ -287,7 +282,12 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     // 7h) Final screen
     timeline.push({
       type: jsPsychHtmlButtonResponse,
-      stimulus: "<h2>All videos complete! Thank you.</h2>",
+      stimulus: `
+        <h2>All videos complete!</h2>
+        <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: center;">
+          Thank you for participating.
+        </p>
+      `,
       choices: []
     });
   
