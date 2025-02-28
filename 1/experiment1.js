@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let participantID = getParticipantID();
 
     // Your existing Google Apps Script endpoint
-    let GOOGLE_SHEETS_URL = "YOUR_GOOGLE_WEB_APP_URL";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyiOfOZB1JKufXdhuRLjzleRSUg2tMpEBYrADm0NR1b8on1DDcvBw_hzqWpVBDBXDja/exec";
 
     // Intro screen
     let startExperiment = {
