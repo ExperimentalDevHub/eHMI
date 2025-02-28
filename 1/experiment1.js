@@ -1,5 +1,5 @@
 /****************************************************
- * experiment1.js - Debug Version
+ * experiment1.js - Debug Version 2
  ****************************************************/
 
 // 1) YouTube API check
@@ -69,18 +69,15 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyiOfOZB1JKufXdhuRLjzleRSUg2tMpEBYrADm0NR1b8on1DDcvBw_hzqWpVBDBXDja/exec";
     
     // --- DEBUG STEP #1: Check if server is reachable via GET ---
-    // We'll call doGet(e) which should return "Hello from doGet!"
-    // This helps confirm you have the correct URL and public access.
-    console.log("Attempting GET request to test connectivity...");
     fetch(GOOGLE_SHEETS_URL + "?test=connectivity")
       .then(response => response.text())
       .then(txt => {
-        console.log("GET response from server:", txt);
-        // If you see something like {"status":"success","message":"Hello from doGet!",...}
-        // it means the web app is reachable.
+        console.log("GET response from server (doGet):", txt);
+        // If you see { "status":"success", "message":"Hello from doGet!", ... }
+        // it means the web app is reachable and set to "Anyone" or "Anyone with the link."
       })
       .catch(err => {
-        console.error("GET request failed. Possible wrong URL or permissions:", err);
+        console.error("GET request failed. Check your Web App URL or permissions:", err);
       });
   
     // 6e) Intro screen
@@ -170,7 +167,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
             if (event.code === "Space" && !keyHandled) {
               pressStart = performance.now() / 1000; 
               keyHandled = true;
-              console.log("Space bar DOWN at", pressStart, "seconds (video start time:", videoStartTime, ")");
+              console.log("Space bar DOWN at", pressStart, "s (video start:", videoStartTime, ")");
             }
           };
   
@@ -179,22 +176,21 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
             if (event.code === "Space" && keyHandled) {
               keyHandled = false; 
               let pressEnd = performance.now() / 1000;
-              console.log("Space bar UP at", pressEnd, "seconds");
+              console.log("Space bar UP at", pressEnd, "s");
   
               // Build data object. 
-              // Your doPost(e) appends [participantID, date, experimentCode].
-              // If you want more columns, you must update doPost in your script.
+              // doPost(e) expects [ participantID, date, experimentCode ]
               let dataToSend = {
                 participantID: parseInt(participantID, 10),
-                date: new Date().toISOString(),  // "date" matches doPost
+                date: new Date().toISOString(),
                 experimentCode: 1
               };
   
-              // Debug info: 
-              // We'll log start/end times locally, but your script won't store them
-              // unless you change doPost() to append them. 
-              console.log("Calculated startTime (approx):", (videoStartTime + pressStart).toFixed(3));
-              console.log("Calculated endTime (approx):", (videoStartTime + pressEnd).toFixed(3));
+              // Debug info for start/end times:
+              let startTimeCalc = (videoStartTime + pressStart).toFixed(3);
+              let endTimeCalc = (videoStartTime + pressEnd).toFixed(3);
+              console.log("Approx startTime:", startTimeCalc);
+              console.log("Approx endTime:", endTimeCalc);
   
               // POST request
               console.log("Sending data to Google Sheets (no-cors):", dataToSend);
@@ -205,7 +201,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
                 mode: "no-cors"
               })
               .then(() => {
-                console.log("POST request finished (no-cors). Can't read server response, but no fetch error.");
+                console.log("POST request finished (no-cors). If there's no fetch error, it was sent.");
               })
               .catch(err => {
                 console.error("POST request encountered an error:", err);
