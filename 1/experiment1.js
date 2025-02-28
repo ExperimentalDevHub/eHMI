@@ -1,5 +1,5 @@
 /****************************************************
- * experiment1.js - Version 2 (Mirrors Working PoC)
+ * experiment1.js - Version 3 (6-Field Data Output)
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -37,10 +37,9 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     }
   }
   
-  // 5) Key handler references
+  // 5) Global key handler references
   let handleKeydown;
   let handleKeyup;
-  
   function removeAllKeyListeners() {
     console.log("🛑 Removing old event listeners before adding new ones...");
     document.removeEventListener("keydown", handleKeydown);
@@ -49,7 +48,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 6) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 2 (Mirrors Working PoC)");
+    console.log("experiment1.js - Version 3 (6-Field Data Output)");
     console.log("Document loaded. Initializing experiment...");
   
     // 6a) Initialize jsPsych
@@ -59,15 +58,14 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       }
     });
   
-    // 6b) Timeline
+    // 6b) Timeline array
     let timeline = [];
   
-    // 6c) Get participant ID
+    // 6c) Retrieve Participant ID
     let participantID = getParticipantID();
   
-    // 6d) Google Apps Script URL .
-    //    (Replace this with your own working URL if needed)
-    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbx6xCm0X8YsL49Ln9LaisumLaiWT6ojwqJj3Y0hv95WAr1GGQJV2fQaL9BlBBnxCBIP/exec";
+    // 6d) Google Apps Script Web App URL (update to your working URL)
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxtE-JJv2coBDlarZ3BnW_q60ARSqmlFHI9czn9a9vbKbP2GvK6fb3jb-hIAdEbfAM5eQ/exec";
   
     // 6e) Intro trial
     let startExperiment = {
@@ -77,9 +75,8 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
             <h2 style="font-size: 36px;">Experimental section</h2>
             <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                 In this experiment, you will be shown brief video clips to interact with. 
-                Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
-                and navigate the tasks as you normally would using your computer's space bar. 
-                The videos will autoplay, please do not try to control their playback. 
+                Imagine yourself in the presented role (pedestrian, cyclist, or driver) and navigate the tasks 
+                as you normally would using your computer's space bar. The videos will autoplay, so please do not try to control their playback.
                 When you are ready to begin, select "Start Experiment."
             </p>
         </div>
@@ -88,7 +85,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     };
     timeline.push(startExperiment);
   
-    // 6f) Video list (shuffle if you like)
+    // 6f) Define video list (and shuffle if desired)
     let videoList = [
       { 
         url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0", 
@@ -119,6 +116,9 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
     // 6g) Build a trial for each video
     videoList.forEach((video, index) => {
+      // Parse the start time from the video URL
+      let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)[1]) || 0;
+  
       let videoTrial = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
@@ -137,35 +137,45 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
           </div>
         `,
         choices: "NO_KEYS",
-        on_load: function() {
-          // Remove old listeners
+        trial_duration: null,
+        on_load: function () {
+          // Remove old key listeners to avoid duplicates
           removeAllKeyListeners();
-  
+    
+          // Declare variables to record press times
+          let pressStart = null;
+          let pressEnd = null;
           let keyIsDown = false;
-  
+    
+          // Keydown: record when space is pressed
           handleKeydown = function(event) {
             if (event.code === "Space" && !keyIsDown) {
               keyIsDown = true;
-              console.log("Space bar pressed (DOWN).");
+              pressStart = performance.now() / 1000; 
+              console.log("Space bar pressed (DOWN) at", pressStart, "seconds");
             }
           };
-  
+    
+          // Keyup: record when space is released, then send data
           handleKeyup = function(event) {
             if (event.code === "Space" && keyIsDown) {
               keyIsDown = false;
-              console.log("Space bar released (UP).");
-  
-              // 6g-i) This is where we do the "on_finish" logic from your working PoC:
-              // Build the data object
+              pressEnd = performance.now() / 1000;
+              console.log("Space bar released (UP) at", pressEnd, "seconds");
+    
+              // Build the data object with 6 fields:
               let dataToSend = {
-                participantID: participantID, // a string
-                date: new Date().toISOString().split('T')[0], // from the working code
-                experimentCode: 1
+                participantID: participantID,                           // Participant ID
+                dateTime: new Date().toISOString(),                      // Date and Time
+                experimentBlock: 1,                                      // Experiment Block (change as needed)
+                videoNumber: index + 1,                                  // Video Number (1-6)
+                startTime: Number((videoStartTime + pressStart).toFixed(3)), // Start Time
+                endTime: Number((videoStartTime + pressEnd).toFixed(3))      // End Time
               };
-  
+    
               console.log("Sending data to Google Sheets (no-cors):", dataToSend);
-  
-              // Send data
+    
+              // POST the data using no-cors mode (response is opaque)
               fetch(GOOGLE_SHEETS_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -177,12 +187,12 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
               });
             }
           };
-  
-          // Add the event listeners
+    
+          // Attach the key event listeners
           document.addEventListener("keydown", handleKeydown);
           document.addEventListener("keyup", handleKeyup);
-  
-          // Next/Finish button
+    
+          // Next/Finish button handler ends the trial
           document.getElementById(`next-button-${index}`).addEventListener("click", () => {
             jsPsych.finishTrial();
           });
@@ -190,7 +200,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       };
       timeline.push(videoTrial);
     });
-  
+    
     // 6h) Final screen
     timeline.push({
       type: jsPsychHtmlButtonResponse,
@@ -199,7 +209,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       `,
       choices: []
     });
-  
+    
     // 6i) Run the experiment
     jsPsych.run(timeline);
   });
