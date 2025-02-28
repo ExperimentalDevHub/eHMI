@@ -65,7 +65,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     let participantID = getParticipantID();
   
     // 6d) Google Apps Script Web App URL (update to your working URL)
-    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxtE-JJv2coBDlarZ3BnW_q60ARSqmlFHI9czn9a9vbKbP2GvK6fb3jb-hIAdEbfAM5eQ/exec";
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxfBoI8n1nCSv-1QkPHpipsUhxNdXs3FsiyJRbZqxLhCTcVo9x2A5F3r0BIA9XUw5JzhQ/exec";
   
     // 6e) Intro trial
     let startExperiment = {
