@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // 2. Your Google Apps Script web app URL
-  const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxkRN5w0ijWISyWYTIQqLtQshfD0OX_Nk5e3K-3vGy_KcsxmDkOM9AcOSaU5jT8lvaGOA/exec";
+  const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxyWu6TdzxRb2v7Uw7O6F5UC_6Ry3GY6yUzBJqZME4KkC6KtOmgmZ64jvOTRPUXDcYZLQ/exec";
 
   // 3. A simple trial to record a space bar press
   let simpleTrial = {
