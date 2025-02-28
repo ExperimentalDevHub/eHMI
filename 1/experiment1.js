@@ -66,7 +66,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
     // 6d) Your Google Apps Script endpoint
     //     (MUST match your deployed "Web App" URL in script.google.com)
-    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyiOfOZB1JKufXdhuRLjzleRSUg2tMpEBYrADm0NR1b8on1DDcvBw_hzqWpVBDBXDja/exec";
+    let GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxBXwp3EP7ib0c0eIzGzSoMvhTAnI3sVW0DKcuZh1V9Eu4NYTc_l7hCB8IRSlSfXBv1/exec";
     
     // --- DEBUG STEP #1: Check if server is reachable via GET ---
     fetch(GOOGLE_SHEETS_URL + "?test=connectivity")
