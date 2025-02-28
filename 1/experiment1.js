@@ -1,5 +1,5 @@
 /****************************************************
- * ExperimentManual.js - Version 5
+ * ExperimentManual.js - Version 5 (Updated)
  ****************************************************/
 
 // Ensure YouTube API loads before running the experiment
@@ -157,14 +157,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         keyHandled = false; 
                         let pressEnd = performance.now() / 1000;
 
-                        // Build the data object with your desired columns
+                        // Build the data object (matching your doPost fields)
                         let dataToSend = {
                             participantID: parseInt(participantID, 10),
-                            dateTime: new Date().toISOString(),   // Full date & time
-                            experimentBlock: 1,                  // Or any block number you want
-                            videoNumber: index + 1,              // (1-6)
-                            startTime: Number((videoStartTime + pressStart).toFixed(3)),
-                            endTime: Number((videoStartTime + pressEnd).toFixed(3))
+                            date: new Date().toISOString(), // "date" is what your doPost expects
+                            experimentCode: 1               // "experimentCode" is what your doPost expects
+                            // Additional fields won't appear unless you update doPost
+                            // but we can still log them locally if you want:
+                            // startTime: Number((videoStartTime + pressStart).toFixed(3)),
+                            // endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
 
                         console.log("Sending data:", dataToSend);
