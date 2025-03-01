@@ -1,6 +1,6 @@
 /****************************************************
- * experiment1.js - V7
- * Restored Intro + Logo + No suggested videos + 6-field data
+ * experiment1.js - Version 8
+ * - Original Video Number instead of index + 1
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -61,7 +61,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 7) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 7");
+    console.log("experiment1.js - Version 8 (Original Video Number)");
     console.log("Document loaded. Initializing experiment...");
   
     // 7a) Initialize jsPsych
@@ -77,7 +77,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     // 7c) Participant ID
     let participantID = getParticipantID();
   
-    // 7d) Google Apps Script URL
+    // 7d) Your Google Apps Script URL
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
   
     // 7e) Intro screen with HFASt Logo + original paragraph
@@ -100,9 +100,14 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     };
     timeline.push(introTrial);
   
-    // 7f) The 6 videos (randomized). Each has a short instruction screen + a video trial
+    // 7f) The 6 videos (randomized). Each has:
+    //     - number: the original video ID you want in the sheet
+    //     - instruction: a short text page
+    //     - url: YouTube embed
+    //     - message: text above the video
     let videoList = [
       {
+        number: 1,
         instruction: `
           <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
             In the upcoming video, press and hold the space bar when you would start slowing down 
@@ -113,6 +118,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         message: "Press and hold the space bar when you would start slowing down and let go when you would speed up"
       },
       {
+        number: 2,
         instruction: `
           <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
             In the upcoming video, press and hold the space bar when you would start slowing down 
@@ -123,6 +129,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         message: "Press and hold the space bar when you would start slowing down to yield"
       },
       {
+        number: 3,
         instruction: `
           <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
             In the upcoming video, press and hold the space bar when you would start slowing down 
@@ -133,6 +140,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         message: "Press and hold the space bar when you would start slowing down to yield"
       },
       {
+        number: 4,
         instruction: `
           <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
             In the upcoming video, press and hold the space bar when you would start slowing down 
@@ -143,6 +151,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         message: "Press and hold the space bar when you would start slowing down to yield"
       },
       {
+        number: 5,
         instruction: `
           <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
             In the upcoming video, press and hold the space bar when you would start slowing down 
@@ -153,6 +162,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         message: "Press and hold the space bar when you would start slowing down to yield"
       },
       {
+        number: 6,
         instruction: `
           <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
             In the upcoming video, press and hold the space bar when you would start slowing down 
@@ -170,7 +180,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     // 7g) For each video, create:
     //     (1) an instruction page, (2) the video page
     videoList.forEach((video, index) => {
-      // Instruction page (no bold title, just text)
+      // (A) Instruction page
       let instructionTrial = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -181,7 +191,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         choices: ["Proceed to Video"]
       };
   
-      // Video page with the old above-video instructions
+      // (B) Video page
       let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
       let videoTrial = {
         type: jsPsychHtmlKeyboardResponse,
@@ -230,7 +240,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
                 participantID: participantID,
                 dateTime: getFormattedDateTime(),
                 experimentBlock: 1,
-                videoNumber: index + 1,  // or keep it as index + 1 for clarity
+                videoNumber: video.number, // <-- use the original "number" property
                 startTime: Number((videoStartTime + pressStart).toFixed(3)),
                 endTime: Number((videoStartTime + pressEnd).toFixed(3))
               };
