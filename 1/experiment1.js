@@ -1,9 +1,9 @@
 /****************************************************
- * experiment1.js - Version 8 (Fixed Final Screen)
+ * experiment1.js - Version 8 (Invisible Final Button)
  * - Original video number
  * - Gray styled buttons
  * - 10% smaller video
- * - Final screen uses jsPsychHtmlKeyboardResponse to avoid error
+ * - Final screen has an invisible dummy button to avoid errors
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -64,7 +64,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 7) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 8 (Fixed Final Screen)");
+    console.log("experiment1.js - Version 8 (Invisible Final Button)");
     console.log("Document loaded. Initializing experiment...");
   
     // 7a) Initialize jsPsych
@@ -84,7 +84,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     const GOOGLE_SHEETS_URL = "YOUR_GOOGLE_WEB_APP_URL";
   
     // We'll use a custom button HTML for jsPsychHtmlButtonResponse
-    // so all "button" screens have the same gray style.
+    // so all "button" screens have the same gray style
     const customButtonHTML = `
       <button class="jspsych-btn"
               style="font-size: 18px; padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
@@ -113,7 +113,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     timeline.push(introTrial);
   
     // 7f) The 6 videos (randomized). Each has an instruction screen + a video trial
-    //    "number" preserves the original video ID in the data.
+    //    "number" preserves the original video ID in the data
     let videoList = [
       {
         number: 1,
@@ -187,8 +187,8 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     shuffleArray(videoList);
   
     // 7g) For each video, create two trials:
-    //     1) an instruction page
-    //     2) the actual video page
+    //     (1) an instruction page
+    //     (2) the actual video page
     videoList.forEach((video, index) => {
   
       // (A) Instruction page
@@ -289,17 +289,23 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       timeline.push(videoTrial);
     });
   
-    // 7h) Final screen using jsPsychHtmlKeyboardResponse with NO_KEYS
-    //     (This avoids the error from choices: [] in jsPsychHtmlButtonResponse)
+    // 7h) Final screen with an invisible dummy button
+    // We must provide at least one choice or jsPsychHtmlButtonResponse will error
+    // We'll hide the button with CSS so participants can't see or click it
     let finalScreen = {
-      type: jsPsychHtmlKeyboardResponse,
+      type: jsPsychHtmlButtonResponse,
       stimulus: `
         <p style="font-size: 20px; text-align: center;">
           Please inform the researcher that you have completed this section
         </p>
       `,
-      choices: "NO_KEYS",
-      trial_duration: null
+      choices: [""], // Single blank choice
+      button_html: `
+        <button class="jspsych-btn"
+                style="opacity:0; width:0; height:0; border:none; cursor:default;">
+          %choice%
+        </button>
+      `
     };
     timeline.push(finalScreen);
   
