@@ -1,8 +1,9 @@
 /****************************************************
- * experiment1.js - Version 8
+ * experiment1.js - Version 8 (Fixed Final Screen)
  * - Original video number
  * - Gray styled buttons
  * - 10% smaller video
+ * - Final screen uses jsPsychHtmlKeyboardResponse to avoid error
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -63,7 +64,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 7) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 8");
+    console.log("experiment1.js - Version 8 (Fixed Final Screen)");
     console.log("Document loaded. Initializing experiment...");
   
     // 7a) Initialize jsPsych
@@ -83,7 +84,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     const GOOGLE_SHEETS_URL = "YOUR_GOOGLE_WEB_APP_URL";
   
     // We'll use a custom button HTML for jsPsychHtmlButtonResponse
-    // so all buttons have the same gray style.
+    // so all "button" screens have the same gray style.
     const customButtonHTML = `
       <button class="jspsych-btn"
               style="font-size: 18px; padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
@@ -111,8 +112,8 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     };
     timeline.push(introTrial);
   
-    // 7f) The 6 videos (randomized). Each has a short instruction screen + a video trial
-    //    We add "number" to preserve the original video ID in the data.
+    // 7f) The 6 videos (randomized). Each has an instruction screen + a video trial
+    //    "number" preserves the original video ID in the data.
     let videoList = [
       {
         number: 1,
@@ -185,9 +186,11 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     // Shuffle the array so the order is random
     shuffleArray(videoList);
   
-    // 7g) For each video, create:
-    //     (1) an instruction page, (2) the video page
+    // 7g) For each video, create two trials:
+    //     1) an instruction page
+    //     2) the actual video page
     videoList.forEach((video, index) => {
+  
       // (A) Instruction page
       let instructionTrial = {
         type: jsPsychHtmlButtonResponse,
@@ -200,9 +203,9 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         button_html: customButtonHTML
       };
   
-      // (B) Video page
-      // 10% smaller: width=80vw, height=45vw
+      // (B) Video page (10% smaller: width=80vw, height=45vw)
       let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
+  
       let videoTrial = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
@@ -231,6 +234,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
           let pressStart = null;
           let keyIsDown = false;
   
+          // Keydown
           handleKeydown = function(event) {
             if (event.code === "Space" && !keyIsDown) {
               keyIsDown = true;
@@ -239,6 +243,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
             }
           };
   
+          // Keyup
           handleKeyup = function(event) {
             if (event.code === "Space" && keyIsDown) {
               keyIsDown = false;
@@ -250,7 +255,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
                 participantID: participantID,
                 dateTime: getFormattedDateTime(),
                 experimentBlock: 1,
-                videoNumber: video.number, // Use the original "number" property
+                videoNumber: video.number,  // Original "number"
                 startTime: Number((videoStartTime + pressStart).toFixed(3)),
                 endTime: Number((videoStartTime + pressEnd).toFixed(3))
               };
@@ -279,18 +284,24 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         }
       };
   
-      // Add both trials to the timeline
+      // Add both trials
       timeline.push(instructionTrial);
       timeline.push(videoTrial);
     });
   
-    // 7h) Final screen with no button
-    timeline.push({
-      type: jsPsychHtmlButtonResponse,
-      stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
-      choices: [],
-      button_html: customButtonHTML
-    });
+    // 7h) Final screen using jsPsychHtmlKeyboardResponse with NO_KEYS
+    //     (This avoids the error from choices: [] in jsPsychHtmlButtonResponse)
+    let finalScreen = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <p style="font-size: 20px; text-align: center;">
+          Please inform the researcher that you have completed this section
+        </p>
+      `,
+      choices: "NO_KEYS",
+      trial_duration: null
+    };
+    timeline.push(finalScreen);
   
     // 7i) Run the experiment
     jsPsych.run(timeline);
