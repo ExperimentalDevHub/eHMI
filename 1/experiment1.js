@@ -1,10 +1,8 @@
 /****************************************************
- * experiment1.js - Version 8 (Modified)
+ * experiment1.js - Version 8
  * - Original video number
  * - Gray styled buttons
  * - 10% smaller video
- * - Title removed on intro
- * - Final screen not bold
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -65,7 +63,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 7) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 8 (Modified)");
+    console.log("experiment1.js - Version 8");
     console.log("Document loaded. Initializing experiment...");
   
     // 7a) Initialize jsPsych
@@ -92,13 +90,13 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         %choice%
       </button>`;
   
-    // 7e) Intro screen (logo + paragraph, NO big title)
+    // 7e) Intro screen (with HFASt Logo + original paragraph)
     let introTrial = {
       type: jsPsychHtmlButtonResponse,
       stimulus: `
         <div style="text-align: center;">
             <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-            <!-- Removed the <h2> title here -->
+            <h2 style="font-size: 36px;">Experimental section</h2>
             <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                 In this experiment, you will be shown brief video clips to interact with. 
                 Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
@@ -286,14 +284,10 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       timeline.push(videoTrial);
     });
   
-    // 7h) Final screen with no button (unbolded text)
+    // 7h) Final screen with no button
     timeline.push({
       type: jsPsychHtmlButtonResponse,
-      stimulus: `
-        <p style="font-size: 20px; text-align: center;">
-          Please inform the researcher that you have completed this section
-        </p>
-      `,
+      stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
       choices: [],
       button_html: customButtonHTML
     });
