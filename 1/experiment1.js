@@ -80,13 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // 7d) Your Google Apps Script URL
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
   
-    // 7e) Intro screen with HFASt Logo + original paragraph
+    // 7e) Intro screen with HFASt Logo + original paragraph (title removed)
     let introTrial = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <h2 style="font-size: 36px;">Experimental section</h2>
+                <!-- Title removed -->
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                     In this experiment, you will be shown brief video clips to interact with. 
                     Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
@@ -274,10 +274,10 @@ document.addEventListener("DOMContentLoaded", function () {
         timeline.push(videoTrial);
     });
   
-    // 7h) Final screen with the old message, no button
+    // 7h) Final screen with unbolded text
     timeline.push({
         type: jsPsychHtmlButtonResponse,
-        stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
+        stimulus: "<p style='font-weight: normal; font-size: 20px;'>Please inform the researcher that you have completed this section</p>",
         choices: []
     });
   
