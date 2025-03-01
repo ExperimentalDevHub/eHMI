@@ -1,6 +1,9 @@
 /****************************************************
- * experiment1.js - Version 8
- * - Original Video Number instead of index + 1
+ * experiment1.js - Version 9
+ * - No big title on first page
+ * - Last page text is not bold
+ * - Gray styled buttons, 10% smaller video
+ * - Original video number
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -61,7 +64,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 7) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 8 (Original Video Number)");
+    console.log("experiment1.js - Version 9");
     console.log("Document loaded. Initializing experiment...");
   
     // 7a) Initialize jsPsych
@@ -78,15 +81,22 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     let participantID = getParticipantID();
   
     // 7d) Your Google Apps Script URL
-    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
+    const GOOGLE_SHEETS_URL = "YOUR_GOOGLE_WEB_APP_URL";
   
-    // 7e) Intro screen with HFASt Logo + original paragraph
+    // We'll use a custom button HTML for jsPsychHtmlButtonResponse
+    // so all buttons have the same gray style.
+    const customButtonHTML = `
+      <button class="jspsych-btn"
+              style="font-size: 18px; padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
+        %choice%
+      </button>`;
+  
+    // 7e) Intro screen (no big title, just the logo + paragraph)
     let introTrial = {
       type: jsPsychHtmlButtonResponse,
       stimulus: `
         <div style="text-align: center;">
             <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-            <h2 style="font-size: 36px;">Experimental section</h2>
             <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                 In this experiment, you will be shown brief video clips to interact with. 
                 Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
@@ -96,15 +106,13 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
             </p>
         </div>
       `,
-      choices: ["Start Experiment"]
+      choices: ["Start Experiment"],
+      button_html: customButtonHTML
     };
     timeline.push(introTrial);
   
-    // 7f) The 6 videos (randomized). Each has:
-    //     - number: the original video ID you want in the sheet
-    //     - instruction: a short text page
-    //     - url: YouTube embed
-    //     - message: text above the video
+    // 7f) The 6 videos (randomized). Each has a short instruction screen + a video trial
+    //    We add "number" to preserve the original video ID in the data.
     let videoList = [
       {
         number: 1,
@@ -188,10 +196,11 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
             ${video.instruction}
           </div>
         `,
-        choices: ["Proceed to Video"]
+        choices: ["Proceed to Video"],
+        button_html: customButtonHTML
       };
   
-      // (B) Video page
+      // (B) Video page (10% smaller: width=80vw, height=45vw)
       let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
       let videoTrial = {
         type: jsPsychHtmlKeyboardResponse,
@@ -199,7 +208,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
           <div style="text-align: center;">
             <p style="font-size: 18px;">${video.message}</p>
             <iframe 
-              style="width: 90vw; height: 50.625vw; max-width: 1440px; max-height: 810px;"
+              style="width: 80vw; height: 45vw; max-width: 1280px; max-height: 720px;"
               src="${video.url}"
               frameborder="0"
               allow="autoplay; encrypted-media"
@@ -240,7 +249,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
                 participantID: participantID,
                 dateTime: getFormattedDateTime(),
                 experimentBlock: 1,
-                videoNumber: video.number, // <-- use the original "number" property
+                videoNumber: video.number, // Original "number" property
                 startTime: Number((videoStartTime + pressStart).toFixed(3)),
                 endTime: Number((videoStartTime + pressEnd).toFixed(3))
               };
@@ -274,11 +283,16 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       timeline.push(videoTrial);
     });
   
-    // 7h) Final screen with the old message, no button
+    // 7h) Final screen (no button, text not bold)
     timeline.push({
       type: jsPsychHtmlButtonResponse,
-      stimulus: "<h2>Please inform the researcher that you have completed this section</h2>",
-      choices: []
+      stimulus: `
+        <p style="font-size: 20px; text-align: center;">
+          Please inform the researcher that you have completed this section
+        </p>
+      `,
+      choices: [],
+      button_html: customButtonHTML
     });
   
     // 7i) Run the experiment
