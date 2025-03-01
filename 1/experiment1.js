@@ -1,9 +1,4 @@
-/****************************************************
- * experiment1.js - Version 8
- * - Original Video Number instead of index + 1
- ****************************************************/
 
-// 1) Check for YouTube API
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("Loading YouTube API...");
     let tag = document.createElement("script");
@@ -14,12 +9,12 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("YouTube API already loaded.");
 }
   
-// 2) Called by YouTube when the API is ready
+
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
   
-// 3) Generate or retrieve Participant ID
+
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
     if (!participantID || participantID.length > 6) {
@@ -30,7 +25,7 @@ function getParticipantID() {
     return participantID;
 }
   
-// 4) Shuffle array
+
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -38,7 +33,7 @@ function shuffleArray(array) {
     }
 }
   
-// 5) Format date/time as YYYY-MM-DD HH:MM:SS
+
 function getFormattedDateTime() {
     let d = new Date();
     let year = d.getFullYear();
@@ -50,7 +45,7 @@ function getFormattedDateTime() {
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
   
-// 6) Key handler references
+
 let handleKeydown;
 let handleKeyup;
 function removeAllKeyListeners() {
@@ -59,28 +54,27 @@ function removeAllKeyListeners() {
     document.removeEventListener("keyup", handleKeyup);
 }
   
-// 7) Main experiment code
+
 document.addEventListener("DOMContentLoaded", function () {
-    //console.log("experiment1.js - Version 8 (Original Video Number)");
     console.log("Document loaded. Initializing experiment...");
   
-    // 7a) Initialize jsPsych
+
     let jsPsych = initJsPsych({
         on_finish: function() {
             console.log("Experiment finished.");
         }
     });
   
-    // 7b) Timeline
+
     let timeline = [];
   
-    // 7c) Participant ID
+
     let participantID = getParticipantID();
   
-    // 7d) Your Google Apps Script URL
+
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
-  
-    // 7e) Intro screen with HFASt Logo + original paragraph (title removed)
+
+
     let introTrial = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -100,11 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(introTrial);
   
-    // 7f) The 6 videos (randomized). Each has:
-    //     - number: the original video ID you want in the sheet
-    //     - instruction: a short text page
-    //     - url: YouTube embed
-    //     - message: text above the video
+
     let videoList = [
         {
             number: 1,
@@ -174,13 +164,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     ];
   
-    // Shuffle the array so the order is random
+
     shuffleArray(videoList);
   
-    // 7g) For each video, create:
-    //     (1) an instruction page, (2) the video page
+
     videoList.forEach((video, index) => {
-        // (A) Instruction page
+
         let instructionTrial = {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
@@ -190,8 +179,8 @@ document.addEventListener("DOMContentLoaded", function () {
             `,
             choices: ["Proceed to Video"]
         };
-  
-        // (B) Video page
+
+
         let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -235,12 +224,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         let pressEnd = performance.now() / 1000;
                         console.log("Space bar released (UP) at", pressEnd, "seconds");
   
-                        // Build the 6-field data object
+
                         let dataToSend = {
                             participantID: participantID,
                             dateTime: getFormattedDateTime(),
                             experimentBlock: 1,
-                            videoNumber: video.number, // <-- use the original "number" property
+                            videoNumber: video.number,
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
@@ -262,25 +251,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
   
-                // "Proceed" or "Finish" button
+
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => {
                     jsPsych.finishTrial();
                 });
             }
         };
   
-        // Add both trials to the timeline
+
         timeline.push(instructionTrial);
         timeline.push(videoTrial);
     });
   
-    // 7h) Final screen with unbolded text
+
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: "<p style='font-weight: normal; font-size: 20px;'>Please inform the researcher that you have completed this section</p>",
         choices: []
     });
   
-    // 7i) Run the experiment
+
     jsPsych.run(timeline);
 });
