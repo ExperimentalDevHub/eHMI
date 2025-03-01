@@ -1,9 +1,10 @@
 /****************************************************
- * experiment1.js - Version 9
- * - No big title on first page
- * - Last page text is not bold
- * - Gray styled buttons, 10% smaller video
+ * experiment1.js - Version 8 (Modified)
  * - Original video number
+ * - Gray styled buttons
+ * - 10% smaller video
+ * - Title removed on intro
+ * - Final screen not bold
  ****************************************************/
 
 // 1) Check for YouTube API
@@ -64,7 +65,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
   
   // 7) Main experiment code
   document.addEventListener("DOMContentLoaded", function () {
-    console.log("experiment1.js - Version 9");
+    console.log("experiment1.js - Version 8 (Modified)");
     console.log("Document loaded. Initializing experiment...");
   
     // 7a) Initialize jsPsych
@@ -91,12 +92,13 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         %choice%
       </button>`;
   
-    // 7e) Intro screen (no big title, just the logo + paragraph)
+    // 7e) Intro screen (logo + paragraph, NO big title)
     let introTrial = {
       type: jsPsychHtmlButtonResponse,
       stimulus: `
         <div style="text-align: center;">
             <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
+            <!-- Removed the <h2> title here -->
             <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                 In this experiment, you will be shown brief video clips to interact with. 
                 Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
@@ -200,7 +202,8 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
         button_html: customButtonHTML
       };
   
-      // (B) Video page (10% smaller: width=80vw, height=45vw)
+      // (B) Video page
+      // 10% smaller: width=80vw, height=45vw
       let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
       let videoTrial = {
         type: jsPsychHtmlKeyboardResponse,
@@ -249,7 +252,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
                 participantID: participantID,
                 dateTime: getFormattedDateTime(),
                 experimentBlock: 1,
-                videoNumber: video.number, // Original "number" property
+                videoNumber: video.number, // Use the original "number" property
                 startTime: Number((videoStartTime + pressStart).toFixed(3)),
                 endTime: Number((videoStartTime + pressEnd).toFixed(3))
               };
@@ -283,7 +286,7 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
       timeline.push(videoTrial);
     });
   
-    // 7h) Final screen (no button, text not bold)
+    // 7h) Final screen with no button (unbolded text)
     timeline.push({
       type: jsPsychHtmlButtonResponse,
       stimulus: `
