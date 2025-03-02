@@ -132,21 +132,19 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             number: 4,
             instruction: `
-              <div style="max-width: 800px; margin: auto;">
-          
+              <div style="max-width: 800px; margin: auto; text-align: left;">
                 <!-- Centered heading -->
                 <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
                   Imagine being the driver
                 </h1>
           
-                <!-- Bullet points with extra spacing -->
-                <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8; margin-bottom: 40px;">
+                <!-- Left-aligned bullet points with extra spacing -->
+                <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                   <li><strong>Context:</strong> You are late for an appointment</li>
                   <li><strong>Destination:</strong> Down the road</li>
                   <li><strong>Objective:</strong> Drive through the intersection</li>
                   <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
                 </ul>
-          
               </div>
             `,
             url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
