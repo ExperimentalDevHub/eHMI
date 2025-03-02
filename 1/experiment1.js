@@ -146,18 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
                   <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
                 </ul>
           
-                <!-- "Imagine being the pedestrian" heading -->
-                <h1 style="font-size: 36px; text-align: left; margin-bottom: 20px;">
-                  Imagine being the pedestrian
-                </h1>
-                <!-- Bullet points -->
-                <ul style="font-size: 20px; list-style-type: none; padding-left: 0; line-height: 1.5;">
-                  <li><strong>Context:</strong> You are late for an appointment</li>
-                  <li><strong>Destination:</strong> Down the road</li>
-                  <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
-                  <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
-                </ul>
-          
               </div>
             `,
             url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
