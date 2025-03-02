@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
                     and navigate the tasks as you normally would using your computer's space bar. 
                     The videos will autoplay, so please do not try to control their playback. 
-                    When you are ready to begin, select "Start Experiment." MONKEY SAY WHAT
+                    When you are ready to begin, select "Start Experiment."
                 </p>
             </div>
         `,
