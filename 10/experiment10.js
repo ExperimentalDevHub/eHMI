@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </ul>
         </div>
       `,
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=10&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=10&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
       },
       {
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </ul>
         </div>
       `,
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=46&end=68&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=46&end=68&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
       },
     
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </ul>
         </div>
       `,
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=453&end=475&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=453&end=475&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
       },
       {
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </ul>
         </div>
       `,
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=489&end=511&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=489&end=511&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
       },
     
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </ul>
         </div>
       `,
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=230&end=253&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=230&end=253&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would feel safe driving."
       },
       {
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </ul>
         </div>
       `,
-        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=267&end=291&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=267&end=291&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
         message: "Press and hold the space bar when you would feel safe driving."
       }
     ];
