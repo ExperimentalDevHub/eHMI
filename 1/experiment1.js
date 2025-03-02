@@ -1,4 +1,3 @@
-
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("Loading YouTube API...");
     let tag = document.createElement("script");
@@ -8,12 +7,10 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
 } else {
     console.log("YouTube API already loaded.");
 }
-  
 
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
-  
 
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
@@ -24,7 +21,6 @@ function getParticipantID() {
     console.log("Participant ID:", participantID);
     return participantID;
 }
-  
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -32,7 +28,6 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
-  
 
 function getFormattedDateTime() {
     let d = new Date();
@@ -44,7 +39,6 @@ function getFormattedDateTime() {
     let second = String(d.getSeconds()).padStart(2, "0");
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
-  
 
 let handleKeydown;
 let handleKeyup;
@@ -53,27 +47,21 @@ function removeAllKeyListeners() {
     document.removeEventListener("keydown", handleKeydown);
     document.removeEventListener("keyup", handleKeyup);
 }
-  
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document loaded. Initializing experiment...");
-  
 
     let jsPsych = initJsPsych({
         on_finish: function() {
             console.log("Experiment finished.");
         }
     });
-  
 
     let timeline = [];
-  
 
     let participantID = getParticipantID();
-  
 
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
-
 
     let introTrial = {
         type: jsPsychHtmlButtonResponse,
@@ -93,90 +81,117 @@ document.addEventListener("DOMContentLoaded", function () {
         choices: ["Start Experiment"]
     };
     timeline.push(introTrial);
-  
 
     let videoList = [
         {
             number: 1,
             instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    and let go when you would speed up.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down and let go when you would speed up"
+      <div style="max-width: 800px; margin: auto; text-align: left;">
+        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+          Imagine being the driver
+        </h1>
+        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+          <li><strong>Context:</strong> You are late for an appointment</li>
+          <li><strong>Destination:</strong> Down the road</li>
+          <li><strong>Objective:</strong> Drive through the intersection</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
+        </ul>
+      </div>
+    `,
+            url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=306&end=328&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe driving."
         },
         {
             number: 2,
             instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
+      <div style="max-width: 800px; margin: auto; text-align: left;">
+        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+          Imagine being the driver
+        </h1>
+        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+          <li><strong>Context:</strong> You are late for an appointment</li>
+          <li><strong>Destination:</strong> At the end of the road</li>
+          <li><strong>Objective:</strong> Continue driving straight</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
+        </ul>
+      </div>
+    `,
+            url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=343&end=366&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe driving."
         },
         {
             number: 3,
             instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
+      <div style="max-width: 800px; margin: auto; text-align: left;">
+        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+          Imagine being the driver
+        </h1>
+        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+          <li><strong>Context:</strong> You are late for an appointment</li>
+          <li><strong>Destination:</strong> At the end of the road</li>
+          <li><strong>Objective:</strong> Continue driving straight</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
+        </ul>
+      </div>
+    `,
+            url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=370&end=392&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe driving."
         },
         {
             number: 4,
             instruction: `
-              <div style="max-width: 800px; margin: auto; text-align: left;">
-                <!-- Centered heading -->
-                <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-                  Imagine being the driver
-                </h1>
-          
-                <!-- Left-aligned bullet points with extra spacing -->
-                <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-                  <li><strong>Context:</strong> You are late for an appointment</li>
-                  <li><strong>Destination:</strong> Down the road</li>
-                  <li><strong>Objective:</strong> Drive through the intersection</li>
-                  <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
-                </ul>
-              </div>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
-          },
+      <div style="max-width: 800px; margin: auto; text-align: left;">
+        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+          Imagine being the driver
+        </h1>
+        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+          <li><strong>Context:</strong> You are late for an appointment</li>
+          <li><strong>Destination:</strong> At the end of the road</li>
+          <li><strong>Objective:</strong> Continue driving straight</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone), crossing your path</li>
+        </ul>
+      </div>
+    `,
+            url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=395&end=418&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe driving."
+        },
         {
             number: 5,
             instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
+      <div style="max-width: 800px; margin: auto; text-align: left;">
+        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+          Imagine being the driver
+        </h1>
+        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+          <li><strong>Context:</strong> You are driving on the highway</li>
+          <li><strong>Objective:</strong> Continue driving in your lane</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
+        </ul>
+      </div>
+    `,
+            url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=422&end=444&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe driving."
         },
         {
             number: 6,
             instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
+      <div style="max-width: 800px; margin: auto; text-align: left;">
+        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+          Imagine being the driver
+        </h1>
+        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+          <li><strong>Context:</strong> The number of lanes on the highway reduced to one due to construction work</li>
+          <li><strong>Objective:</strong> Continue driving in your lane</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
+        </ul>
+      </div>
+    `,
+            url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=448&end=470&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe driving."
         }
     ];
-  
 
     shuffleArray(videoList);
-  
 
     videoList.forEach((video, index) => {
 
@@ -190,8 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: ["Proceed to Video"]
         };
 
-
-        let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
+        let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)?.[1]) || 0;
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
@@ -216,10 +230,10 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 removeAllKeyListeners();
-  
+
                 let pressStart = null;
                 let keyIsDown = false;
-  
+
                 handleKeydown = function(event) {
                     if (event.code === "Space" && !keyIsDown) {
                         keyIsDown = true;
@@ -227,13 +241,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log("Space bar pressed (DOWN) at", pressStart, "seconds");
                     }
                 };
-  
+
                 handleKeyup = function(event) {
                     if (event.code === "Space" && keyIsDown) {
                         keyIsDown = false;
                         let pressEnd = performance.now() / 1000;
                         console.log("Space bar released (UP) at", pressEnd, "seconds");
-  
 
                         let dataToSend = {
                             participantID: participantID,
@@ -243,9 +256,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
-  
+
                         console.log("Sending data to Google Sheets (no-cors):", dataToSend);
-  
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -257,29 +270,25 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                     }
                 };
-  
+
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
-  
 
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => {
                     jsPsych.finishTrial();
                 });
             }
         };
-  
 
         timeline.push(instructionTrial);
         timeline.push(videoTrial);
     });
-  
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: "<p style='font-weight: normal; font-size: 20px;'>Please inform the researcher that you have completed this section</p>",
         choices: []
     });
-  
 
     jsPsych.run(timeline);
 });
