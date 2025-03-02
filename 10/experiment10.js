@@ -1,4 +1,3 @@
-
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     console.log("Loading YouTube API...");
     let tag = document.createElement("script");
@@ -8,12 +7,10 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
 } else {
     console.log("YouTube API already loaded.");
 }
-  
 
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
-  
 
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
@@ -24,7 +21,6 @@ function getParticipantID() {
     console.log("Participant ID:", participantID);
     return participantID;
 }
-  
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -32,7 +28,6 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
-  
 
 function getFormattedDateTime() {
     let d = new Date();
@@ -44,7 +39,6 @@ function getFormattedDateTime() {
     let second = String(d.getSeconds()).padStart(2, "0");
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
-  
 
 let handleKeydown;
 let handleKeyup;
@@ -53,34 +47,25 @@ function removeAllKeyListeners() {
     document.removeEventListener("keydown", handleKeydown);
     document.removeEventListener("keyup", handleKeyup);
 }
-  
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document loaded. Initializing experiment...");
-  
 
     let jsPsych = initJsPsych({
         on_finish: function() {
             console.log("Experiment finished.");
         }
     });
-  
 
     let timeline = [];
-  
-
     let participantID = getParticipantID();
-  
-
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
-
 
     let introTrial = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <!-- Title removed -->
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                     In this experiment, you will be shown brief video clips to interact with. 
                     Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
@@ -93,83 +78,139 @@ document.addEventListener("DOMContentLoaded", function () {
         choices: ["Start Experiment"]
     };
     timeline.push(introTrial);
-  
 
+    // New video list with new instructions
     let videoList = [
-        {
-            number: 1,
-            instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    and let go when you would speed up.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down and let go when you would speed up"
-        },
-        {
-            number: 2,
-            instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
-        },
-        {
-            number: 3,
-            instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
-        },
-        {
-            number: 4,
-            instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
-        },
-        {
-            number: 5,
-            instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
-        },
-        {
-            number: 6,
-            instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
-            `,
-            url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would start slowing down to yield"
-        }
+      // Pedestrian group (items 1-2)
+      {
+        number: 1,
+        instruction: `
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
+          </ul>
+        </div>
+      `,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=10&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
+      },
+      {
+        number: 2,
+        instruction: `
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
+          </ul>
+        </div>
+      `,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=46&end=68&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
+      },
+    
+      // Cycling group (items 3-4)
+      {
+        number: 3,
+        instruction: `
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
+          </ul>
+        </div>
+      `,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=453&end=475&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      },
+      {
+        number: 4,
+        instruction: `
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cycle mid block to cross the road</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching</li>
+          </ul>
+        </div>
+      `,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=489&end=511&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      },
+    
+      // Driving group (items 5-6)
+      {
+        number: 5,
+        instruction: `
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Drive through the intersection</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
+          </ul>
+        </div>
+      `,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=230&end=253&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        message: "Press and hold the space bar when you would feel safe driving."
+      },
+      {
+        number: 6,
+        instruction: `
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Continue driving straight</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
+          </ul>
+        </div>
+      `,
+        url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=267&end=291&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+        message: "Press and hold the space bar when you would feel safe driving."
+      }
     ];
-  
 
-    shuffleArray(videoList);
-  
+    // Group videos by mode using the "number" field
+    let pedestrianVideos = videoList.filter(video => video.number === 1 || video.number === 2);
+    let cyclingVideos = videoList.filter(video => video.number === 3 || video.number === 4);
+    let drivingVideos = videoList.filter(video => video.number === 5 || video.number === 6);
 
-    videoList.forEach((video, index) => {
+    // Shuffle videos within each group
+    shuffleArray(pedestrianVideos);
+    shuffleArray(cyclingVideos);
+    shuffleArray(drivingVideos);
 
+    // Concatenate groups in the desired order: Pedestrian, Cycling, then Driving
+    let orderedVideoList = pedestrianVideos.concat(cyclingVideos, drivingVideos);
+
+    // Create trials for each video in the ordered list
+    orderedVideoList.forEach((video, index) => {
         let instructionTrial = {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
@@ -180,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
             choices: ["Proceed to Video"]
         };
 
-
+        // Extract the video's start time from the URL query parameters
         let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
@@ -197,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 10px;">
                         <button id="next-button-${index}"
                                 style="font-size: 18px; padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
-                            ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Video"}
+                            ${index === orderedVideoList.length - 1 ? "Finish Section" : "Proceed to Next Video"}
                         </button>
                     </div>
                 </div>
@@ -206,7 +247,6 @@ document.addEventListener("DOMContentLoaded", function () {
             trial_duration: null,
             on_load: function () {
                 removeAllKeyListeners();
-  
                 let pressStart = null;
                 let keyIsDown = false;
   
@@ -224,7 +264,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         let pressEnd = performance.now() / 1000;
                         console.log("Space bar released (UP) at", pressEnd, "seconds");
   
-
                         let dataToSend = {
                             participantID: participantID,
                             dateTime: getFormattedDateTime(),
@@ -251,25 +290,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
   
-
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => {
                     jsPsych.finishTrial();
                 });
             }
         };
-  
 
         timeline.push(instructionTrial);
         timeline.push(videoTrial);
     });
-  
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: "<p style='font-weight: normal; font-size: 20px;'>Please inform the researcher that you have completed this section</p>",
         choices: []
     });
-  
 
     jsPsych.run(timeline);
 });
