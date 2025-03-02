@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=3&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=10&end=27&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe driving."
         },
         {
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=36&end=65&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=41&end=58&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe driving."
         },
         {
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=69&end=98&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=72&end=89&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe driving."
         },
         {
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=103&end=120&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe driving."
         },
         {
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=146&end=175&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=135&end=153&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe driving."
         },
         {
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=179&end=208&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=166&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe driving."
         }
     ];
