@@ -132,14 +132,38 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             number: 4,
             instruction: `
-                <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
-                    In the upcoming video, press and hold the space bar when you would start slowing down 
-                    to yield.
-                </p>
+              <div style="max-width: 800px; margin: auto; text-align: left;">
+          
+                <!-- "Imagine being the driver" heading -->
+                <h1 style="font-size: 36px; text-align: left; margin-bottom: 20px;">
+                  Imagine being the driver
+                </h1>
+                <!-- Bullet points -->
+                <ul style="font-size: 20px; list-style-type: none; padding-left: 0; line-height: 1.5; margin-bottom: 40px;">
+                  <li><strong>Context:</strong> You are late for an appointment</li>
+                  <li><strong>Destination:</strong> Down the road</li>
+                  <li><strong>Objective:</strong> Drive through the intersection</li>
+                  <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
+                </ul>
+          
+                <!-- "Imagine being the pedestrian" heading -->
+                <h1 style="font-size: 36px; text-align: left; margin-bottom: 20px;">
+                  Imagine being the pedestrian
+                </h1>
+                <!-- Bullet points -->
+                <ul style="font-size: 20px; list-style-type: none; padding-left: 0; line-height: 1.5;">
+                  <li><strong>Context:</strong> You are late for an appointment</li>
+                  <li><strong>Destination:</strong> Down the road</li>
+                  <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+                  <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
+                </ul>
+          
+              </div>
             `,
             url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would start slowing down to yield"
-        },
+          }
+          ,
         {
             number: 5,
             instruction: `
@@ -197,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div style="display: flex; justify-content: flex-end; align-items: flex-end; margin-top: 10px;">
                         <button id="next-button-${index}"
                                 style="font-size: 18px; padding: 10px 20px; background-color: #ccc; border: none; cursor: pointer;">
-                            ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Trial"}
+                            ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Video"}
                         </button>
                     </div>
                 </div>
