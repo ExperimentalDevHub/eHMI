@@ -132,14 +132,15 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             number: 4,
             instruction: `
-              <div style="max-width: 800px; margin: auto; text-align: left;">
+              <div style="max-width: 800px; margin: auto;">
           
-                <!-- "Imagine being the driver" heading -->
-                <h1 style="font-size: 36px; text-align: left; margin-bottom: 20px;">
+                <!-- Centered heading -->
+                <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
                   Imagine being the driver
                 </h1>
-                <!-- Bullet points -->
-                <ul style="font-size: 20px; list-style-type: none; padding-left: 0; line-height: 1.5; margin-bottom: 40px;">
+          
+                <!-- Bullet points with extra spacing -->
+                <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8; margin-bottom: 40px;">
                   <li><strong>Context:</strong> You are late for an appointment</li>
                   <li><strong>Destination:</strong> Down the road</li>
                   <li><strong>Objective:</strong> Drive through the intersection</li>
@@ -150,8 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `,
             url: "https://www.youtube.com/embed/tEp5Ufrsn7M?start=102&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would start slowing down to yield"
-          }
-          ,
+          },
         {
             number: 5,
             instruction: `
