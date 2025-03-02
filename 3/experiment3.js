@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let introTrial = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: 
+        stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
                 <!-- Title removed -->
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     When you are ready to begin, select "Start Experiment."
                 </p>
             </div>
-        ,
+        `,
         choices: ["Start Experiment"]
     };
     timeline.push(introTrial);
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let videoList = [
         {
             number: 1,
-            instruction: 
+            instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -107,13 +107,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
                     </ul>
                 </div>
-            ,
-            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?list=PL_mdfFo99cx5uVkJf5P__v3huM_CvWLRs&index=4&start=11&end=28&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            `,
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=11&end=28&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 2,
-            instruction: 
+            instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -123,13 +123,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
                     </ul>
                 </div>
-            ,
-            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?list=PL_mdfFo99cx5uVkJf5P__v3huM_CvWLRs&index=4&start=42&end=59&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            `,
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=42&end=59&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 3,
-            instruction: 
+            instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -139,13 +139,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
                     </ul>
                 </div>
-            ,
-            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?list=PL_mdfFo99cx5uVkJf5P__v3huM_CvWLRs&index=4&start=73&end=90&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            `,
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=73&end=90&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 4,
-            instruction: 
+            instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -155,13 +155,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
                     </ul>
                 </div>
-            ,
-            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?list=PL_mdfFo99cx5uVkJf5P__v3huM_CvWLRs&index=4&start=104&end=121&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            `,
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=104&end=121&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 5,
-            instruction: 
+            instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -171,13 +171,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) nearby dropped off a passenger; wants to begin driving again</li>
                     </ul>
                 </div>
-            ,
-            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?list=PL_mdfFo99cx5uVkJf5P__v3huM_CvWLRs&index=4&start=135&end=152&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            `,
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=135&end=152&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 6,
-            instruction: 
+            instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -187,8 +187,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
                     </ul>
                 </div>
-            ,
-            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?list=PL_mdfFo99cx5uVkJf5P__v3huM_CvWLRs&index=4&start=166&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            `,
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=166&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         }
     ];
@@ -202,11 +202,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let instructionTrial = {
             type: jsPsychHtmlButtonResponse,
-            stimulus: 
+            stimulus: `
                 <div style="text-align: center;">
                     ${video.instruction}
                 </div>
-            ,
+            `,
             choices: ["Proceed to Video"]
         };
   
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)?.[1]) || 0;
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: 
+            stimulus: `
                 <div style="text-align: center;">
                     <p style="font-size: 18px;">${video.message}</p>
                     <iframe 
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         </button>
                     </div>
                 </div>
-            ,
+            `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
@@ -281,13 +281,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.addEventListener("keyup", handleKeyup);
   
   
-                document.getElementById(next-button-${index}).addEventListener("click", () => {
+                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
                     jsPsych.finishTrial();
                 });
             }
         };
   
-
+  
         timeline.push(instructionTrial);
         timeline.push(videoTrial);
     });

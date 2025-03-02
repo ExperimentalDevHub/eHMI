@@ -99,97 +99,97 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 1,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the cyclist</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> Across the road</li>
-                        <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
+                        <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/cjGw-SzsZww?start=11&end=27&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=11&end=28&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 2,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the cyclist</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> Across the road</li>
-                        <li><strong>Objective:</strong> Cycle mid block to cross the road</li>
-                        <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching</li>
+                        <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
+                        <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/cjGw-SzsZww?start=42&end=58&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=42&end=59&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 3,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the cyclist</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> Across the road</li>
-                        <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
-                        <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
+                        <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+                        <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/cjGw-SzsZww?start=73&end=89&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=73&end=90&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 4,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the cyclist</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> Down the road</li>
-                        <li><strong>Objective:</strong> Cycle straight through an intersection</li>
+                        <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/cjGw-SzsZww?start=104&end=120&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=104&end=121&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 5,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the cyclist</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
-                        <li><strong>Destination:</strong> Down the road</li>
-                        <li><strong>Objective:</strong> Cycle straight down the road</li>
-                        <li><strong>Other actors:</strong> A vehicle (grey SUV) ahead dropped off a passenger; wants to begin driving again</li>
+                        <li><strong>Destination:</strong> Across the road</li>
+                        <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
+                        <li><strong>Other actors:</strong> A vehicle (grey SUV) nearby dropped off a passenger; wants to begin driving again</li>
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/cjGw-SzsZww?start=136&end=152&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=135&end=152&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         },
         {
             number: 6,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the cyclist</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the pedestrian</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> Down the road</li>
-                        <li><strong>Objective:</strong> Cycle straight down the road</li>
+                        <li><strong>Objective:</strong> Continue walking straight</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
                     </ul>
                 </div>
             `,
-            url: "https://www.youtube.com/embed/cjGw-SzsZww?start=167&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            url: "https://www.youtube.com/embed/ZTX5JSdlqp8?start=166&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+            message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
         }
     ];
   
@@ -257,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let dataToSend = {
                             participantID: participantID,
                             dateTime: getFormattedDateTime(),
-                            experimentBlock: 2,
+                            experimentBlock: 3,
                             videoNumber: video.number,
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
