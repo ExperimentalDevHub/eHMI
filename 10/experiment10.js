@@ -803,7 +803,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let dataToSend = {
                             participantID: participantID,
                             dateTime: getFormattedDateTime(),
-                            experimentBlock: 1,
+                            experimentBlock: 10,
                             videoNumber: video.number,
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
