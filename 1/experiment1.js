@@ -14,17 +14,6 @@ function onYouTubeIframeAPIReady() {
 }
   
 
-let participantID = localStorage.getItem("participantID");
-
-if (participantID) {
-    console.log("Retrieved Participant ID:", participantID);
-} else {
-    console.log("No Participant ID found. Running getParticipantID()...");
-    participantID = getParticipantID(); // Ensures it gets generated if missing
-}
-
-  
-
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -68,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeline = [];
   
 
-    let participantID = getParticipantID();
+    let participantID = localStorage.getItem("participantID");
   
 
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
