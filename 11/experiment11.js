@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are cycling on the highway</li>
@@ -286,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are cycling on the highway</li>
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the pedestrian
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -340,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -394,7 +394,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -520,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -538,7 +538,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -556,7 +556,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -574,7 +574,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -592,7 +592,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are driving on the highway</li>
@@ -609,7 +609,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the cyclist
+              Imagine being the driver
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> The number of lanes on the highway reduced to one due to construction work</li>
@@ -626,7 +626,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -644,7 +644,7 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
@@ -662,13 +662,13 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
               <li><strong>Context:</strong> You are late for an appointment</li>
               <li><strong>Destination:</strong> Across the road</li>
               <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
-              <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
+              <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
             </ul>
           </div>
         `,
@@ -680,13 +680,13 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-              <li><strong>Context:</strong> You are driving on the highway</li>
+              <li><strong>Context:</strong> You are late for an appointment</li>
               <li><strong>Destination:</strong> Down the road</li>
-              <li><strong>Objective:</strong> Continue driving in your lane</li>
-              <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
+              <li><strong>Objective:</strong> Cycle straight through an intersection</li>
+              <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
             </ul>
           </div>
         `,
@@ -698,13 +698,13 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-              <li><strong>Context:</strong> You are driving on the highway</li>
-              <li><strong>Destination:</strong> At the end of the road</li>
-              <li><strong>Objective:</strong> Continue driving straight</li>
-              <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
+              <li><strong>Context:</strong> You are late for an appointment</li>
+              <li><strong>Destination:</strong> Down the road</li>
+              <li><strong>Objective:</strong> Cycle straight down the road</li>
+              <li><strong>Other actors:</strong> A vehicle (grey SUV) ahead dropped off a passenger; wants to begin driving again</li>
             </ul>
           </div>
         `,
@@ -716,13 +716,13 @@ document.addEventListener("DOMContentLoaded", function () {
       instruction: `
           <div style="max-width: 800px; margin: auto; text-align: left;">
             <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-              Imagine being the driver
+              Imagine being the cyclist
             </h1>
             <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-              <li><strong>Context:</strong> You are driving on the highway</li>
+              <li><strong>Context:</strong> You are late for an appointment</li>
               <li><strong>Destination:</strong> Down the road</li>
-              <li><strong>Objective:</strong> Continue driving straight</li>
-              <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone) on your right</li>
+              <li><strong>Objective:</strong> Cycle straight down the road</li>
+              <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
             </ul>
           </div>
         `,
