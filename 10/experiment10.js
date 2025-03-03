@@ -14,8 +14,8 @@ function onYouTubeIframeAPIReady() {
 
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
-    if (!participantID || participantID.length > 6) {
-        participantID = Math.floor(100000 + Math.random() * 900000).toString();
+    if (!participantID || participantID.length !== 3) {
+        participantID = Math.floor(100 + Math.random() * 900).toString();
         localStorage.setItem("participantID", participantID);
     }
     console.log("Participant ID:", participantID);
@@ -705,6 +705,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </h1>
           <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
             <li><strong>Context:</strong> You are driving on the highway</li>
+            <li><strong>Destination:</strong> Down the road</li>
             <li><strong>Objective:</strong> Continue driving in your lane</li>
             <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
           </ul>
@@ -722,6 +723,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </h1>
           <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
             <li><strong>Context:</strong> The number of lanes on the highway reduced to one due to construction work</li>
+            <li><strong>Destination:</strong> Down the road</li>
             <li><strong>Objective:</strong> Continue driving in your lane</li>
             <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
           </ul>

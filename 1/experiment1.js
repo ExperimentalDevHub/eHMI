@@ -14,15 +14,15 @@ function onYouTubeIframeAPIReady() {
 }
   
 
-function getParticipantID() {
-    let participantID = localStorage.getItem("participantID");
-    if (!participantID || participantID.length > 6) {
-        participantID = Math.floor(100000 + Math.random() * 900000).toString();
-        localStorage.setItem("participantID", participantID);
-    }
-    console.log("Participant ID:", participantID);
-    return participantID;
+let participantID = localStorage.getItem("participantID");
+
+if (participantID) {
+    console.log("Retrieved Participant ID:", participantID);
+} else {
+    console.log("No Participant ID found. Running getParticipantID()...");
+    participantID = getParticipantID(); // Ensures it gets generated if missing
 }
+
   
 
 function shuffleArray(array) {
