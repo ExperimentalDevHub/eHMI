@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/-497IV_69xM?start=11&end=28&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe crossing (cycling) the road."
         },
         {
             number: 2,
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/-497IV_69xM?start=42&end=59&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe crossing (cycling) the road."
         },
         {
             number: 3,
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/-497IV_69xM?start=73&end=90&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe crossing (cycling) the road."
         },
         {
             number: 4,
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/-497IV_69xM?start=104&end=121&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe crossing (cycling) the road."
         },
         {
             number: 5,
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/-497IV_69xM?start=135&end=153&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe crossing (cycling) the road."
         },
         {
             number: 6,
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/-497IV_69xM?start=167&end=184&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe crossing (cycling) the road."
         }
     ];
   

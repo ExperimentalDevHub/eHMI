@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=11&end=27&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe driving."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
             number: 2,
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=42&end=58&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe driving."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
             number: 3,
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=73&end=89&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe driving."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
             number: 4,
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=104&end=120&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe driving."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
             number: 5,
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=136&end=153&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe driving."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
             number: 6,
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=167&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-            message: "Press and hold the space bar when you would feel safe driving."
+            message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         }
     ];
   
