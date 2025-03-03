@@ -309,42 +309,6 @@ document.addEventListener("DOMContentLoaded", function () {
           <li><strong>Context:</strong> You are late for an appointment</li>
           <li><strong>Destination:</strong> Across the road</li>
           <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
-      url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1122&end=1143&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
-    },
-    {
-      number: 14,
-      instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cycle mid block to cross the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching</li>
-        </ul>
-      </div>
-    `,
-      url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1158&end=1179&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
-    },
-    {
-      number: 15,
-      instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
           <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
         </ul>
       </div>
@@ -353,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
-      number: 16,
+      number: 14,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -371,7 +335,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
-      number: 17,
+      number: 15,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -389,7 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
-      number: 18,
+      number: 16,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -407,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
-      number: 19,
+      number: 17,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -425,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
-      number: 20,
+      number: 18,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -443,7 +407,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
-      number: 21,
+      number: 19,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -461,7 +425,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
-      number: 22,
+      number: 20,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -479,7 +443,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
-      number: 23,
+      number: 21,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -497,7 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
-      number: 24,
+      number: 22,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -515,7 +479,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
-      number: 25,
+      number: 23,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -533,7 +497,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe driving."
     },
     {
-      number: 26,
+      number: 24,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -551,7 +515,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe driving."
     },
     {
-      number: 27,
+      number: 25,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -569,7 +533,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe driving."
     },
     {
-      number: 28,
+      number: 26,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -578,8 +542,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
           <li><strong>Context:</strong> You are late for an appointment</li>
           <li><strong>Destination:</strong> At the end of the road</li>
-          <li><strong>Objective:</strong> Continue driving straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
+          <li><strong>Objective:</strong> Continue driving in your lane</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
         </ul>
       </div>
     `,
@@ -587,7 +551,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe driving."
     },
     {
-      number: 29,
+      number: 27,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -605,7 +569,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe driving."
     },
     {
-      number: 30,
+      number: 28,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -623,7 +587,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe driving."
     },
     {
-      number: 31,
+      number: 29,
       instruction: `
       <div style="max-width: 800px; margin: auto; text-align: left;">
         <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
@@ -638,6 +602,42 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1122&end=1143&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+    },
+    {
+      number: 30,
+      instruction: `
+      <div style="max-width: 800px; margin: auto; text-align: left;">
+        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+          Imagine being the cyclist
+        </h1>
+        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+          <li><strong>Context:</strong> You are late for an appointment</li>
+          <li><strong>Destination:</strong> Across the road</li>
+          <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
+        </ul>
+      </div>
+    `,
+      url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1122&end=1143&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+    },
+    {
+      number: 31,
+      instruction: `
+      <div style="max-width: 800px; margin: auto; text-align: left;">
+        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+          Imagine being the cyclist
+        </h1>
+        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+          <li><strong>Context:</strong> You are late for an appointment</li>
+          <li><strong>Destination:</strong> Down the road</li>
+          <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
+          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
+        </ul>
+      </div>
+    `,
+      url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1158&end=1179&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
@@ -731,6 +731,7 @@ document.addEventListener("DOMContentLoaded", function () {
       message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     }
 ];
+
 
   // Set the order of displayed videos as follows:
   // Group 1: Videos 1–6
