@@ -14,8 +14,8 @@ function onYouTubeIframeAPIReady() {
 
 function getParticipantID() {
     let participantID = localStorage.getItem("participantID");
-    if (!participantID || participantID.length > 6) {
-        participantID = Math.floor(100000 + Math.random() * 900000).toString();
+    if (!participantID || participantID.length !== 3) {
+        participantID = Math.floor(100 + Math.random() * 900).toString();
         localStorage.setItem("participantID", participantID);
     }
     console.log("Participant ID:", participantID);
