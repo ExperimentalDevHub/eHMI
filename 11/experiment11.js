@@ -730,7 +730,7 @@ document.addEventListener("DOMContentLoaded", function () {
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1306&end=1329&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     }
-  ];
+];
 
   // Set the order of displayed videos as follows:
   // Group 1: Videos 1–6
