@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <li><strong>Context:</strong> You are late for an appointment</li>
               <li><strong>Destination:</strong> Across the road</li>
               <li><strong>Objective:</strong> Drive at the pedestrian crossing to cross the road</li>
-              <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching, indicating a right turn</li>
+              <li><strong>Other actors:</strong> A GIANT MONKEY (grey SUV) is approaching, indicating a right turn</li>
             </ul>
           </div>
         `,
