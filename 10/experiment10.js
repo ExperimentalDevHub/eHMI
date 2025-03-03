@@ -84,651 +84,652 @@ document.addEventListener("DOMContentLoaded", function () {
     {
       number: 1,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=11&end=32&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 2,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=47&end=68&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 3,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=83&end=104&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 4,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the intersection with caution</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=119&end=141&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 5,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) nearby dropped off a passenger; wants to begin driving again</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=156&end=179&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 6,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Continue walking straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching with caution</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=193&end=216&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 7,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Drive through the intersection</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Cycle through the intersection</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching from the right side</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=231&end=253&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 8,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> At the end of the road</li>
-          <li><strong>Objective:</strong> Continue driving straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Cycle straight through the intersection</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=268&end=291&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 9,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> At the end of the road</li>
-          <li><strong>Objective:</strong> Continue driving straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Cycle straight through</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin moving again</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=306&end=328&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 10,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> At the end of the road</li>
-          <li><strong>Objective:</strong> Continue driving straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone), crossing your path</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Cycle straight through</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone)</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=343&end=366&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 11,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are driving on the highway</li>
-          <li><strong>Objective:</strong> Continue driving in your lane</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are cycling on the highway</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Cycle in your lane</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=381&end=403&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 12,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are driving on the highway</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Continue driving in your lane</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are cycling on the highway</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Cycle in your lane</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=418&end=439&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 13,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
-      url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1122&end=1143&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Drive at the pedestrian crossing to cross the road</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching, indicating a right turn</li>
+          </ul>
+        </div>
+      `,
+      url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=454&end=475&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 14,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cycle mid block to cross the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching</li>
-        </ul>
-      </div>
-    `,
-      url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1158&end=1179&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Drive straight through the intersection</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway</li>
+          </ul>
+        </div>
+      `,
+      url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=490&end=511&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 15,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Drive straight down the road</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) ahead dropped off a passenger; wants to begin driving again</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=526&end=548&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 16,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cycle straight through an intersection</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Drive straight down the road</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=563&end=585&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 17,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cycle straight down the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) ahead dropped off a passenger; wants to begin driving again</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Drive at the pedestrian crossing to cross the road</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching, indicating a right turn</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=600&end=622&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 18,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cycle straight down the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Continue driving straight</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=637&end=660&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 19,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=675&end=696&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 20,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=711&end=732&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 21,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Continue walking straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=747&end=769&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 22,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) nearby dropped off a passenger; wants to begin moving again</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=783&end=805&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 23,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cross at the pedestrian crossing</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=820&end=843&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 24,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the pedestrian
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) nearby dropped off a passenger; wants to begin driving again</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the pedestrian
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Cross mid block (jaywalk)</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) nearby dropped off a passenger; wants to begin moving again</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=858&end=881&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
       message: "Press and hold the space bar when you would feel safe crossing (walking) the road."
     },
     {
       number: 25,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Drive through the intersection</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Cycle straight through the intersection</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=896&end=922&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 26,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> At the end of the road</li>
-          <li><strong>Objective:</strong> Continue driving straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone), crossing your path</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Cycle in your lane</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is indicating a left turn into an alleyway</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=937&end=960&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 27,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> At the end of the road</li>
-          <li><strong>Objective:</strong> Continue driving straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Cycle straight through the intersection</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin moving again</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=975&end=997&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 28,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> At the end of the road</li>
-          <li><strong>Objective:</strong> Continue driving straight</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Cycle in your lane</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1012&end=1035&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 29,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are driving on the highway</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Continue driving in your lane</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Cycle straight through</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone)</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1050&end=1071&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 30,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the driver
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are driving on the highway</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Continue driving in your lane</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the cyclist
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Across the road</li>
+            <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the intersection</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1086&end=1107&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe driving."
+      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
     },
     {
       number: 31,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Drive at the pedestrian crossing to cross the road</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching, indicating a right turn</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1122&end=1143&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 32,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Across the road</li>
-          <li><strong>Objective:</strong> Cycle mid block to cross the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are late for an appointment</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Continue driving straight</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1158&end=1179&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 33,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cycle at the pedestrian crossing to cross the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are driving on the highway</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Continue driving in your lane</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1194&end=1216&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 34,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cycle straight through an intersection</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection, indicating a right turn</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are driving on the highway</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Continue driving in your lane</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1231&end=1253&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 35,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cycle straight down the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) ahead dropped off a passenger; wants to begin driving again</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are driving on the highway</li>
+            <li><strong>Destination:</strong> At the end of the road</li>
+            <li><strong>Objective:</strong> Continue driving straight</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1269&end=1291&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     },
     {
       number: 36,
       instruction: `
-      <div style="max-width: 800px; margin: auto; text-align: left;">
-        <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
-          Imagine being the cyclist
-        </h1>
-        <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
-          <li><strong>Context:</strong> You are late for an appointment</li>
-          <li><strong>Destination:</strong> Down the road</li>
-          <li><strong>Objective:</strong> Cycle straight down the road</li>
-          <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane indicates turning into an alleyway (pedestrian zone) on your right</li>
-        </ul>
-      </div>
-    `,
+        <div style="max-width: 800px; margin: auto; text-align: left;">
+          <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">
+            Imagine being the driver
+          </h1>
+          <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
+            <li><strong>Context:</strong> You are driving on the highway</li>
+            <li><strong>Destination:</strong> Down the road</li>
+            <li><strong>Objective:</strong> Continue driving straight</li>
+            <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone) on your right</li>
+          </ul>
+        </div>
+      `,
       url: "https://www.youtube.com/embed/-FWMwYM-bqQ?start=1306&end=1329&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
-      message: "Press and hold the space bar when you would feel safe crossing (cycling) the road."
+      message: "Press and hold the space bar when you would feel safe driving."
     }
-];
+  ];
 
   // We no longer need to shuffle or group the videos;
   // simply use the videoList in the given order (1-36)
