@@ -173,7 +173,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let pageNumber = 1; // Start page numbering from 1
 
     videoList.forEach((video, index) => {
-
         let instructionTrial = {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
