@@ -73,7 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let videoList = [
         {
-            number: 1,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
@@ -89,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            number: 2,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
@@ -105,7 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            number: 3,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
@@ -121,7 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            number: 4,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
@@ -137,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            number: 5,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
@@ -152,7 +147,6 @@ document.addEventListener("DOMContentLoaded", function () {
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            number: 6,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
