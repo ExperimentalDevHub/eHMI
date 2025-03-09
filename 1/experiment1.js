@@ -7,12 +7,10 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
 } else {
     console.log("YouTube API already loaded.");
 }
-  
 
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
-  
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -20,7 +18,6 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
-  
 
 function getFormattedDateTime() {
     let d = new Date();
@@ -32,7 +29,6 @@ function getFormattedDateTime() {
     let second = String(d.getSeconds()).padStart(2, "0");
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
-  
 
 let handleKeydown;
 let handleKeyup;
@@ -41,34 +37,27 @@ function removeAllKeyListeners() {
     document.removeEventListener("keydown", handleKeydown);
     document.removeEventListener("keyup", handleKeyup);
 }
-  
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document loaded. Initializing experiment...");
-  
 
     let jsPsych = initJsPsych({
         on_finish: function() {
             console.log("Experiment finished.");
         }
     });
-  
 
     let timeline = [];
-  
 
     let participantID = localStorage.getItem("participantID");
-  
 
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
-  
 
     let introTrial = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
-                <!-- Title removed -->
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                     In this experiment, you will be shown brief video clips to interact with. 
                     Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
@@ -81,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
         choices: ["Start Experiment"]
     };
     timeline.push(introTrial);
-  
 
     let videoList = [
         {
@@ -185,13 +173,10 @@ document.addEventListener("DOMContentLoaded", function () {
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         }
     ];
-  
 
     shuffleArray(videoList);
-  
 
     videoList.forEach((video, index) => {
-  
 
         let instructionTrial = {
             type: jsPsychHtmlButtonResponse,
@@ -202,7 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
             `,
             choices: ["Proceed to Video"]
         };
-  
 
         let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
         let videoTrial = {
@@ -223,16 +207,17 @@ document.addEventListener("DOMContentLoaded", function () {
                             ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Video"}
                         </button>
                     </div>
+                    <p style="text-align: center; font-size: 20px; margin-top: 20px;">Page ${index + 2}</p>
                 </div>
             `,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 removeAllKeyListeners();
-  
+
                 let pressStart = null;
                 let keyIsDown = false;
-  
+
                 handleKeydown = function(event) {
                     if (event.code === "Space" && !keyIsDown) {
                         keyIsDown = true;
@@ -240,13 +225,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log("Space bar pressed (DOWN) at", pressStart, "seconds");
                     }
                 };
-  
+
                 handleKeyup = function(event) {
                     if (event.code === "Space" && keyIsDown) {
                         keyIsDown = false;
                         let pressEnd = performance.now() / 1000;
                         console.log("Space bar released (UP) at", pressEnd, "seconds");
-  
+
                         let dataToSend = {
                             participantID: participantID,
                             dateTime: getFormattedDateTime(),
@@ -255,9 +240,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
-  
+
                         console.log("Sending data to Google Sheets (no-cors):", dataToSend);
-  
+
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -269,29 +254,25 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                     }
                 };
-  
+
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
-  
-  
+
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => {
                     jsPsych.finishTrial();
                 });
             }
         };
-  
 
         timeline.push(instructionTrial);
         timeline.push(videoTrial);
     });
-  
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: "<p style='font-weight: normal; font-size: 20px;'>Please inform the researcher that you have completed this section</p>",
         choices: []
     });
-  
 
     jsPsych.run(timeline);
 });
