@@ -76,14 +76,13 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 1,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 1: Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> Down the road</li>
                         <li><strong>Objective:</strong> Drive through the intersection</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
                     </ul>
-                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 1</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=11&end=27&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -93,14 +92,13 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 2,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 2: Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
                         <li><strong>Objective:</strong> Continue driving straight</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
                     </ul>
-                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 2</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=42&end=58&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -110,14 +108,13 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 3,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 3: Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
                         <li><strong>Objective:</strong> Continue driving straight</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
                     </ul>
-                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 3</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=73&end=89&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -127,14 +124,13 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 4,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 4: Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
                         <li><strong>Objective:</strong> Continue driving straight</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone), crossing your path</li>
                     </ul>
-                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 4</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=104&end=120&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -144,13 +140,12 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 5,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 5: Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are driving on the highway</li>
                         <li><strong>Objective:</strong> Continue driving in your lane</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
                     </ul>
-                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 5</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=136&end=153&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -160,13 +155,12 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 6,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 6: Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> The number of lanes on the highway reduced to one due to construction work</li>
                         <li><strong>Objective:</strong> Continue driving in your lane</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
                     </ul>
-                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 6</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=167&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
