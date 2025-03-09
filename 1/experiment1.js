@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Objective:</strong> Drive through the intersection</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
                     </ul>
+                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 1</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=11&end=27&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -111,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Objective:</strong> Continue driving straight</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
                     </ul>
+                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 2</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=42&end=58&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -127,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Objective:</strong> Continue driving straight</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
                     </ul>
+                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 3</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=73&end=89&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -143,6 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Objective:</strong> Continue driving straight</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone), crossing your path</li>
                     </ul>
+                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 4</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=104&end=120&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -158,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Objective:</strong> Continue driving in your lane</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
                     </ul>
+                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 5</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=136&end=153&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
@@ -173,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Objective:</strong> Continue driving in your lane</li>
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
                     </ul>
+                    <p style="font-size: 20px; text-align: center; margin-top: 20px;">Page 6</p>
                 </div>
             `,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=167&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
