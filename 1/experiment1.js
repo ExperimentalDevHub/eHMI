@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
                     and navigate the tasks as you normally would using your computer's space bar. 
                     The videos will autoplay, so please do not try to control their playback. 
-                    When you are ready to begin, select "Start Experiment." MONKEY
+                    When you are ready to begin, select "Start Experiment."
                 </p>
             </div>
         `,
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 1,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 1: Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> Down the road</li>
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 2,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 2: Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 3,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 3: Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 4,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 4: Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 5,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 5: Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> You are driving on the highway</li>
                         <li><strong>Objective:</strong> Continue driving in your lane</li>
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
             number: 6,
             instruction: `
                 <div style="max-width: 800px; margin: auto; text-align: left;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page 6: Imagine being the driver</h1>
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
                         <li><strong>Context:</strong> The number of lanes on the highway reduced to one due to construction work</li>
                         <li><strong>Objective:</strong> Continue driving in your lane</li>
@@ -170,13 +170,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     shuffleArray(videoList);
 
+    let pageNumber = 1; // Start page numbering from 1
+
     videoList.forEach((video, index) => {
 
         let instructionTrial = {
             type: jsPsychHtmlButtonResponse,
             stimulus: `
                 <div style="text-align: center;">
-                    ${video.instruction}
+                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page ${pageNumber}: ${video.instruction}</h1>
                 </div>
             `,
             choices: ["Proceed to Video"]
@@ -201,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Video"}
                         </button>
                     </div>
-                    <p style="text-align: center; font-size: 20px; margin-top: 20px;">Page ${index + 2}</p>
+                    <p style="text-align: center; font-size: 20px; margin-top: 20px;">Page ${pageNumber}</p>
                 </div>
             `,
             choices: "NO_KEYS",
@@ -254,6 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 document.getElementById(`next-button-${index}`).addEventListener("click", () => {
                     jsPsych.finishTrial();
+                    pageNumber++; // Increment page number after each trial
                 });
             }
         };
