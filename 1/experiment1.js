@@ -7,10 +7,12 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
 } else {
     console.log("YouTube API already loaded.");
 }
+  
 
 function onYouTubeIframeAPIReady() {
     console.log("YouTube API Loaded and Ready.");
 }
+  
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -18,6 +20,7 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+  
 
 function getFormattedDateTime() {
     let d = new Date();
@@ -27,8 +30,9 @@ function getFormattedDateTime() {
     let hour = String(d.getHours()).padStart(2, "0");
     let minute = String(d.getMinutes()).padStart(2, "0");
     let second = String(d.getSeconds()).padStart(2, "0");
-    return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    return ${year}-${month}-${day} ${hour}:${minute}:${second};
 }
+  
 
 let handleKeydown;
 let handleKeyup;
@@ -37,27 +41,34 @@ function removeAllKeyListeners() {
     document.removeEventListener("keydown", handleKeydown);
     document.removeEventListener("keyup", handleKeyup);
 }
+  
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Document loaded. Initializing experiment...");
+  
 
     let jsPsych = initJsPsych({
         on_finish: function() {
             console.log("Experiment finished.");
         }
     });
+  
 
     let timeline = [];
+  
 
     let participantID = localStorage.getItem("participantID");
+  
 
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
+  
 
     let introTrial = {
         type: jsPsychHtmlButtonResponse,
-        stimulus: `
+        stimulus: 
             <div style="text-align: center;">
                 <img src="../HFASt Logo.png" alt="Lab Logo" style="max-width: 300px; margin-bottom: 20px;">
+                <!-- Title removed -->
                 <p style="font-size: 20px; max-width: 800px; margin: auto; text-align: justify;">
                     In this experiment, you will be shown brief video clips to interact with. 
                     Imagine yourself in the presented role (pedestrian, cyclist, or driver) 
@@ -66,14 +77,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     When you are ready to begin, select "Start Experiment."
                 </p>
             </div>
-        `,
+        ,
         choices: ["Start Experiment"]
     };
     timeline.push(introTrial);
+  
 
     let videoList = [
         {
-            instruction: `
+            number: 1,
+            instruction: 
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -83,12 +96,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is approaching the same intersection from the right side</li>
                     </ul>
                 </div>
-            `,
+            ,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=11&end=27&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            instruction: `
+            number: 2,
+            instruction: 
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -98,12 +112,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
                     </ul>
                 </div>
-            `,
+            ,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=42&end=58&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            instruction: `
+            number: 3,
+            instruction: 
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -113,12 +128,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
                     </ul>
                 </div>
-            `,
+            ,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=73&end=89&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            instruction: `
+            number: 4,
+            instruction: 
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -128,12 +144,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone), crossing your path</li>
                     </ul>
                 </div>
-            `,
+            ,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=104&end=120&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            instruction: `
+            number: 5,
+            instruction: 
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -142,12 +159,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is overtaking you on the left side</li>
                     </ul>
                 </div>
-            `,
+            ,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=136&end=153&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         },
         {
-            instruction: `
+            number: 6,
+            instruction: 
                 <div style="max-width: 800px; margin: auto; text-align: left;">
                     <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Imagine being the driver</h1>
                     <ul style="font-size: 20px; list-style-type: disc; padding-left: 40px; line-height: 1.8;">
@@ -156,31 +174,34 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Other actors:</strong> A vehicle (grey SUV) is merging into the road in front of you from the right side</li>
                     </ul>
                 </div>
-            `,
+            ,
             url: "https://www.youtube.com/embed/KOYF5LLaI-Q?start=167&end=183&autoplay=1&mute=1&cc_load_policy=0&disablekb=1&modestbranding=1&rel=0",
             message: "After the countdown, press and hold the space bar. Continue holding as long as you would feel safe driving."
         }
     ];
+  
 
     shuffleArray(videoList);
-
-    let pageNumber = 1; // Start page numbering from 1
+  
 
     videoList.forEach((video, index) => {
+  
+
         let instructionTrial = {
             type: jsPsychHtmlButtonResponse,
-            stimulus: `
+            stimulus: 
                 <div style="text-align: center;">
-                    <h1 style="font-size: 36px; text-align: center; margin-bottom: 20px;">Page ${pageNumber}: ${video.instruction}</h1>
+                    ${video.instruction}
                 </div>
-            `,
+            ,
             choices: ["Proceed to Video"]
         };
+  
 
         let videoStartTime = parseFloat(video.url.match(/start=(\\d+)/)?.[1]) || 0;
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: `
+            stimulus: 
                 <div style="text-align: center;">
                     <p style="font-size: 18px;">${video.message}</p>
                     <iframe 
@@ -196,17 +217,16 @@ document.addEventListener("DOMContentLoaded", function () {
                             ${index === videoList.length - 1 ? "Finish Section" : "Proceed to Next Video"}
                         </button>
                     </div>
-                    <p style="text-align: center; font-size: 20px; margin-top: 20px;">Page ${pageNumber}</p>
                 </div>
-            `,
+            ,
             choices: "NO_KEYS",
             trial_duration: null,
             on_load: function () {
                 removeAllKeyListeners();
-
+  
                 let pressStart = null;
                 let keyIsDown = false;
-
+  
                 handleKeydown = function(event) {
                     if (event.code === "Space" && !keyIsDown) {
                         keyIsDown = true;
@@ -214,13 +234,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log("Space bar pressed (DOWN) at", pressStart, "seconds");
                     }
                 };
-
+  
                 handleKeyup = function(event) {
                     if (event.code === "Space" && keyIsDown) {
                         keyIsDown = false;
                         let pressEnd = performance.now() / 1000;
                         console.log("Space bar released (UP) at", pressEnd, "seconds");
-
+  
                         let dataToSend = {
                             participantID: participantID,
                             dateTime: getFormattedDateTime(),
@@ -229,9 +249,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             startTime: Number((videoStartTime + pressStart).toFixed(3)),
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
-
+  
                         console.log("Sending data to Google Sheets (no-cors):", dataToSend);
-
+  
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -243,26 +263,29 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                     }
                 };
-
+  
                 document.addEventListener("keydown", handleKeydown);
                 document.addEventListener("keyup", handleKeyup);
-
-                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
+  
+  
+                document.getElementById(next-button-${index}).addEventListener("click", () => {
                     jsPsych.finishTrial();
-                    pageNumber++; // Increment page number after each trial
                 });
             }
         };
+  
 
         timeline.push(instructionTrial);
         timeline.push(videoTrial);
     });
+  
 
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: "<p style='font-weight: normal; font-size: 20px;'>Please inform the researcher that you have completed this section</p>",
         choices: []
     });
+  
 
     jsPsych.run(timeline);
 });
