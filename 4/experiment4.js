@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
                         <li><strong>Objective:</strong> Continue driving straight</li>
-                        <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone), crossing your path</li>
+                        <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
                     </ul>
                 </div>
             `,
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
                         <li><strong>Objective:</strong> Continue driving straight</li>
-                        <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway, crossing your path</li>
+                        <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
                     </ul>
                 </div>
             `,
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><strong>Context:</strong> You are late for an appointment</li>
                         <li><strong>Destination:</strong> At the end of the road</li>
                         <li><strong>Objective:</strong> Continue driving straight</li>
-                        <li><strong>Other actors:</strong> A vehicle (grey SUV) has dropped off a passenger and wants to begin driving again</li>
+                        <li><strong>Other actors:</strong> A vehicle (grey SUV) in the oncoming lane is indicating a left turn into an alleyway (pedestrian zone), crossing your path</li>
                     </ul>
                 </div>
             `,
