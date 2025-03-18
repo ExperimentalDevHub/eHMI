@@ -1,16 +1,11 @@
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
-    console.log("Loading YouTube API...");
     let tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     let firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-} else {
-    console.log("YouTube API already loaded.");
 }
 
-function onYouTubeIframeAPIReady() {
-    console.log("YouTube API Loaded and Ready.");
-}
+function onYouTubeIframeAPIReady() {}
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -34,18 +29,13 @@ let handleKeydown;
 let handleKeyup;
 
 function removeAllKeyListeners() {
-    console.log("🛑 Removing old event listeners before adding new ones...");
     document.removeEventListener("keydown", handleKeydown);
     document.removeEventListener("keyup", handleKeyup);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Document loaded. Initializing experiment...");
-
     let jsPsych = initJsPsych({
-        on_finish: function() {
-            console.log("Experiment finished.");
-        }
+        on_finish: function() {}
     });
 
     let timeline = [];
@@ -214,7 +204,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && !keyIsDown) {
                         keyIsDown = true;
                         pressStart = performance.now() / 1000;
-                        console.log("Space bar pressed (DOWN) at", pressStart, "seconds");
                     }
                 };
 
@@ -222,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (event.code === "Space" && keyIsDown) {
                         keyIsDown = false;
                         let pressEnd = performance.now() / 1000;
-                        console.log("Space bar released (UP) at", pressEnd, "seconds");
 
                         let dataToSend = {
                             participantID: participantID,
@@ -233,16 +221,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             endTime: Number((videoStartTime + pressEnd).toFixed(3))
                         };
 
-                        console.log("Sending data to Google Sheets (no-cors):", dataToSend);
-
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ experimentData: dataToSend }),
                             mode: "no-cors"
-                        })
-                        .catch(err => {
-                            console.error("Error sending data:", err);
                         });
                     }
                 };
