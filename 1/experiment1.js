@@ -262,9 +262,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             videoNumber:         video.number,
                             startTime:           relativeStart,
                             endTime:             relativeEnd,
-                            videoTimestampStart: actualStart,
-                            videoTimestampEnd:   actualEnd
-                        };
+                            // use EXACT header names here:
+                            "Timestamp Start":   actualStart,
+                            "Timestamp End":     actualEnd
+                          };
+                          
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
