@@ -273,7 +273,7 @@ if (!tryMakePlayer()) {
                           };
                           
                           // … inside handleKeyup, just before fetch:
-console.log("sending payload:", dataToSend);
+console.log( JSON.stringify(dataToSend, null, 2) );
 fetch(GOOGLE_SHEETS_URL, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
