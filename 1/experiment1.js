@@ -165,6 +165,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     ];
 
+    videoList.forEach(video => {
+        // inject enablejsapi=1 just after the “?” 
+        if (!/enablejsapi=1/.test(video.url)) {
+          video.url = video.url.replace("?", "?enablejsapi=1&");
+        }
+      });
+      
+
     shuffleArray(videoList);
 
     videoList.forEach((video, index) => {
