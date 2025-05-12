@@ -210,70 +210,83 @@ document.addEventListener("DOMContentLoaded", function () {
                 let videoPressStart = 0;
                 let videoPressEnd   = 0;
                 let keyIsDown       = false;
-                let player          = null;
-                function tryMakePlayer() {
-                    if (window.YT && YT.Player) {
-                      player = new YT.Player(`player-${index}`, { });
-                      return true;
-                    }
-                    return false;
-                  }
+                // … inside on_load of your videoTrial …
 
-                  if (!tryMakePlayer()) {
-                    let poll = setInterval(() => {
-                      if (tryMakePlayer()) clearInterval(poll);
-                    }, 100);
-                  }
-                  
-                  // on SPACE↓
-                  handleKeydown = e => {
-                    if (e.code === "Space" && !keyIsDown) {
-                      keyIsDown = true;
-                      sitePressStart = performance.now() / 1000;
-                      if (player && typeof player.getCurrentTime === "function") {
-                        videoPressStart = player.getCurrentTime();    // **video timestamp**
-                      } else {
-                        videoPressStart = null;
-                      }
-                    }
-                  };
+let player = null;
+let playerReady = false;
 
-                // On space‐up: get current video time & POST both sets
-                handleKeyup = e => {
-                    if (e.code === "Space" && keyIsDown) {
-                      keyIsDown = false;
-                      sitePressEnd = performance.now() / 1000;
-                      if (player && typeof player.getCurrentTime === "function") {
-                        videoPressEnd = player.getCurrentTime();      // **video timestamp**
-                      } else {
-                        videoPressEnd = null;
-                      }
-                  
-                      const dataToSend = {
-                        participantID,  
-                        dateTime: getFormattedDateTime(),
-                        experimentBlock: 1,
-                        videoNumber: video.number,
-                  
-                        // site‐relative times (this will keep climbing):
-                        startTime: +sitePressStart.toFixed(3),
-                        endTime:   +sitePressEnd.toFixed(3),
-                  
-                        // true video‐playback times (should not accumulate):
-                        videoTimestampStart: videoPressStart === null ? "" : +videoPressStart.toFixed(3),
-                        videoTimestampEnd:   videoPressEnd   === null ? "" : +videoPressEnd.toFixed(3)
-                      };
-                  
-                      console.log(JSON.stringify(dataToSend, null, 2));
-                  
-                      fetch(GOOGLE_SHEETS_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ experimentData: dataToSend }),
-                        mode: "no-cors"
-                      });
-                    }
-                  };
+// Called once the IFrame API hooks into that <iframe>
+function onPlayerReady(event) {
+  player    = event.target;
+  playerReady = true;
+}
+
+// Try to instantiate the player; return true if we did
+function tryMakePlayer() {
+  if (window.YT && YT.Player) {
+    new YT.Player(`player-${index}`, {
+      events: { onReady: onPlayerReady }
+    });
+    return true;
+  }
+  return false;
+}
+
+// Poll until YT.Player exists, then wire up
+if (!tryMakePlayer()) {
+  let poll = setInterval(() => {
+    if (tryMakePlayer()) clearInterval(poll);
+  }, 100);
+}
+
+
+// On space‐down:
+handleKeydown = e => {
+  if (e.code === "Space" && !keyIsDown) {
+    keyIsDown = true;
+    sitePressStart = performance.now() / 1000;
+    // only grab video time if the player is truly ready
+    videoPressStart = playerReady
+      ? player.getCurrentTime()
+      : null;
+  }
+};
+
+// On space‐up:
+handleKeyup = e => {
+  if (e.code === "Space" && keyIsDown) {
+    keyIsDown = false;
+    sitePressEnd = performance.now() / 1000;
+    videoPressEnd = playerReady
+      ? player.getCurrentTime()
+      : null;
+
+    let dataToSend = {
+      participantID,
+      dateTime: getFormattedDateTime(),
+      experimentBlock: 1,
+      videoNumber: video.number,
+
+      // site time (cumulative)
+      startTime: +sitePressStart.toFixed(3),
+      endTime:   +sitePressEnd.toFixed(3),
+
+      // only real video‐time if ready; else blank
+      videoTimestampStart: videoPressStart !== null ? +videoPressStart.toFixed(3) : "",
+      videoTimestampEnd:   videoPressEnd   !== null ? +videoPressEnd.toFixed(3)   : ""
+    };
+
+    console.log("sending payload:", JSON.stringify(dataToSend, null, 2));
+
+    fetch(GOOGLE_SHEETS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ experimentData: dataToSend }),
+      mode: "no-cors"
+    });
+  }
+};
+
                   
                   document.addEventListener("keydown", handleKeydown);
                   document.addEventListener("keyup",   handleKeyup);
