@@ -267,6 +267,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             "Timestamp End":     actualEnd
                           };
                           
+                          // … inside handleKeyup, just before fetch:
+console.log("sending payload:", dataToSend);
+fetch(GOOGLE_SHEETS_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ experimentData: dataToSend }),
+  mode: "no-cors"
+});
+
 
                         fetch(GOOGLE_SHEETS_URL, {
                             method: "POST",
