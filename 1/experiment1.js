@@ -1,3 +1,6 @@
+// experiment1.js
+
+// === Load YouTube IFrame API if needed ===
 if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     let tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -5,7 +8,10 @@ if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
-function onYouTubeIframeAPIReady() {}
+// Flag the API-ready callback
+function onYouTubeIframeAPIReady() {
+    // YouTube IFrame API is now available
+}
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -16,10 +22,10 @@ function shuffleArray(array) {
 
 function getFormattedDateTime() {
     let d = new Date();
-    let year = d.getFullYear();
-    let month = String(d.getMonth() + 1).padStart(2, "0");
-    let day = String(d.getDate()).padStart(2, "0");
-    let hour = String(d.getHours()).padStart(2, "0");
+    let year   = d.getFullYear();
+    let month  = String(d.getMonth() + 1).padStart(2, "0");
+    let day    = String(d.getDate()).padStart(2, "0");
+    let hour   = String(d.getHours()).padStart(2, "0");
     let minute = String(d.getMinutes()).padStart(2, "0");
     let second = String(d.getSeconds()).padStart(2, "0");
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
@@ -40,9 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let timeline = [];
     let participantID = localStorage.getItem("participantID");
-
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
 
+    // --- Intro screen ---
     let introTrial = {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
@@ -61,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     timeline.push(introTrial);
 
+    // --- Your six videos ---
     let videoList = [
         {
             number: 1,
@@ -161,23 +168,24 @@ document.addEventListener("DOMContentLoaded", function () {
     shuffleArray(videoList);
 
     videoList.forEach((video, index) => {
+        // Instruction screen
         let instructionTrial = {
             type: jsPsychHtmlButtonResponse,
-            stimulus: `
-                <div style="text-align: center;">
-                    ${video.instruction}
-                </div>
-            `,
+            stimulus: `<div style="text-align: center;">${video.instruction}</div>`,
             choices: ["Proceed to Video"]
         };
 
+        // Extract the “start=” offset so your original startTime/endTime still work
         let videoStartTime = parseFloat(video.url.match(/start=(\d+)/)?.[1]) || 0;
+
+        // The video trial itself
         let videoTrial = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
                 <div style="text-align: center;">
                     <p style="font-size: 18px;">${video.message}</p>
-                    <iframe 
+                    <iframe
+                        id="player-${index}"                                  
                         style="width: 81vw; height: 45.5625vw; max-width: 1296px; max-height: 729px;"
                         src="${video.url}"
                         frameborder="0"
@@ -197,28 +205,65 @@ document.addEventListener("DOMContentLoaded", function () {
             on_load: function () {
                 removeAllKeyListeners();
 
-                let pressStart = null;
-                let keyIsDown = false;
+                let pressStart = 0;
+                let pressEnd   = 0;
+                let keyIsDown  = false;
 
+                // Instantiate the YT.Player once the API is ready
+                let player = null;
+                function tryMakePlayer() {
+                    if (typeof YT !== "undefined" && YT.Player) {
+                        player = new YT.Player(`player-${index}`);
+                        return true;
+                    }
+                    return false;
+                }
+                if (!tryMakePlayer()) {
+                    let poll = setInterval(() => {
+                        if (tryMakePlayer()) clearInterval(poll);
+                    }, 100);
+                }
+
+                // On space‐down: get current video time
                 handleKeydown = function(event) {
                     if (event.code === "Space" && !keyIsDown) {
                         keyIsDown = true;
-                        pressStart = performance.now() / 1000;
+                        if (player && player.getCurrentTime) {
+                            pressStart = player.getCurrentTime();
+                        } else {
+                            // fallback (shouldn’t be used once API is up)
+                            pressStart = performance.now() / 1000;
+                        }
                     }
                 };
 
+                // On space‐up: get current video time & POST both sets
                 handleKeyup = function(event) {
                     if (event.code === "Space" && keyIsDown) {
                         keyIsDown = false;
-                        let pressEnd = performance.now() / 1000;
+                        if (player && player.getCurrentTime) {
+                            pressEnd = player.getCurrentTime();
+                        } else {
+                            pressEnd = performance.now() / 1000;
+                        }
+
+                        // Your original “embedded” timestamps
+                        let relativeStart = Number((videoStartTime + pressStart).toFixed(3));
+                        let relativeEnd   = Number((videoStartTime + pressEnd).toFixed(3));
+
+                        // **New** actual video‐timestamp columns
+                        let actualStart   = Number(pressStart.toFixed(3));
+                        let actualEnd     = Number(pressEnd.toFixed(3));
 
                         let dataToSend = {
-                            participantID: participantID,
-                            dateTime: getFormattedDateTime(),
-                            experimentBlock: 1,
-                            videoNumber: video.number,
-                            startTime: Number((videoStartTime + pressStart).toFixed(3)),
-                            endTime: Number((videoStartTime + pressEnd).toFixed(3))
+                            participantID:       participantID,
+                            dateTime:            getFormattedDateTime(),
+                            experimentBlock:     1,
+                            videoNumber:         video.number,
+                            startTime:           relativeStart,
+                            endTime:             relativeEnd,
+                            videoTimestampStart: actualStart,
+                            videoTimestampEnd:   actualEnd
                         };
 
                         fetch(GOOGLE_SHEETS_URL, {
@@ -231,11 +276,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
                 document.addEventListener("keydown", handleKeydown);
-                document.addEventListener("keyup", handleKeyup);
+                document.addEventListener("keyup",   handleKeyup);
 
-                document.getElementById(`next-button-${index}`).addEventListener("click", () => {
-                    jsPsych.finishTrial();
-                });
+                document.getElementById(`next-button-${index}`)
+                    .addEventListener("click", () => jsPsych.finishTrial());
             }
         };
 
@@ -243,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
         timeline.push(videoTrial);
     });
 
+    // Final “section complete” screen
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: "<p style='font-weight: normal; font-size: 20px;'>Please inform the researcher that you have completed this section</p>",
