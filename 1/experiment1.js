@@ -210,19 +210,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 let keyIsDown  = false;
 
                 // Instantiate the YT.Player once the API is ready
-                let player = null;
-                function tryMakePlayer() {
-                    if (typeof YT !== "undefined" && YT.Player) {
-                        player = new YT.Player(`player-${index}`);
-                        return true;
-                    }
-                    return false;
-                }
-                if (!tryMakePlayer()) {
-                    let poll = setInterval(() => {
-                        if (tryMakePlayer()) clearInterval(poll);
-                    }, 100);
-                }
+                // inside your on_load callback
+let player = null;
+function tryMakePlayer() {
+  if (window.YT && YT.Player) {
+    player = new YT.Player(`player-${index}`, {
+      // no special config needed—just passing {} makes the constructor run
+    });
+    return true;
+  }
+  return false;
+}
+
+if (!tryMakePlayer()) {
+  let poll = setInterval(() => {
+    if (tryMakePlayer()) clearInterval(poll);
+  }, 100);
+}
+
 
                 // On space‐down: get current video time
                 handleKeydown = function(event) {
