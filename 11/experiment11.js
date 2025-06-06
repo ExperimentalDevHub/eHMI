@@ -394,7 +394,7 @@ handleKeyup = e => {
     let dataToSend = {
       participantID,
       dateTime: getFormattedDateTime(),
-      experimentBlock: 1,
+      experimentBlock: 11,
       videoNumber: video.number,
 
 
