@@ -10,6 +10,15 @@ function onYouTubeIframeAPIReady() {
 }
 
 
+function getParticipantID() {
+  let participantID = localStorage.getItem("participantID");
+  if (!participantID || participantID.length !== 3) {
+    participantID = Math.floor(100 + Math.random() * 900).toString();
+    localStorage.setItem("participantID", participantID);
+  }
+  return participantID;
+}
+
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
