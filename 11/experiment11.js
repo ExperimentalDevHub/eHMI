@@ -11,13 +11,14 @@ function onYouTubeIframeAPIReady() {
 
 
 function getParticipantID() {
-let participantID = getParticipantID();
+  let participantID = localStorage.getItem("participantID");
   if (!participantID || participantID.length !== 3) {
     participantID = Math.floor(100 + Math.random() * 900).toString();
     localStorage.setItem("participantID", participantID);
   }
   return participantID;
 }
+
 
 
 function shuffleArray(array) {
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 let timeline = [];
-    let participantID = localStorage.getItem("participantID");
+let participantID = getParticipantID();
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzsvZbu4Yk-KlH_T_iBuXxcst19Lh88VLGX6_25w2_XA2BTc3WDqyNG9IyvYmIMcvxUwQ/exec";
 
 
